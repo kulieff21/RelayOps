@@ -27,6 +27,8 @@ not imply that future purchasing or agent execution is already implemented.
 See the [product specification](docs/product-spec.md), [architecture](docs/architecture.md),
 [API contracts](docs/api.md) and [verification scope](docs/testing.md).
 See [visual design](docs/design.md) and [frontend behavior](docs/frontend.md).
+The starting OpenRouter model and authorized spending policy are recorded in
+[model preparation](docs/model-setup.md); the inference adapter remains future work.
 
 ## Run locally
 
