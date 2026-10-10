@@ -1,16 +1,17 @@
 # Architecture and decisions
 
-Status: backend foundation implemented; website design and UI have not started.
+Status: backend foundation and bilingual storefront/operations UI implemented.
 OpenRouter, Telegram, durable job execution and purchasing/receipt orchestration are
 future implementation stages. Their records exist, but no live integration runs yet.
 
 ## ADR 001: independently deployable clients and server
 
-Choose React with TypeScript and Vite for the future bilingual storefront and business
+Choose React with TypeScript and Vite for the bilingual storefront and business
 panel. The same typed API supports both experiences and the customer assistant. A
 client SPA suits interactive case timelines, persistent language selection and process
-inspection. Frontend dependencies and UI code will be added after visual direction is
-agreed. Keep customer and staff routes separate while sharing translation/control code.
+inspection. The agreed premium visual direction is implemented in `src/web`; customer
+and staff routes share translation/control code. Vite proxies API requests locally.
+The server still validates every identity, argument and state-changing action.
 
 Choose Fastify 5, TypeScript 5 and strict Zod 4 contracts for the server. The initial
 API runs without credentials. All model tools will invoke the same domain services as
@@ -31,7 +32,7 @@ flowchart LR
 ```
 
 The diagram includes future components, not proof of implemented integrations.
-Repository layout: `src/web` is reserved for the UI, `src/server` for HTTP/config,
+Repository layout: `src/web` contains the UI, `src/server` handles HTTP/config,
 `src/domain` for policies, `src/db` for storage/fixtures, `src/shared` for contracts,
 `src/worker` for future workers, `migrations` for SQL, `scripts` for maintenance,
 `test` for isolated verification and `docs` for public product documentation.
@@ -137,10 +138,11 @@ ineligible. Missing feasible supply returns clarification/escalation rather than
 ## ADR 006: locales and reproducible sandbox
 
 Accounts store `en`/`az` preferences; public catalog accepts an explicit locale defaulting
-to English. Product descriptions are bilingual. Future UI uses English source translation
-keys and an Azerbaijani catalog checked for missing keys; persisted notifications store
-message keys/parameters and recipient locale. Assistant/Telegram prose follows the
-recipient locale. API errors use stable English codes for translation by the future UI.
+to English. Product descriptions are bilingual. The UI uses typed English/Azerbaijani
+entries checked for missing translations and fixture specification coverage. Future
+persisted notifications store message keys/parameters and recipient locale.
+Assistant/Telegram prose follows the recipient locale. API errors use stable English
+codes translated by the bilingual UI.
 Language is not part of the consent fingerprint; switching it does not alter an offer.
 Store UTC timestamps, format in Asia/Baku, and use the Mon–Fri Baku demo calendar.
 

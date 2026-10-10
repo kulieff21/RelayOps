@@ -3,6 +3,7 @@ import { z } from "zod";
 import { Store } from "../db/database.js";
 import { Auth } from "../domain/auth.js";
 import { Business } from "../domain/business.js";
+import { Views } from "../domain/views.js";
 import {
   BusinessError,
   localeSchema,
@@ -19,6 +20,7 @@ export function createApp(store: Store, clock: Clock = frozenClock()) {
   });
   const auth = new Auth(store);
   const business = new Business(store, clock);
+  const views = new Views(business);
   const loginAttempts = new Map<string, { count: number; resets: number }>();
   const token = (header?: string) =>
     header?.startsWith("Bearer ") ? header.slice(7) : undefined;
@@ -96,6 +98,15 @@ export function createApp(store: Store, clock: Clock = frozenClock()) {
       actor(request.headers.authorization),
       request.body,
     ),
+  }));
+  app.get("/api/orders", async (request) => ({
+    data: views.orders(actor(request.headers.authorization)),
+  }));
+  app.get("/api/returns", async (request) => ({
+    data: views.returns(actor(request.headers.authorization)),
+  }));
+  app.get("/api/workspace", async (request) => ({
+    data: views.workspace(actor(request.headers.authorization)),
   }));
   const params = (raw: unknown) => z.strictObject({ id }).parse(raw).id;
   app.get("/api/orders/:id", async (request) => ({
