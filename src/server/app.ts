@@ -1,0 +1,165 @@
+import Fastify from "fastify";
+import { z } from "zod";
+import { Store } from "../db/database.js";
+import { Auth } from "../domain/auth.js";
+import { Business } from "../domain/business.js";
+import {
+  BusinessError,
+  localeSchema,
+  id,
+  type Actor,
+} from "../shared/contracts.js";
+import { frozenClock, type Clock } from "../shared/time.js";
+
+export function createApp(store: Store, clock: Clock = frozenClock()) {
+  const app = Fastify({
+    bodyLimit: 16384,
+    logger: false,
+    requestIdHeader: false,
+  });
+  const auth = new Auth(store);
+  const business = new Business(store, clock);
+  const loginAttempts = new Map<string, { count: number; resets: number }>();
+  const token = (header?: string) =>
+    header?.startsWith("Bearer ") ? header.slice(7) : undefined;
+  const actor = (header?: string): Actor => auth.authenticate(token(header));
+  app.setErrorHandler((error, request, reply) => {
+    if (error instanceof z.ZodError)
+      return reply
+        .code(400)
+        .send({ error: { code: "INVALID_INPUT", correlationId: request.id } });
+    if (error instanceof BusinessError)
+      return reply
+        .code(error.status)
+        .send({ error: { code: error.code, correlationId: request.id } });
+    if (
+      typeof error === "object" &&
+      error !== null &&
+      "statusCode" in error &&
+      typeof error.statusCode === "number" &&
+      error.statusCode < 500
+    )
+      return reply.code(error.statusCode).send({
+        error: { code: "INVALID_REQUEST", correlationId: request.id },
+      });
+    return reply
+      .code(500)
+      .send({ error: { code: "INTERNAL_ERROR", correlationId: request.id } });
+  });
+  app.get("/health", async () => ({
+    status: "ok",
+    mode: "sandbox",
+    integrations: "not_connected",
+    businessClock: clock.now(),
+  }));
+  app.post("/api/auth/login", async (request, reply) => {
+    const now = Date.now();
+    for (const [ip, state] of loginAttempts)
+      if (state.resets <= now) loginAttempts.delete(ip);
+    const current = loginAttempts.get(request.ip) ?? {
+      count: 0,
+      resets: now + 60000,
+    };
+    current.count++;
+    loginAttempts.set(request.ip, current);
+    if (current.count > 10)
+      return reply
+        .code(429)
+        .send({ error: { code: "RATE_LIMITED", correlationId: request.id } });
+    return { data: auth.login(request.body) };
+  });
+  app.get("/api/auth/me", async (request) => ({
+    data: actor(request.headers.authorization),
+  }));
+  app.post("/api/auth/logout", async (request) => {
+    actor(request.headers.authorization);
+    auth.logout(token(request.headers.authorization)!);
+    return { data: { loggedOut: true } };
+  });
+  app.get("/api/products", async (request) => {
+    const query = z
+      .strictObject({
+        q: z.string().max(100).default(""),
+        locale: localeSchema.default("en"),
+      })
+      .parse(request.query);
+    return { data: business.search(query.q, query.locale) };
+  });
+  app.post("/api/order-offers", async (request) => ({
+    data: business.prepareOrder(
+      actor(request.headers.authorization),
+      request.body,
+    ),
+  }));
+  app.post("/api/orders", async (request) => ({
+    data: business.confirmOrder(
+      actor(request.headers.authorization),
+      request.body,
+    ),
+  }));
+  const params = (raw: unknown) => z.strictObject({ id }).parse(raw).id;
+  app.get("/api/orders/:id", async (request) => ({
+    data: business.getOrder(
+      actor(request.headers.authorization),
+      params(request.params),
+    ),
+  }));
+  app.post("/api/orders/:id/cancel", async (request) => ({
+    data: business.cancelOrder(
+      actor(request.headers.authorization),
+      params(request.params),
+      request.body,
+    ),
+  }));
+  app.post("/api/orders/:id/transition", async (request) => ({
+    data: business.transitionOrder(
+      actor(request.headers.authorization),
+      params(request.params),
+      request.body,
+    ),
+  }));
+  app.post("/api/returns", async (request) => ({
+    data: business.requestReturn(
+      actor(request.headers.authorization),
+      request.body,
+    ),
+  }));
+  app.post("/api/returns/:id/transition", async (request) => ({
+    data: business.transitionReturn(
+      actor(request.headers.authorization),
+      params(request.params),
+      request.body,
+    ),
+  }));
+  app.post("/api/returns/:id/inspect", async (request) => ({
+    data: business.inspectReturn(
+      actor(request.headers.authorization),
+      params(request.params),
+      request.body,
+    ),
+  }));
+  app.post("/api/returns/:id/resolve", async (request) => ({
+    data: business.resolveReturn(
+      actor(request.headers.authorization),
+      params(request.params),
+      request.body,
+    ),
+  }));
+  app.post("/api/returns/:id/exchange-offer", async (request) => ({
+    data: business.prepareExchange(
+      actor(request.headers.authorization),
+      params(request.params),
+      request.body,
+    ),
+  }));
+  app.get("/api/procurement/:id/comparison", async (request) => ({
+    data: business.compareQuotes(
+      actor(request.headers.authorization),
+      params(request.params),
+    ),
+  }));
+  app.post("/api/reservations/expire", async (request) => ({
+    data: business.expireReservations(actor(request.headers.authorization)),
+  }));
+  return app;
+}

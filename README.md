@@ -1,45 +1,84 @@
 # RelayOps
 
-AI-powered retail and procurement operations for an electronics and IT equipment retailer.
+Retail and procurement operations for a fictional electronics/IT equipment retailer,
+connecting customer demand, verified stock, supplier quotes and human decisions.
+English is the original product language; Azerbaijani is a supported locale.
 
-RelayOps connects customer requests, inventory shortages, supplier quotations and human
-purchasing decisions in a persistent business process. English is the original interface
-language; Azerbaijani is a supported locale for both customer and business experiences.
+## Current status
 
-## Status
+The sandbox backend foundation runs locally: role-based sessions, bilingual catalog,
+versioned customer consent, transactional reservations/shortage cases, scoped orders,
+cancellation, delivery transitions, inspection-controlled returns/exchanges, exact quote
+comparison and audit records. Website design and UI have not started.
 
-Early development. The repository currently contains the project overview and working
-specification. There is no runnable application yet. Features described below are the
-intended scope, not a claim of completed functionality.
+OpenRouter agents, Telegram approvals, leased workers, purchasing/receipt orchestration
+and the full bilingual website are planned. Their database records and architecture are
+prepared; there are no live integration results or measured AI gains.
 
-The [product specification](docs/product-spec.md) defines roles, order/return policies,
-procurement rules, approval states and 34 observable acceptance criteria. Its monetary
-values and supplier offers are fictional demo fixtures.
+See the [product specification](docs/product-spec.md), [architecture](docs/architecture.md),
+[API contracts](docs/api.md) and [verification scope](docs/testing.md).
 
-## Planned capabilities
+## Run locally
 
-- Customer storefront with product specifications, orders, cancellations and returns.
-- A customer AI assistant that uses business tools and requests confirmation for changes.
-- Business operations for inventory, supplier quotations and procurement proposals.
-- A procurement agent that explains feasible supplier choices using actual quote records.
-- Telegram approval or rejection by an authorized person, followed by process resumption.
-- Stock receipt and allocation to waiting customer orders.
-- Durable state, duplicate prevention, permission boundaries and a business audit trail.
-- Reproducible demo data, a mock integration mode and measured comparative evaluation.
+Use **Node 22.16+ within major 22** and npm. Node 22's SQLite API is experimental and
+isolated behind an adapter. No database server or provider credentials are required.
 
-## Example process
+```sh
+npm ci
+npm run dev
+```
 
-A customer needs 20 identical managed network switches before a deadline, while the
-retailer has only 8 available. RelayOps captures the shortage, compares supplier offers,
-prepares a purchase proposal and requests approval. Following a valid decision, it
-creates a sandbox purchase order. Stock becomes available to the customer only after
-goods receipt and allocation.
+The API listens at `http://127.0.0.1:3001`. `/health` and `/api/products?locale=az` are
+public. First start migrates and seeds `runtime/relayops-demo.sqlite`. This is an API,
+not a website page. The current server is loopback-only.
 
-## Integration boundaries
+Optionally copy `.env.example` to `.env` to change the port or frozen business clock.
+Fixture time is **2026-10-12 08:00 UTC**, explicitly reported by health; sessions expire
+using real time. Integration credentials are neither needed nor consumed yet.
 
-OpenRouter and Telegram are the intended live integrations. Supplier transactions,
-payments and fulfillment use an explicitly labelled sandbox. Model/provider selection
-and technical architecture have not been finalized.
+```sh
+npm run check       # types, lint, format, tests and production compilation
+npm run build
+npm start           # compiled API; keep migrations/ beside dist/
+npm run smoke       # bounded compiled-server HTTP check; exits afterward
+npm run db:migrate
+npm run db:seed     # no-op if complete; interrupted seed requires reset
+npm run db:reset    # resets only the named sandbox; stop server first
+```
 
-Setup, runnable examples, screenshots and evaluation results will be added as the
-corresponding capabilities are implemented and verified.
+On Windows PowerShell use `npm.cmd` if execution policy blocks `npm.ps1`. Reset checks
+the demo marker and rebuilds the named database tables, without deleting project files.
+Local databases, credentials and generated evidence stay out of Git.
+
+## Fictional demo accounts
+
+All accounts use the public synthetic password **`RelayOps-demo-2026!`**. These are local
+demo accounts, not production credentials. Login returns an opaque bearer session; use
+it in the Authorization header, never URLs.
+
+| Email | Role | Locale |
+| --- | --- | --- |
+| customer-a@relayops.example | Customer | English |
+| customer-b@relayops.example | Customer | Azerbaijani |
+| operator@relayops.example | Operator | English |
+| purchaser@relayops.example | Purchaser | English |
+| owner@relayops.example | Owner | Azerbaijani |
+
+## Reference case
+
+An accepted order needs 20 RelaySwitch 24G switches by T+5 business days. Eight physical
+units are reserved; the case needs 12 more with a 2,000 AZN purchasing budget. Northlink's
+1,920 AZN offer meets the deadline; ByteHarbor's cheaper 1,780 AZN offer arrives too late;
+CircuitDepot's minimum quantity costs 2,550 AZN and exceeds the budget. A delivered monitor
+order supports return/exchange demonstrations.
+
+Comparison is deterministic; no AI has selected or purchased anything. Customer consent
+and purchasing approval remain separate. Incoming purchases never count as received
+stock. Quotes, refunds, dispatch evidence and inspection are synthetic.
+
+## Publishing
+
+The full product requires a persistent backend for SQLite, agents and Telegram. The
+future frontend may be hosted separately, including on GitHub Pages. A self-contained
+JavaScript visitor demo can later live in a separate public repo with labelled simulation.
+No hosting or extra demo repository has been set up yet.

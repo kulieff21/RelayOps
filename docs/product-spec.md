@@ -11,14 +11,14 @@ The fictional store is **RelayOps Supply**, an electronics and IT equipment reta
 serving individual customers and small organizations. The application/platform remains
 named RelayOps. Its catalog supports English and Azerbaijani.
 
-| Category | Example items | Decision-relevant specifications |
-| --- | --- | --- |
-| Networking | Managed switches, routers, access points | Ports, speed, management, PoE budget |
-| Computers | Laptops, mini PCs, workstations | CPU, RAM, storage, operating-system option |
-| Components | Memory, SSDs, graphics cards | Interface, capacity, physical compatibility |
-| Storage | External drives, NAS equipment | Capacity, interface, bay count |
-| Peripherals | Monitors, keyboards, docks | Resolution, connectors, power delivery |
-| Power and accessories | UPS units, adapters, cables | Power rating, connector, length |
+| Category              | Example items                            | Decision-relevant specifications            |
+| --------------------- | ---------------------------------------- | ------------------------------------------- |
+| Networking            | Managed switches, routers, access points | Ports, speed, management, PoE budget        |
+| Computers             | Laptops, mini PCs, workstations          | CPU, RAM, storage, operating-system option  |
+| Components            | Memory, SSDs, graphics cards             | Interface, capacity, physical compatibility |
+| Storage               | External drives, NAS equipment           | Capacity, interface, bay count              |
+| Peripherals           | Monitors, keyboards, docks               | Resolution, connectors, power delivery      |
+| Power and accessories | UPS units, adapters, cables              | Power rating, connector, length             |
 
 Seed products use clearly fictional model names and internally consistent specifications.
 Product compatibility claims require stored specifications; the assistant must clarify
@@ -30,19 +30,19 @@ demo items that need inspection/warranty tracking.
 An account may have multiple business roles, but permissions are checked per action.
 An agent is a service actor with explicitly permitted tools, not a business owner.
 
-| Action | Customer | Operator | Purchaser | Owner |
-| --- | --- | --- | --- | --- |
-| Browse catalog and public availability | Yes | Yes | Yes | Yes |
-| View/change a customer's own order | Own only | All, within order rules | Read for linked cases | All, within order rules |
-| Submit cancellation/return/exchange | Own only | Record on customer behalf with evidence | No | Record with evidence |
-| Inspect returns and record goods receipt | No | Yes | Read | Yes |
-| Manage supplier and quotation records | No | Read relevant records | Yes | Yes |
-| Prepare/revise procurement proposals | No | Create shortage case | Yes | Yes |
-| Approve purchasing up to 1,000 AZN | No | No | Yes, subject to budget | Yes, subject to budget |
-| Approve purchasing above 1,000 AZN | No | No | No | Yes, subject to budget |
-| Change case budget/purchasing policy | No | No | No | Yes, with audit record |
-| View business audit and cost records | No | Operations scope | Procurement scope | Full business scope |
-| Manage business roles and Telegram mapping | No | No | No | Yes |
+| Action                                     | Customer | Operator                                | Purchaser              | Owner                   |
+| ------------------------------------------ | -------- | --------------------------------------- | ---------------------- | ----------------------- |
+| Browse catalog and public availability     | Yes      | Yes                                     | Yes                    | Yes                     |
+| View/change a customer's own order         | Own only | All, within order rules                 | Read for linked cases  | All, within order rules |
+| Submit cancellation/return/exchange        | Own only | Record on customer behalf with evidence | No                     | Record with evidence    |
+| Inspect returns and record goods receipt   | No       | Yes                                     | Read                   | Yes                     |
+| Manage supplier and quotation records      | No       | Read relevant records                   | Yes                    | Yes                     |
+| Prepare/revise procurement proposals       | No       | Create shortage case                    | Yes                    | Yes                     |
+| Approve purchasing up to 1,000 AZN         | No       | No                                      | Yes, subject to budget | Yes, subject to budget  |
+| Approve purchasing above 1,000 AZN         | No       | No                                      | No                     | Yes, subject to budget  |
+| Change case budget/purchasing policy       | No       | No                                      | No                     | Yes, with audit record  |
+| View business audit and cost records       | No       | Operations scope                        | Procurement scope      | Full business scope     |
+| Manage business roles and Telegram mapping | No       | No                                      | No                     | Yes                     |
 
 Never authorize an action using a role, identity or account reference supplied by a model.
 Customer confirmation is not purchasing approval. Telegram ownership mapping is separate
@@ -50,16 +50,16 @@ from GitHub access. The public source repository has only kulieff21 as owner/col
 
 ## 3. Order lifecycle (01.05)
 
-| State | Meaning | Allowed next states |
-| --- | --- | --- |
-| draft | Cart/request has not been confirmed | awaiting_supply, confirmed, cancelled |
-| awaiting_supply | Customer agreed to the documented shortage/fulfillment proposal | confirmed, cancelled |
-| confirmed | Full required stock is reserved and sandbox checkout is accepted | processing, cancelled |
-| processing | Operator is preparing dispatch | shipped, cancellation_requested |
-| cancellation_requested | Dispatch must be checked before acting | cancelled, processing, shipped |
-| shipped | Dispatch event and quantity recorded | delivered |
-| delivered | Delivery event recorded | No order-state transition |
-| cancelled | Order closed and unshipped reservations released | No order-state transition |
+| State                  | Meaning                                                          | Allowed next states                   |
+| ---------------------- | ---------------------------------------------------------------- | ------------------------------------- |
+| draft                  | Cart/request has not been confirmed                              | awaiting_supply, confirmed, cancelled |
+| awaiting_supply        | Customer agreed to the documented shortage/fulfillment proposal  | confirmed, cancelled                  |
+| confirmed              | Full required stock is reserved and sandbox checkout is accepted | processing, cancelled                 |
+| processing             | Operator is preparing dispatch                                   | shipped, cancellation_requested       |
+| cancellation_requested | Dispatch must be checked before acting                           | cancelled, processing, shipped        |
+| shipped                | Dispatch event and quantity recorded                             | delivered                             |
+| delivered              | Delivery event recorded                                          | No order-state transition             |
+| cancelled              | Order closed and unshipped reservations released                 | No order-state transition             |
 
 Returns and exchanges have their own lifecycle, linked to a delivered order. A delivered
 order is not relabelled cancelled/returned. For the initial product, partially fulfilled
@@ -194,11 +194,11 @@ Fictional SKU: `NET-SW-24G`, RelaySwitch 24G, 24-port managed gigabit switch wit
 Customer requests 20 identical units by T+5 business days; physical available stock is 8.
 Retail sale price is 229 AZN/unit. The shortage is 12 units; purchasing budget is 2,000 AZN.
 
-| Supplier | Unit price | MOQ | Stock | Receipt lead | Delivery fee | Calculated total | Result |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| Northlink Demo | 155 AZN | 1 | 30 | T+1 business day | 60 AZN | 12 × 155 + 60 = 1,920 AZN | Feasible; customer delivery T+4 |
-| ByteHarbor Demo | 145 AZN | 1 | 30 | T+3 business days | 40 AZN | 12 × 145 + 40 = 1,780 AZN | Customer delivery T+6 misses deadline |
-| CircuitDepot Demo | 125 AZN | 20 | 40 | T+1 business day | 50 AZN | 20 × 125 + 50 = 2,550 AZN | Exceeds budget; creates 8 excess units |
+| Supplier          | Unit price | MOQ | Stock | Receipt lead      | Delivery fee | Calculated total          | Result                                 |
+| ----------------- | ---------- | --- | ----- | ----------------- | ------------ | ------------------------- | -------------------------------------- |
+| Northlink Demo    | 155 AZN    | 1   | 30    | T+1 business day  | 60 AZN       | 12 × 155 + 60 = 1,920 AZN | Feasible; customer delivery T+4        |
+| ByteHarbor Demo   | 145 AZN    | 1   | 30    | T+3 business days | 40 AZN       | 12 × 145 + 40 = 1,780 AZN | Customer delivery T+6 misses deadline  |
+| CircuitDepot Demo | 125 AZN    | 20  | 40    | T+1 business day  | 50 AZN       | 20 × 125 + 50 = 2,550 AZN | Exceeds budget; creates 8 excess units |
 
 All reference offers explicitly declare zero other charges and the same exact product.
 They are fictional fixtures, not live prices. Instantiate T and quote expiry from a
@@ -244,44 +244,45 @@ No email/SMS integration is required in the initial product.
 
 ## 13. Observable acceptance criteria (01.15)
 
-| ID | Given/trigger | Required observable outcome |
-| --- | --- | --- |
-| AC01 | English is the initial locale | Storefront and business UI start in English |
-| AC02 | User switches to Azerbaijani | UI/assistant locale changes without clearing cart, consent or case |
-| AC03 | Customer queries an order owned by another account | Server denies access and discloses no order data |
-| AC04 | Agent supplies owner identity/role in tool arguments | Server derives permissions from trusted context and rejects escalation |
-| AC05 | Customer drafts a request | Inventory remains unreserved until the specified consent/checkout step |
-| AC06 | Two orders compete for the same stock | Active reservations never exceed sellable stock |
-| AC07 | The reference 20-unit request is accepted | Eight units reserved and one linked 12-unit shortage case recorded |
-| AC08 | Request is retried with the same key | No duplicate order, reservation or procurement case |
-| AC09 | Reference quotations are compared | Northlink selected; ByteHarbor deadline and CircuitDepot budget exclusions recorded |
-| AC10 | A required quotation field is missing | Quote cannot advance to a purchase proposal as if complete |
-| AC11 | A foreign-currency quote is supplied | No assumed conversion; explicit clarification/escalation |
-| AC12 | A 1,920 AZN proposal is submitted | Only a mapped owner can approve it |
-| AC13 | A valid 900 AZN proposal within budget is submitted | Mapped purchaser or owner may decide; operator cannot |
-| AC14 | Quote validity is shorter than 24 hours | Approval request expires with the quote |
-| AC15 | Decision is rejected or expires | No purchase order or purchasing commitment is created |
-| AC16 | A Telegram callback is duplicated | The existing decision is returned; business action occurs once |
-| AC17 | Another Telegram user clicks | No approval is recorded and no purchase executes |
-| AC18 | Price/budget/quantity changes while waiting | Old approval cannot execute the changed proposal |
-| AC19 | Application restarts during approval wait | Existing pending request and process checkpoint survive |
-| AC20 | Approval arrives | One purchase order is created after revalidation; stock is not yet received |
-| AC21 | Execution retry follows a successful commit | Same purchase order returned; budget is not consumed again |
-| AC22 | Customer cancels after supplier purchase | Customer allocation released; outstanding supplier obligation remains visible |
-| AC23 | An uncommitted shortage reservation expires | Units released once and later resume rechecks availability |
-| AC24 | Only six of twelve purchased units arrive | Six accepted units added/allocated; six remain outstanding |
-| AC25 | Goods receipt is submitted twice | Sellable stock changes once |
-| AC26 | Substitution or later delivery is proposed | Customer consent required for the new version |
-| AC27 | Return request exceeds eligible delivered quantity | Request rejected without modifying stock |
-| AC28 | Item is authorized/received for return | It remains outside sellable stock until inspection |
-| AC29 | Damaged/wrong item is inspected | No sellable restocking or unjustified refund |
-| AC30 | Refund/return resolution is retried | One sandbox ledger event and one stock effect at most |
-| AC31 | Supplier text contains instructions to bypass policy | No additional tool permissions or purchasing approval |
-| AC32 | Provider/tool fails repeatedly | Bounded recovery and clear persisted escalation; no infinite paid loop |
-| AC33 | An entire case is reviewed | Audit trail reconstructs requirements, tools, proposals, decisions and stock events |
-| AC34 | Mock integrations are used | UI/evidence identifies mock execution, not a live model or supplier run |
+| ID   | Given/trigger                                        | Required observable outcome                                                         |
+| ---- | ---------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| AC01 | English is the initial locale                        | Storefront and business UI start in English                                         |
+| AC02 | User switches to Azerbaijani                         | UI/assistant locale changes without clearing cart, consent or case                  |
+| AC03 | Customer queries an order owned by another account   | Server denies access and discloses no order data                                    |
+| AC04 | Agent supplies owner identity/role in tool arguments | Server derives permissions from trusted context and rejects escalation              |
+| AC05 | Customer drafts a request                            | Inventory remains unreserved until the specified consent/checkout step              |
+| AC06 | Two orders compete for the same stock                | Active reservations never exceed sellable stock                                     |
+| AC07 | The reference 20-unit request is accepted            | Eight units reserved and one linked 12-unit shortage case recorded                  |
+| AC08 | Request is retried with the same key                 | No duplicate order, reservation or procurement case                                 |
+| AC09 | Reference quotations are compared                    | Northlink selected; ByteHarbor deadline and CircuitDepot budget exclusions recorded |
+| AC10 | A required quotation field is missing                | Quote cannot advance to a purchase proposal as if complete                          |
+| AC11 | A foreign-currency quote is supplied                 | No assumed conversion; explicit clarification/escalation                            |
+| AC12 | A 1,920 AZN proposal is submitted                    | Only a mapped owner can approve it                                                  |
+| AC13 | A valid 900 AZN proposal within budget is submitted  | Mapped purchaser or owner may decide; operator cannot                               |
+| AC14 | Quote validity is shorter than 24 hours              | Approval request expires with the quote                                             |
+| AC15 | Decision is rejected or expires                      | No purchase order or purchasing commitment is created                               |
+| AC16 | A Telegram callback is duplicated                    | The existing decision is returned; business action occurs once                      |
+| AC17 | Another Telegram user clicks                         | No approval is recorded and no purchase executes                                    |
+| AC18 | Price/budget/quantity changes while waiting          | Old approval cannot execute the changed proposal                                    |
+| AC19 | Application restarts during approval wait            | Existing pending request and process checkpoint survive                             |
+| AC20 | Approval arrives                                     | One purchase order is created after revalidation; stock is not yet received         |
+| AC21 | Execution retry follows a successful commit          | Same purchase order returned; budget is not consumed again                          |
+| AC22 | Customer cancels after supplier purchase             | Customer allocation released; outstanding supplier obligation remains visible       |
+| AC23 | An uncommitted shortage reservation expires          | Units released once and later resume rechecks availability                          |
+| AC24 | Only six of twelve purchased units arrive            | Six accepted units added/allocated; six remain outstanding                          |
+| AC25 | Goods receipt is submitted twice                     | Sellable stock changes once                                                         |
+| AC26 | Substitution or later delivery is proposed           | Customer consent required for the new version                                       |
+| AC27 | Return request exceeds eligible delivered quantity   | Request rejected without modifying stock                                            |
+| AC28 | Item is authorized/received for return               | It remains outside sellable stock until inspection                                  |
+| AC29 | Damaged/wrong item is inspected                      | No sellable restocking or unjustified refund                                        |
+| AC30 | Refund/return resolution is retried                  | One sandbox ledger event and one stock effect at most                               |
+| AC31 | Supplier text contains instructions to bypass policy | No additional tool permissions or purchasing approval                               |
+| AC32 | Provider/tool fails repeatedly                       | Bounded recovery and clear persisted escalation; no infinite paid loop              |
+| AC33 | An entire case is reviewed                           | Audit trail reconstructs requirements, tools, proposals, decisions and stock events |
+| AC34 | Mock integrations are used                           | UI/evidence identifies mock execution, not a live model or supplier run             |
 
-These are acceptance targets. No criteria have been demonstrated by an application yet.
+These remain the full-product acceptance targets. Backend foundation checks are recorded
+in docs/testing.md; UI, live integrations and full-process acceptance remain pending.
 
 ## 14. Scope and integration boundaries (01.16)
 
@@ -294,6 +295,7 @@ inspection events. A visitor mode uses labelled mock integrations without creden
 No real payment, supplier commitment, live personal customer data or automatic tax
 compliance claim is included. Hosted deployment is not assumed by this specification.
 
-Still open: implementation stack, exact OpenRouter model/provider, paid-run budget,
+The implementation stack is recorded in docs/architecture.md. Still open: exact
+OpenRouter model/provider, paid-run budget,
 evaluation sample size and joint website visual-design decisions. This document defines
 behavior; it does not prescribe a visual theme or announce completed features.

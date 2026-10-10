@@ -1,0 +1,36 @@
+{
+  "name": "relayops",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.16.0 <23"
+  },
+  "scripts": {
+    "dev": "node --watch --env-file-if-exists=.env --import tsx src/server/main.ts",
+    "start": "node --env-file-if-exists=.env dist/server/main.js",
+    "build": "tsc",
+    "smoke": "npm run build && node --import tsx scripts/smoke.ts",
+    "typecheck": "tsc -p tsconfig.check.json",
+    "test": "node --import tsx --test test/*.test.ts",
+    "db:migrate": "node --env-file-if-exists=.env --import tsx scripts/database.ts migrate",
+    "db:seed": "node --env-file-if-exists=.env --import tsx scripts/database.ts seed",
+    "db:reset": "node --env-file-if-exists=.env --import tsx scripts/database.ts reset --demo-only",
+    "lint": "eslint src scripts test",
+    "format": "prettier --write src scripts test docs package.json tsconfig*.json eslint.config.js .github",
+    "format:check": "prettier --check src scripts test docs package.json tsconfig*.json eslint.config.js .github",
+    "check": "npm run typecheck && npm run lint && npm run format:check && npm test && npm run build"
+  },
+  "dependencies": {
+    "fastify": "5.12.5",
+    "zod": "4.6.5"
+  },
+  "devDependencies": {
+    "@types/node": "22.20.5",
+    "eslint": "10.12.0",
+    "prettier": "3.9.10",
+    "tsx": "4.23.15",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.71.1"
+  }
+}
