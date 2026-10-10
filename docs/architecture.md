@@ -1,8 +1,9 @@
 # Architecture and decisions
 
 Status: backend foundation and complete pre-agent bilingual storefront/operations views implemented.
-OpenRouter, Telegram, durable job execution and purchasing/receipt orchestration are
-future implementation stages. Their records exist, but no live integration runs yet.
+The server-side OpenRouter adapter and durable shared spending guard are implemented.
+The website agent loop, Telegram, durable job execution and purchasing/receipt
+orchestration are future stages. Adapter diagnostics do not execute these workflows.
 
 ## ADR 001: independently deployable clients and server
 
@@ -205,3 +206,27 @@ prepared approval/PO/receipt schema. No new migration is needed for these views.
 The main named demo remains unchanged by populated-view verification. Isolated test
 fixtures populate the existing schema to verify rendering/visibility of future records;
 they are not evidence that the future worker or approval workflow runs.
+
+## OpenRouter adapter boundary
+
+`src/model/openrouter.ts` implements bounded text/function-call Chat Completions with
+native server-side fetch. Model/provider IDs come from validated environment settings.
+Each call verifies unauthenticated endpoint metadata before reserving money and sending
+the key to the fixed HTTPS completion origin. Redirects are refused. Input, output,
+response body and time are bounded; unsupported tool names/response shapes are rejected.
+The adapter returns model requests; it never executes a business function itself.
+
+`ModelBudget` uses Store's synchronous BEGIN IMMEDIATE transactions in the separate
+`runtime/model-budget.sqlite`. All live diagnostic attempts share its original USD 1
+ceiling. Reservations cover full advertised context at the highest cache/long-context
+input rate, capped output at the highest completion/reasoning rates and a 10% margin.
+Unknown outcomes remain held across restart. Known costs settle independently of prose
+validity. An observed billing overrun stops subsequent calls. The business-demo reset
+never touches this ledger. Its schema is independent of immutable business migrations.
+
+This is application accounting for this project, not an OpenRouter account/key limit.
+It assumes provider catalogue prices and token caps are honored; unrelated key use is
+outside its accounting. A future agent entry point must always use this adapter/ledger,
+persist all execution outcomes and supply trusted actor context to a validated dispatcher.
+No public completion endpoint or website conversation exists yet. The explicit local
+diagnostic stores actual usage and a synthetic tool result in existing run/usage tables.

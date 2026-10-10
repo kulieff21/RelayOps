@@ -8,6 +8,7 @@
   },
   "scripts": {
     "model:verify": "node --env-file-if-exists=.env --import tsx scripts/verify-model.ts",
+    "model:smoke": "node --env-file-if-exists=.env --import tsx scripts/model-smoke.ts",
     "dev": "node --watch --env-file-if-exists=.env --import tsx src/server/main.ts",
     "start": "node --env-file-if-exists=.env dist/server/main.js",
     "dev:web": "vite --host 127.0.0.1",

@@ -5,7 +5,7 @@ production API/frontend compilation. `npm run smoke` checks the compiled server 
 dedicated loopback port 3099 and then stops it. All checks use unpaid fictional records.
 CI runs the same check on Node 22.
 
-The suite contains 38 tests covering:
+The suite contains 52 tests covering:
 
 - Bilingual fixtures, reference totals and deterministic quote rejection reasons.
 - No draft reservation, accepted 8/12 split and duplicate order/case prevention.
@@ -45,6 +45,26 @@ The race test uses separate SQLite connections in separate OS processes and insp
 stored effects. The restart test checks persistence; it does **not** demonstrate an
 unimplemented approval worker's resumption. The supplier-text check demonstrates that
 text cannot change deterministic totals or role policy; no model dispatcher is evaluated.
+
+## OpenRouter adapter checks
+
+Fourteen additional unpaid tests inject synthetic HTTP responses into the real adapter.
+They cover configurable bounded settings, private-value-free errors, exact provider
+capability/pricing checks, credential-free metadata fetch, price/token/routing caps,
+strict input/response/tool names, invalid output with independently retained billing,
+usage observers before requests and after billing (including invalid replies),
+missing versus known-zero cost, rounded small charges, held non-2xx/lost/oversized
+responses, no automatic retries and a real deadline abort. Two SQLite connections and
+a reopen verify shared reservations; a separate business-demo reset does not touch
+the budget ledger. Ceiling increases and observed billing overruns block new calls.
+
+`npm run model:smoke -- --live` is an explicit paid diagnostic outside check/CI. It
+performs at most two completion requests and one validated synthetic local probe;
+usage and its tool result are persisted separately from prose. This is adapter
+verification, not general agent-loop, business-tool or AI-benefit evaluation.
+The 2026-10-10 live round trip passed; including two earlier schema diagnostics, four
+requests recorded 88 micro-USD total, zero held funds and no business actions. See
+[adapter setup/evidence](model-setup.md) for the bounded scope and token counts.
 
 ## Browser review
 
@@ -136,6 +156,6 @@ sandbox QA records remain. Conversation preservation (06.07) is still dependent 
 Phase 09 conversation implementation; no conversation exists to exercise yet.
 
 Full acceptance targets remain in `docs/product-spec.md`. Telegram callbacks, approval/PO
-execution, worker lease recovery, partial receipts, model limits and live provider
-performance remain future work. Current checks do not establish public deployment
+execution, worker lease recovery, partial receipts, general agent-loop limits and live
+business-task performance remain future work. Current checks do not establish public deployment
 readiness or AI-performance improvements.

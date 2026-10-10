@@ -18,17 +18,18 @@ history, original evidence, explicit missing data and guarded concurrent edits.
 Full case details, linked activity, proposal/decision history, PO/receipt inspection
 and model usage reads are available with role-scoped access and honest empty states.
 
-OpenRouter agents, Telegram approvals, leased workers, purchasing/receipt orchestration
-are planned. Their database records and architecture are prepared; there are no live
-integration results or measured AI gains. The approvals
+The server-side OpenRouter adapter and persistent shared spending guard are implemented.
+The website agent loop, Telegram approvals, leased workers and purchasing/receipt
+orchestration are planned. Their database records and architecture are prepared;
+adapter connection checks do not measure business-task success or AI gains. The approvals
 and assistant surfaces explicitly show their disconnected state. Review screens do
 not imply that future purchasing or agent execution is already implemented.
 
 See the [product specification](docs/product-spec.md), [architecture](docs/architecture.md),
 [API contracts](docs/api.md) and [verification scope](docs/testing.md).
 See [visual design](docs/design.md) and [frontend behavior](docs/frontend.md).
-The starting OpenRouter model and authorized spending policy are recorded in
-[model preparation](docs/model-setup.md); the inference adapter remains future work.
+See [OpenRouter setup and adapter verification](docs/model-setup.md) for the selected
+model, authorized spending policy and explicit paid diagnostic command.
 
 ## Run locally
 
@@ -57,7 +58,8 @@ frontend listen on loopback only. If changing the API port, update Vite's local 
 
 Optionally copy `.env.example` to `.env` to change the port or frozen business clock.
 Fixture time is **2026-10-12 08:00 UTC**, explicitly reported by health; sessions expire
-using real time. Integration credentials are neither needed nor consumed yet.
+using real time. Provider credentials are optional and only consumed by the explicit
+OpenRouter diagnostic; ordinary server startup and checks do not make inference calls.
 
 ```sh
 npm run check       # types, lint, format, tests and production compilation
@@ -73,6 +75,8 @@ npm run db:reset    # resets only the named sandbox; stop server first
 On Windows PowerShell use `npm.cmd` if execution policy blocks `npm.ps1`. Reset checks
 the demo marker and rebuilds the named database tables, without deleting project files.
 Local databases, credentials and generated evidence stay out of Git.
+The separate `runtime/model-budget.sqlite` spending ledger survives business-demo reset.
+Preserve this file across restarts and backups; deleting it discards spending history.
 
 ## Fictional demo accounts
 
