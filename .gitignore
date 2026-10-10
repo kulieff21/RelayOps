@@ -1,0 +1,57 @@
+# Local agent instructions and working records (at any directory depth)
+AGENTS.md
+CLAUDE.md
+CLUADE.md
+LOG.md
+PLAN.md
+plan.md
+TASKS.md
+SESSION*.md
+*.local.md
+.codex/
+.claude/
+.agents/
+.local/
+
+# Credentials and machine-specific configuration
+.env
+.env.*
+!.env.example
+!.env.*.example
+*.key
+*.pem
+
+# Runtime data, private logs and local generated evidence
+data/
+runtime/
+logs/
+*.log
+*.db
+*.db-*
+*.sqlite
+*.sqlite-*
+*.sqlite3
+*.sqlite3-*
+artifacts/
+coverage/
+test-results/
+playwright-report/
+
+# Dependencies, caches and build outputs
+node_modules/
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+dist/
+build/
+.next/
+*.tsbuildinfo
+
+# Operating-system files
+.DS_Store
+Thumbs.db
+Desktop.ini
