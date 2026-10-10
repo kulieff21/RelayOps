@@ -12,6 +12,10 @@ Early development. The repository currently contains the project overview and wo
 specification. There is no runnable application yet. Features described below are the
 intended scope, not a claim of completed functionality.
 
+The [product specification](docs/product-spec.md) defines roles, order/return policies,
+procurement rules, approval states and 34 observable acceptance criteria. Its monetary
+values and supplier offers are fictional demo fixtures.
+
 ## Planned capabilities
 
 - Customer storefront with product specifications, orders, cancellations and returns.
