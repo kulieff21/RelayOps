@@ -15,11 +15,14 @@ category/availability filters, cart, order confirmation, cancellation and return
 Both experiences support English and Azerbaijani, with local fonts and Baku dates.
 The workspace supports supplier capabilities and quotation entry with immutable version
 history, original evidence, explicit missing data and guarded concurrent edits.
+Full case details, linked activity, proposal/decision history, PO/receipt inspection
+and model usage reads are available with role-scoped access and honest empty states.
 
 OpenRouter agents, Telegram approvals, leased workers, purchasing/receipt orchestration
 are planned. Their database records and architecture are prepared; there are no live
 integration results or measured AI gains. The approvals
-and assistant surfaces explicitly show their disconnected state.
+and assistant surfaces explicitly show their disconnected state. Review screens do
+not imply that future purchasing or agent execution is already implemented.
 
 See the [product specification](docs/product-spec.md), [architecture](docs/architecture.md),
 [API contracts](docs/api.md) and [verification scope](docs/testing.md).

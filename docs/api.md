@@ -104,3 +104,26 @@ Types and validation source: `src/shared/contracts.ts`; inferred service results
 their TypeScript structure. `toolSchemas` exports the future agent JSON schemas with
 strict inputs and role metadata. API error codes are translated by the bilingual UI; raw
 exceptions, passwords, tokens and database paths are not included in error responses.
+
+## Case, purchasing and model-run reads
+
+- GET `/api/procurement/:id`: purchaser/owner; full case requirements, accepted consent
+  snapshot, reservations with stored/effective statuses, stock, budget allocations,
+  safe process summaries, fulfillment batches and integrated audit summaries.
+- GET `/api/procurement/:id/audit`: purchaser/owner; chronological events linked through
+  stored case relationships. Private payloads/actor identities are omitted.
+- GET `/api/purchasing-records`: staff; proposal versions with their exact quotation,
+  approval request/decision plus PO/receipt records. Operators receive PO/receipts only.
+- GET `/api/model-runs`: purchaser/owner; safe run/tool/nullable usage fields. Purchasers
+  receive only procurement runs with an actual case relationship; owners see all runs.
+
+The last two endpoints accept only the optional `case` query parameter. Unknown fields,
+repeated parameters and supplied roles are rejected; missing cases return CASE_NOT_FOUND.
+Filtering by case requires purchaser/owner access. Closed cases remain readable.
+Elapsed pending proposals/requests are marked without mutating their stored statuses.
+No read reserves stock/budget, creates proposals/POs, inspects goods or executes a model.
+
+Read types: `src/shared/operations.ts`. The SQL selects public fields explicitly,
+omitting arbitrary snapshots, checkpoints, provider IDs, raw tool inputs/results,
+idempotency keys and Telegram mappings. These sandbox lists return the recorded history;
+production pagination/large-volume scaling remains a later deployment concern.

@@ -40,8 +40,8 @@ changes explain user actions. Reduced motion disables continuous movement and ti
 ## Navigation and behavior
 
 Storefront: Home, Collection, Business orders, Cart, Account/orders, product detail.
-Workspace: Overview, Orders, Returns, Inventory, Procurement, Suppliers, Approvals,
-Audit. Server permissions govern each read and action. English is the initial locale;
+Workspace: Overview, Orders, Returns, Inventory, Procurement, Suppliers, Quotations,
+Approvals, Purchase orders/receipts, Activity, Model runs/usage. Server permissions govern each read and action. English is the initial locale;
 EN/AZ switching preserves cart, active route and open forms. Dates use Asia/Baku.
 
 Desktop uses a split scene and sidebar workspace; tablet reduces columns; mobile

@@ -1,6 +1,6 @@
 # Architecture and decisions
 
-Status: backend foundation and bilingual storefront/operations UI implemented.
+Status: backend foundation and complete pre-agent bilingual storefront/operations views implemented.
 OpenRouter, Telegram, durable job execution and purchasing/receipt orchestration are
 future implementation stages. Their records exist, but no live integration runs yet.
 
@@ -192,3 +192,16 @@ static mock frontend or deployment has been created during this stage.
 
 These sources explain component capabilities. RelayOps's business choices, limitations
 and tests are this project's own design and evidence.
+
+## Operations read boundary
+
+Operations builds explicit scoped read contracts for case details, integrated activity,
+proposal/decision history, goods handling and run usage. It follows foreign-key business
+relationships and exposes selected fields, not whole private payloads. Purchasers read
+procurement records; operators read goods handling without financial decisions; owners
+retain the full summary scope. Reads do not advance process checkpoints or execute the
+prepared approval/PO/receipt schema. No new migration is needed for these views.
+
+The main named demo remains unchanged by populated-view verification. Isolated test
+fixtures populate the existing schema to verify rendering/visibility of future records;
+they are not evidence that the future worker or approval workflow runs.

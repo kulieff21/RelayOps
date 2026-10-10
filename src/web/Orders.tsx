@@ -12,7 +12,14 @@ import { Link, useShop } from "./shop";
 import { Login } from "./Dialogs";
 import { useData } from "./data";
 import { ProductArt } from "./ProductArt";
-import { date, money, translatedCode, type MessageKey } from "./i18n";
+import {
+  date,
+  money,
+  messages,
+  translate,
+  translatedCode,
+  type MessageKey,
+} from "./i18n";
 import { request } from "./api";
 import type { Order, Return } from "./types";
 
@@ -20,7 +27,9 @@ export function Status({ value }: { value: string }) {
   const { locale } = useShop();
   return (
     <span className={`badge status-${value}`}>
-      {translatedCode(locale, value)}
+      {value in messages
+        ? translate(locale, value as MessageKey)
+        : `${translate(locale, "recordedStatus")}: ${value}`}
     </span>
   );
 }

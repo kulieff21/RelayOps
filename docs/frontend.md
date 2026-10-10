@@ -27,16 +27,16 @@ payment, refund, supplier commitment or delivery integration.
 ## Workspace
 
 `/workspace/:view` contains overview, orders, returns, inventory/movements, procurement,
-suppliers, quotations, approvals and owner audit summaries. The server supplies actual stored state;
+suppliers, quotations, approvals, purchase orders/receipts, case activity, model usage
+and owner-wide audit summaries. The server supplies actual stored state;
 the client only displays authorized routes. Operators/owners can record processing,
 dispatch/delivery evidence, authorize/receive/inspect returns and resolve simulated refunds.
 Purchasers only see procurement-linked orders and purchasing views, not customer returns.
 
 Quotation comparison shows deterministic total, quantity/MOQ excess, delivery timing
 and rejection reasons for a selected case, with links to the exact supplier/product version
-history. No agent has made that decision. Full case details/audit, proposals, PO/receipt
-workflows and usage views remain later work. The approvals surface is disconnected;
-it cannot authorize a purchase.
+history. No agent has made that decision. Purchasing execution and approval actions
+remain disconnected; their review screens cannot authorize or execute a purchase.
 The equipment-help panel states that the AI assistant has not been connected.
 
 `/workspace/suppliers` displays stored equipment categories and the Baku service zone.
@@ -59,6 +59,47 @@ recording metadata show an unknown timestamp. Operators can read quotes only for
 linked to open procurement cases. Only purchasers/owners can save changes. Retry keys
 prevent duplicates; version conflicts ask the user to reopen and review current data.
 
+## Case and execution record views
+
+`/workspace/procurement?case=:id` opens full requirements and accepted consent,
+including the stored specification snapshot, original 8/12 allocation, delivery deadline
+and substitution/partial preferences. It shows current physical/available stock,
+order reservations, purchasing budget reservations/commitments, safe process state,
+fulfillment batches and an integrated activity timeline. Closed cases retain their
+history; only open cases expose comparison. Elapsed reservations have a separate
+effective status without rewriting the historical stored state during a read.
+
+`/workspace/approvals` reads each stored proposal version, its exact quotation/version,
+quantity, AZN total, required approval route, expiry and linked human decision/reason.
+Expired pending records retain their stored status with an explicit elapsed warning.
+No decision or proposal is invented when its table is empty. Submission and decision
+mutations are intentionally scheduled with the later agent/Telegram workflow.
+
+`/workspace/purchaseOrders` reads ordered/received/cancelled/remaining quantities and
+all linked receipt inspections, serials and exception reasons. Operators can inspect
+these goods-handling records without accessing proposal amounts or decisions.
+A recorded receipt is not itself proof of allocation or sellable physical stock.
+Actual PO creation, supplier receipt and allocation services remain later stages.
+
+`/workspace/audit?case=:id` follows explicit order, consent, case, proposal, bound quote,
+approval, PO, receipt, return, process, run and tool relationships. It includes event
+summaries in timestamp/ID order, never arbitrary audit payloads or unrelated
+supplier/product-wide activity. Purchasers can inspect integrated cases; owner-wide
+activity remains available to owners when no case is selected.
+
+`/workspace/modelUsage` reads run agent/mode/model/status, safe tool names/statuses and
+nullable input/output tokens and integer micro-USD costs. Purchasers only see
+procurement runs linked to cases; owners see all runs. Mock/live labels remain distinct.
+Known-entry subtotals show their coverage; missing records and null costs are unknown,
+not zero. USD rendering retains six decimals. Provider request identifiers, tool
+arguments/results, checkpoints and credentials stay private. The adapter/executor
+has not been built and the default demo has no run, proposal or PO records.
+
+Proposal, purchase, audit and usage case filters use shareable query parameters;
+locale changes, reload and browser Back preserve their meaning. The complete panel
+is translated into Azerbaijani. These are database-backed read views, not claimed
+agent or purchasing workflow completion.
+
 ## Locale and accessibility
 
 English is initial/default. EN/AZ selection persists across reloads. Language changes
@@ -70,7 +111,8 @@ Source and translation are paired typed entries; catalog/spec coverage is tested
 The font cmaps cover `Ə ə ı İ ğ ş ç ö ü`; uppercase schwa uses a local Noto Sans fallback.
 Native dialogs contain keyboard focus, support Escape and restore the previous focus.
 Visible focus rings, form labels, status/error regions, motion pause and reduced-motion
-styles are included. Sessions stay in session storage; no tokens enter navigation URLs.
+styles are included. A shared subscription responds to changes in the motion preference
+without clearing the app; both MotionConfig and continuous hardware scenes follow it. Sessions stay in session storage; no tokens enter navigation URLs.
 
 ## Local operation
 

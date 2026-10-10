@@ -4,7 +4,6 @@ import {
   motion,
   useMotionValue,
   useSpring,
-  useReducedMotion,
 } from "motion/react";
 import {
   ArrowUpRight,
@@ -23,6 +22,7 @@ import {
 } from "lucide-react";
 import { Link, useShop } from "./shop";
 import { ProductArt } from "./ProductArt";
+import { useMotionPreference } from "./motion";
 import { money, type MessageKey } from "./i18n";
 import type { Product } from "./types";
 
@@ -98,7 +98,7 @@ function Hero() {
   const { t, products, locale } = useShop();
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
-  const reduced = useReducedMotion();
+  const reduced = useMotionPreference();
   const pointerX = useMotionValue(0);
   const pointerY = useMotionValue(0);
   const rotateY = useSpring(pointerX, { stiffness: 80, damping: 25 });

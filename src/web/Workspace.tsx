@@ -1,6 +1,14 @@
 import { useShop, Link } from "./shop";
 import { useData } from "./data";
 import { SupplierDirectory, QuotationDirectory } from "./Purchasing";
+import {
+  CaseDetails,
+  CaseAuditView,
+  ProposalView,
+  PurchaseView,
+  ModelUsageView,
+} from "./Operations";
+import { auditName } from "./audit";
 import { DataState, OrderTable, SignInPage, Status } from "./Orders";
 import { ProductArt } from "./ProductArt";
 import { date, money, translatedCode, type MessageKey } from "./i18n";
@@ -10,6 +18,8 @@ import {
   ChevronRight,
   CircleCheck,
   ClipboardCheck,
+  Cpu,
+  PackageCheck,
   Clock3,
   FileText,
   LayoutDashboard,
@@ -51,15 +61,15 @@ function CaseCard({ row }: { row: ProcurementCase }) {
             <strong>{money(locale, row.budget)}</strong>
           </span>
         </div>
-        {row.status !== "closed" && (
+        {
           <Link
             className="button button-small"
             to={`/workspace/procurement?case=${row.id}`}
           >
-            {t("compare")}
+            {t("caseDetails")}
             <ArrowUpRight size={16} />
           </Link>
-        )}
+        }
       </div>
     </article>
   );
@@ -171,7 +181,13 @@ export function WorkspacePage({ view }: { view: string }) {
           { key: "approvals", icon: ClipboardCheck },
         ]
       : []),
-    ...(owner ? [{ key: "audit", icon: ShieldCheck }] : []),
+    { key: "purchaseOrders", icon: PackageCheck },
+    ...(purchasing
+      ? [
+          { key: "audit", icon: ShieldCheck },
+          { key: "modelUsage", icon: Cpu },
+        ]
+      : []),
   ];
   const valid = nav.some((item) => item.key === view);
   const logout = async () => {
@@ -525,15 +541,25 @@ export function WorkspacePage({ view }: { view: string }) {
             )}
             {view === "procurement" && (
               <>
-                <div className="case-list">
-                  {data.cases.length ? (
-                    data.cases.map((row) => <CaseCard key={row.id} row={row} />)
-                  ) : (
-                    <div className="empty-state">
-                      <p>{t("noRecords")}</p>
-                    </div>
-                  )}
-                </div>
+                {!activeCase && (
+                  <div className="case-list">
+                    {data.cases.length ? (
+                      data.cases.map((row) => (
+                        <CaseCard key={row.id} row={row} />
+                      ))
+                    ) : (
+                      <div className="empty-state">
+                        <p>{t("noRecords")}</p>
+                      </div>
+                    )}
+                  </div>
+                )}
+                {activeCase && (
+                  <Link className="text-link" to="/workspace/procurement">
+                    {t("backToCases")}
+                  </Link>
+                )}
+                {activeCase && <CaseDetails caseId={activeCase} />}
                 {activeCase &&
                   data.cases.some(
                     (row) => row.id === activeCase && row.status !== "closed",
@@ -547,21 +573,22 @@ export function WorkspacePage({ view }: { view: string }) {
               <QuotationDirectory data={data} editable={purchasing} />
             )}
             {view === "approvals" && (
-              <div className="integration-empty">
-                <ClipboardCheck size={42} />
-                <h2>{t("approvals")}</h2>
-                <span className="badge">{t("disconnected")}</span>
-                <p>{t("approvalsText")}</p>
-                {data.approvals.map((row) => (
-                  <div key={row.id}>
-                    <span>#{row.id.slice(-8)}</span>
-                    <Status value={row.status} />
-                    <span>{date(locale, row.expires_at)}</span>
-                  </div>
-                ))}
-              </div>
+              <ProposalView caseId={activeCase} workspace={data} />
+            )}
+            {view === "purchaseOrders" && (
+              <PurchaseView
+                caseId={activeCase}
+                workspace={data}
+                purchasing={purchasing}
+              />
+            )}
+            {view === "modelUsage" && (
+              <ModelUsageView caseId={activeCase} workspace={data} />
             )}
             {view === "audit" && (
+              <CaseAuditView caseId={activeCase} workspace={data} />
+            )}
+            {view === "audit" && owner && !activeCase && (
               <div className="audit-list">
                 {data.audit.map((row) => (
                   <article key={row.id}>
@@ -582,52 +609,4 @@ export function WorkspacePage({ view }: { view: string }) {
       </section>
     </div>
   );
-}
-function auditName(locale: string, action: string) {
-  const labels: Record<string, [string, string]> = {
-    "supplier.created": ["Supplier added", "Təchizatçı əlavə edildi"],
-    "supplier.updated": ["Supplier updated", "Təchizatçı yeniləndi"],
-    "quote.version_recorded": [
-      "Quotation version recorded",
-      "Təklif versiyası qeydə alındı",
-    ],
-    "order.offer_prepared": [
-      "Order summary prepared",
-      "Sifariş xülasəsi hazırlandı",
-    ],
-    "order.confirmed": ["Order confirmed", "Sifariş təsdiqləndi"],
-    "procurement.shortage_created": [
-      "Supply case opened",
-      "Təchizat işi açıldı",
-    ],
-    "fixture.delivery": [
-      "Demo delivery recorded",
-      "Demo çatdırılma qeydə alındı",
-    ],
-    "order.cancellation": ["Cancellation recorded", "Ləğv qeydə alındı"],
-    "order.status_changed": [
-      "Order status updated",
-      "Sifariş vəziyyəti yeniləndi",
-    ],
-    "return.requested": ["Return requested", "Qaytarma tələb edildi"],
-    "return.status_changed": [
-      "Return status updated",
-      "Qaytarma vəziyyəti yeniləndi",
-    ],
-    "return.inspected": [
-      "Returned goods inspected",
-      "Qaytarılan məhsullar yoxlanıldı",
-    ],
-    "return.resolved": ["Return resolved", "Qaytarma tamamlandı"],
-    "exchange.confirmed": ["Exchange confirmed", "Dəyişdirmə təsdiqləndi"],
-    "exchange.offer_linked": [
-      "Replacement summary prepared",
-      "Əvəzləyici xülasə hazırlandı",
-    ],
-    "stock.reservation_expired": [
-      "Reservation expired",
-      "Rezervasiyanın müddəti bitdi",
-    ],
-  };
-  return labels[action]?.[locale === "az" ? 1 : 0] ?? action;
 }

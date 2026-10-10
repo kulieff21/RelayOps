@@ -5,6 +5,7 @@ import { Auth } from "../domain/auth.js";
 import { Business } from "../domain/business.js";
 import { Views } from "../domain/views.js";
 import { Purchasing } from "../domain/purchasing.js";
+import { Operations } from "../domain/operations.js";
 import {
   BusinessError,
   localeSchema,
@@ -23,6 +24,7 @@ export function createApp(store: Store, clock: Clock = frozenClock()) {
   const business = new Business(store, clock);
   const views = new Views(business);
   const purchasing = new Purchasing(business);
+  const operations = new Operations(business);
   const loginAttempts = new Map<string, { count: number; resets: number }>();
   const token = (header?: string) =>
     header?.startsWith("Bearer ") ? header.slice(7) : undefined;
@@ -111,6 +113,27 @@ export function createApp(store: Store, clock: Clock = frozenClock()) {
     data: views.workspace(actor(request.headers.authorization)),
   }));
   const params = (raw: unknown) => z.strictObject({ id }).parse(raw).id;
+  app.get("/api/procurement/:id", async (request) => ({
+    data: operations.detail(
+      actor(request.headers.authorization),
+      params(request.params),
+    ),
+  }));
+  app.get("/api/procurement/:id/audit", async (request) => ({
+    data: operations.timeline(
+      actor(request.headers.authorization),
+      params(request.params),
+    ),
+  }));
+  app.get("/api/purchasing-records", async (request) => ({
+    data: operations.purchasing(
+      actor(request.headers.authorization),
+      request.query,
+    ),
+  }));
+  app.get("/api/model-runs", async (request) => ({
+    data: operations.runs(actor(request.headers.authorization), request.query),
+  }));
   app.get("/api/suppliers", async (request) => ({
     data: purchasing.suppliers(actor(request.headers.authorization)),
   }));
