@@ -73,7 +73,11 @@ test("new collection reads enforce customer privacy and staff scopes over real e
     await app.inject({ url: "/api/workspace", headers: operator })
   ).json().data;
   assert.equal(operational.returns.length, 1);
-  assert.equal(operational.suppliers.length, 0);
+  assert.equal(operational.suppliers.length, 3);
+  assert.deepEqual(operational.suppliers[0].capabilities, {
+    categories: ["networking"],
+    zone: "baku",
+  });
   assert.equal(operational.cases.length, 0);
   assert.equal(operational.audit.length, 0);
   const full = (

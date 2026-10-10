@@ -1,12 +1,25 @@
 import { DatabaseSync, type SQLInputValue } from "node:sqlite";
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 import { createHash } from "node:crypto";
 
+function migrations() {
+  const directory = new URL("../../migrations/", import.meta.url);
+  return readdirSync(directory)
+    .filter((name) => /^\d{3}-.+\.sql$/.test(name))
+    .sort()
+    .map((name) => {
+      const sql = readFileSync(new URL(name, directory), "utf8");
+      return {
+        version: name.slice(0, 3),
+        sql,
+        checksum: createHash("sha256").update(sql).digest("hex"),
+      };
+    });
+}
 export function applicationTables() {
-  const sql = readFileSync(
-    new URL("../../migrations/001-initial.sql", import.meta.url),
-    "utf8",
-  );
+  const sql = migrations()
+    .map((migration) => migration.sql)
+    .join("\n");
   return new Set([
     "migrations",
     ...Array.from(
@@ -49,29 +62,36 @@ export class Store {
     this.db.exec(
       "CREATE TABLE IF NOT EXISTS migrations(version TEXT PRIMARY KEY, checksum TEXT NOT NULL) STRICT",
     );
-    const sql = readFileSync(
-      new URL("../../migrations/001-initial.sql", import.meta.url),
-      "utf8",
+    const files = migrations();
+    const applied = this.all<{ version: string; checksum: string }>(
+      "SELECT version,checksum FROM migrations ORDER BY version",
     );
-    const checksum = createHash("sha256").update(sql).digest("hex");
-    const prior = this.one<{ checksum: string }>(
-      "SELECT checksum FROM migrations WHERE version=?",
-      "001",
-    );
-    if (prior) {
-      if (prior.checksum !== checksum)
-        throw new Error("Migration checksum mismatch");
-      return;
+    for (const prior of applied) {
+      const file = files.find(
+        (migration) => migration.version === prior.version,
+      );
+      if (!file || file.checksum !== prior.checksum)
+        throw new Error("Migration checksum mismatch or unknown version");
     }
+    const tables = this.all<{ name: string }>(
+      "SELECT name FROM sqlite_master WHERE type='table' AND name!='migrations' AND name NOT LIKE 'sqlite_%'",
+    );
+    const expected = applicationTables();
     if (
-      this.all(
-        "SELECT name FROM sqlite_master WHERE type='table' AND name!='migrations' AND name NOT LIKE 'sqlite_%'",
-      ).length
+      (!applied.length && tables.length) ||
+      tables.some((row) => !expected.has(row.name))
     )
       throw new Error("Unrecognized database; refusing fixture migration");
     this.transaction(() => {
-      this.db.exec(sql);
-      this.run("INSERT INTO migrations VALUES (?, ?)", "001", checksum);
+      for (const file of files) {
+        if (applied.some((prior) => prior.version === file.version)) continue;
+        this.db.exec(file.sql);
+        this.run(
+          "INSERT INTO migrations VALUES (?, ?)",
+          file.version,
+          file.checksum,
+        );
+      }
     });
   }
   close() {

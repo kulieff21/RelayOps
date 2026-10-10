@@ -196,7 +196,7 @@ export function seed(store: Store) {
       },
     ]) {
       store.run(
-        "INSERT INTO suppliers VALUES (?,?,?)",
+        "INSERT INTO suppliers (id,name,capabilities) VALUES (?,?,?)",
         q.id,
         q.name,
         JSON.stringify({ categories: ["networking"], zone: "baku" }),
@@ -220,6 +220,12 @@ export function seed(store: Store) {
         specs,
         "Synthetic gross quote; inspection and delivery not included in receipt date.",
         `Fixture offer from ${q.name}; other charges explicitly zero.`,
+      );
+      store.run(
+        "INSERT INTO quote_records VALUES (?,?,?)",
+        `quote-${q.id}-v1`,
+        FIXTURE_TIME,
+        "Seeded synthetic supplier offer.",
       );
     }
     // Historical fulfilled order: opening stock already represents the remaining 8 monitors.

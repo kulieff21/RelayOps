@@ -67,13 +67,26 @@ export function evaluateQuote(raw: unknown, req: Requirement, now: string) {
         typeof raw === "object" && raw !== null && "id" in raw
           ? String(raw.id)
           : "unknown",
+      supplier:
+        typeof raw === "object" &&
+        raw !== null &&
+        "supplier_id" in raw &&
+        typeof raw.supplier_id === "string"
+          ? raw.supplier_id
+          : "",
+      version:
+        typeof raw === "object" &&
+        raw !== null &&
+        "version" in raw &&
+        typeof raw.version === "number"
+          ? raw.version
+          : null,
       feasible: false,
       reasons: ["INCOMPLETE_OR_UNSUPPORTED_QUOTE"],
       total: null,
       customerDelivery: null,
       quantity: null,
       excess: null,
-      supplier: "",
     };
   const quote = parsed.data;
   const count = Math.max(req.quantity, quote.moq);
@@ -106,6 +119,7 @@ export function evaluateQuote(raw: unknown, req: Requirement, now: string) {
   return {
     id: quote.id,
     supplier: quote.supplier_id,
+    version: quote.version,
     feasible: reasons.length === 0,
     reasons,
     total,

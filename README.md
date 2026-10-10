@@ -13,10 +13,12 @@ comparison and audit records. The React storefront and operations workspace now 
 against those services: animated hardware scenes, six product detail routes, search,
 category/availability filters, cart, order confirmation, cancellation and return requests.
 Both experiences support English and Azerbaijani, with local fonts and Baku dates.
+The workspace supports supplier capabilities and quotation entry with immutable version
+history, original evidence, explicit missing data and guarded concurrent edits.
 
 OpenRouter agents, Telegram approvals, leased workers, purchasing/receipt orchestration
-and quotation entry/version management are planned. Their database records and architecture
-are prepared; there are no live integration results or measured AI gains. The approvals
+are planned. Their database records and architecture are prepared; there are no live
+integration results or measured AI gains. The approvals
 and assistant surfaces explicitly show their disconnected state.
 
 See the [product specification](docs/product-spec.md), [architecture](docs/architecture.md),

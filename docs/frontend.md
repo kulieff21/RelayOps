@@ -27,17 +27,37 @@ payment, refund, supplier commitment or delivery integration.
 ## Workspace
 
 `/workspace/:view` contains overview, orders, returns, inventory/movements, procurement,
-suppliers, approvals and owner audit summaries. The server supplies actual stored state;
+suppliers, quotations, approvals and owner audit summaries. The server supplies actual stored state;
 the client only displays authorized routes. Operators/owners can record processing,
 dispatch/delivery evidence, authorize/receive/inspect returns and resolve simulated refunds.
 Purchasers only see procurement-linked orders and purchasing views, not customer returns.
 
 Quotation comparison shows deterministic total, quantity/MOQ excess, delivery timing
-and rejection reasons for a selected case. No agent has made that decision. Suppliers
-currently list the seeded networking/Baku records. Editable capabilities, quote entry,
-quote-version history, full case audit, proposals, PO/receipt workflows and usage views
-remain later work. The approvals surface is disconnected; it cannot authorize a purchase.
+and rejection reasons for a selected case, with links to the exact supplier/product version
+history. No agent has made that decision. Full case details/audit, proposals, PO/receipt
+workflows and usage views remain later work. The approvals surface is disconnected;
+it cannot authorize a purchase.
 The equipment-help panel states that the AI assistant has not been connected.
+
+`/workspace/suppliers` displays stored equipment categories and the Baku service zone.
+Purchasers/owners can add suppliers and edit their names/capabilities. Versions reject
+stale edits; operators see a read-only directory. Capability changes are audited and
+rechecked during quotation entry and comparison, without changing historical evidence.
+
+`/workspace/quotations` filters by supplier/product through shareable query parameters.
+Purchasers/owners record a new quotation or append a revision, with original evidence
+and a required revision reason. The form shows the next version and preserves its inputs
+when switching EN/AZ. Decimal AZN inputs are parsed directly to integer minor units;
+no floating-point rounding is used. Date/time fields explicitly use Baku time.
+
+Blank availability, fees, dates, destination, specs or terms remain unknown. Saving an
+incomplete latest version is explicit, and comparison will not fall back to an older
+complete offer. Latest, superseded, incomplete and expired versions have distinct labels;
+the latest label alone does not establish case feasibility. History preserves every
+version's amounts, dates, terms, specs, evidence and reason. Pre-upgrade records with no
+recording metadata show an unknown timestamp. Operators can read quotes only for products
+linked to open procurement cases. Only purchasers/owners can save changes. Retry keys
+prevent duplicates; version conflicts ask the user to reopen and review current data.
 
 ## Locale and accessibility
 

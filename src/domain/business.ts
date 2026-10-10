@@ -3,6 +3,7 @@ import { z } from "zod";
 import { Store } from "../db/database.js";
 import { digest } from "./auth.js";
 import { evaluateQuote, exactTotal, type Requirement } from "./quotes.js";
+import { capabilitiesSchema } from "../shared/purchasing.js";
 import {
   BusinessError,
   requireRole,
@@ -102,7 +103,7 @@ export class Business {
       this.clock.now(),
     );
   }
-  private effect<T>(
+  effect<T>(
     actor: Actor,
     operation: string,
     key: string,
@@ -795,11 +796,31 @@ export class Business {
       destination: "baku",
     };
     const options = this.store
-      .all(
+      .all<{ id: string; supplier_id: string }>(
         "SELECT * FROM quotes WHERE product_id=? AND version=(SELECT MAX(q2.version) FROM quotes q2 WHERE q2.supplier_id=quotes.supplier_id AND q2.product_id=quotes.product_id)",
         product.id,
       )
-      .map((quote) => evaluateQuote(quote, req, this.clock.now()));
+      .map((quote) => {
+        const option = evaluateQuote(quote, req, this.clock.now());
+        const supplier = this.store.one<{ capabilities: string }>(
+          "SELECT capabilities FROM suppliers WHERE id=?",
+          quote.supplier_id,
+        )!;
+        const caps = capabilitiesSchema.safeParse(
+          JSON.parse(supplier.capabilities),
+        );
+        if (
+          !caps.success ||
+          !caps.data.categories.some(
+            (category) => category === product.category_id,
+          ) ||
+          caps.data.zone !== req.destination
+        ) {
+          option.feasible = false;
+          option.reasons.push("SUPPLIER_CAPABILITY_MISMATCH");
+        }
+        return option;
+      });
     const feasible = options
       .filter((option) => option.feasible)
       .sort(

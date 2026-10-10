@@ -1,5 +1,6 @@
 import { useShop, Link } from "./shop";
 import { useData } from "./data";
+import { SupplierDirectory, QuotationDirectory } from "./Purchasing";
 import { DataState, OrderTable, SignInPage, Status } from "./Orders";
 import { ProductArt } from "./ProductArt";
 import { date, money, translatedCode, type MessageKey } from "./i18n";
@@ -10,6 +11,7 @@ import {
   CircleCheck,
   ClipboardCheck,
   Clock3,
+  FileText,
   LayoutDashboard,
   ListOrdered,
   LogOut,
@@ -92,6 +94,13 @@ function ComparisonView({ caseId, data }: { caseId: string; data: Workspace }) {
               {data.suppliers.find((s) => s.id === option.supplier)?.name ??
                 option.supplier}
             </h3>
+            <Link
+              className="text-link quote-version-link"
+              to={`/workspace/quotations?supplier=${encodeURIComponent(option.supplier)}&product=${encodeURIComponent(data.cases.find((row) => row.id === caseId)!.product_id)}`}
+            >
+              {t("versionHistory")} · v{option.version ?? "—"}
+              <ArrowUpRight size={14} />
+            </Link>
             <span className="quote-verdict">
               {t(option.feasible ? "feasible" : "notFeasible")}
             </span>
@@ -154,10 +163,11 @@ export function WorkspacePage({ view }: { view: string }) {
     { key: "orders", icon: ListOrdered },
     ...(operations ? [{ key: "returns", icon: RotateCcw }] : []),
     { key: "inventory", icon: Boxes },
+    { key: "suppliers", icon: Users },
+    { key: "quotations", icon: FileText },
     ...(purchasing
       ? [
           { key: "procurement", icon: Truck },
-          { key: "suppliers", icon: Users },
           { key: "approvals", icon: ClipboardCheck },
         ]
       : []),
@@ -531,31 +541,10 @@ export function WorkspacePage({ view }: { view: string }) {
               </>
             )}
             {view === "suppliers" && (
-              <div className="supplier-grid">
-                {data.suppliers.map((supplier) => (
-                  <article key={supplier.id}>
-                    <span className="supplier-avatar">
-                      {supplier.name.slice(0, 1)}
-                    </span>
-                    <h2>{supplier.name}</h2>
-                    <p>{t("networking")}</p>
-                    <span className="badge">{t("baku")}</span>
-                    {data.cases
-                      .filter((row) => row.status !== "closed")
-                      .slice(0, 1)
-                      .map((row) => (
-                        <Link
-                          key={row.id}
-                          to={`/workspace/procurement?case=${row.id}`}
-                          className="text-link"
-                        >
-                          {t("compare")}
-                          <ArrowUpRight size={17} />
-                        </Link>
-                      ))}
-                  </article>
-                ))}
-              </div>
+              <SupplierDirectory data={data} editable={purchasing} />
+            )}
+            {view === "quotations" && (
+              <QuotationDirectory data={data} editable={purchasing} />
             )}
             {view === "approvals" && (
               <div className="integration-empty">
@@ -596,6 +585,12 @@ export function WorkspacePage({ view }: { view: string }) {
 }
 function auditName(locale: string, action: string) {
   const labels: Record<string, [string, string]> = {
+    "supplier.created": ["Supplier added", "Təchizatçı əlavə edildi"],
+    "supplier.updated": ["Supplier updated", "Təchizatçı yeniləndi"],
+    "quote.version_recorded": [
+      "Quotation version recorded",
+      "Təklif versiyası qeydə alındı",
+    ],
     "order.offer_prepared": [
       "Order summary prepared",
       "Sifariş xülasəsi hazırlandı",

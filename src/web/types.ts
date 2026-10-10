@@ -1,4 +1,6 @@
 export type Locale = "en" | "az";
+export type { Supplier, QuoteRecord } from "../shared/purchasing.js";
+import type { Supplier } from "../shared/purchasing.js";
 export interface Product {
   id: string;
   category: string;
@@ -90,7 +92,7 @@ export interface Workspace {
     created_at: string;
   }[];
   cases: ProcurementCase[];
-  suppliers: { id: string; name: string }[];
+  suppliers: Supplier[];
   audit: {
     id: string;
     action: string;
@@ -102,6 +104,7 @@ export interface Workspace {
 export interface Comparison {
   id: string;
   supplier: string;
+  version: number | null;
   feasible: boolean;
   reasons: string[];
   total: number | null;

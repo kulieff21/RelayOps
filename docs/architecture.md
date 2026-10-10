@@ -52,6 +52,15 @@ Migration version/checksum records detect modification after application. Add a 
 migration rather than changing an applied one. Store quantities and AZN minor units as
 integers. Model cost uses integer micro-USD, nullable when unknown.
 
+The runner applies ordered numbered migrations and verifies every applied checksum.
+Migration 002 upgrades existing supplier records to version 1 without replacing them,
+adds supplier update timestamps and separate quotation-recording metadata, and protects
+quotation rows/metadata with SQL update/delete triggers. A revision inserts a new row
+under a unique supplier/product/version; existing evidence remains immutable. Legacy
+quotation timestamps/reasons stay unknown rather than being invented by the upgrade.
+Fresh demo fixtures include their synthetic recording metadata. Version checks, inserts,
+audit and idempotency responses commit together under the same immediate transaction.
+
 Deploy a single backend instance with persistent disk and backup/restore before public
 live hosting. SQLite is a single-writer choice; synchronous queries block the Node event
 loop. It is appropriate for this bounded portfolio application, not a demonstrated

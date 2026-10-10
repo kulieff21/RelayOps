@@ -1,0 +1,434 @@
+@layer components {
+  .record-toolbar {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 28px;
+  }
+  .record-toolbar > p {
+    font-size: 13px;
+    line-height: 1.65;
+    color: var(--slate);
+    max-width: 560px;
+  }
+  .record-toolbar .button {
+    flex-shrink: 0;
+  }
+  .supplier-directory {
+    display: grid;
+    gap: 12px;
+  }
+  .supplier-record {
+    display: grid;
+    grid-template-columns: 48px minmax(150px, 1fr) minmax(150px, 1.15fr) auto;
+    align-items: center;
+    gap: 22px;
+    padding: 25px;
+    background: #e6ebee;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+  }
+  .supplier-record .supplier-avatar {
+    margin: 0;
+    width: 48px;
+    height: 48px;
+    font-size: 20px;
+  }
+  .supplier-record-name h2 {
+    font-size: 19px;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+    overflow-wrap: anywhere;
+  }
+  .supplier-record-name > span {
+    display: block;
+    margin-top: 7px;
+    font-size: 11px;
+    color: var(--slate);
+  }
+  .supplier-capabilities,
+  .record-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 9px;
+  }
+  .supplier-capabilities .spec-chip {
+    padding: 7px 10px;
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    font-size: 11px;
+  }
+  .record-actions .text-link {
+    font-size: 11px;
+  }
+  .record-editor {
+    padding: 12px 5px 5px;
+  }
+  .record-editor-icon {
+    display: grid;
+    place-items: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 13px;
+    background: #c8d9dd;
+    color: var(--petrol);
+    margin-bottom: 24px;
+  }
+  .record-editor h2 {
+    font-size: 29px;
+    letter-spacing: -1px;
+    line-height: 1.2;
+    margin-bottom: 15px;
+    padding-right: 28px;
+  }
+  .record-editor > p {
+    font-size: 13px;
+    line-height: 1.65;
+    color: var(--slate);
+    margin-bottom: 25px;
+    max-width: 650px;
+  }
+  .capability-picker {
+    border: 1px solid var(--line);
+    padding: 18px;
+    border-radius: 9px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+  }
+  .capability-picker legend {
+    font-size: 12px;
+    padding: 0 6px;
+  }
+  .record-filters,
+  .record-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+  .record-filters {
+    margin-bottom: 25px;
+  }
+  .record-filters label {
+    display: grid;
+    gap: 10px;
+    font-size: 12px;
+  }
+  .record-filters select {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    background: #e6ebee;
+    color: var(--ink);
+    min-width: 0;
+  }
+  .quotation-directory {
+    display: grid;
+    gap: 20px;
+  }
+  .quotation-record {
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: #e6ebee;
+    padding: 28px;
+    min-width: 0;
+  }
+  .quotation-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+  }
+  .quotation-heading > div > span {
+    font-size: 11px;
+    color: var(--slate);
+  }
+  .quotation-heading h2 {
+    font-size: 24px;
+    font-weight: 550;
+    letter-spacing: -0.7px;
+    margin-top: 7px;
+  }
+  .quotation-summary {
+    display: flex;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 35px;
+    padding: 25px 0;
+  }
+  .quotation-summary > div > span {
+    display: block;
+    font-size: 11px;
+    color: var(--slate);
+    margin-bottom: 9px;
+  }
+  .quotation-summary strong {
+    font-size: 22px;
+    font-weight: 550;
+    letter-spacing: -0.4px;
+  }
+  .quotation-summary > button {
+    margin-left: auto;
+    font-size: 12px;
+  }
+  .quote-status-current {
+    background: #cce0d8;
+    color: #25584b;
+  }
+  .quote-status-incomplete,
+  .quote-status-expired {
+    background: #e6dcc7;
+    color: #655331;
+  }
+  .quote-status-superseded {
+    background: #d8dfe3;
+    color: var(--slate);
+  }
+  .quote-clarification {
+    font-size: 12px;
+    line-height: 1.6;
+    padding: 14px 18px;
+    background: #e6dcc7;
+    border-radius: 7px;
+    margin-bottom: 20px;
+  }
+  .quote-history {
+    border-top: 1px solid var(--line);
+    padding-top: 18px;
+  }
+  .quote-history summary {
+    font-size: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: fit-content;
+  }
+  .quote-history summary::after {
+    content: "+";
+    font-size: 20px;
+    margin-left: 12px;
+  }
+  .quote-history[open] summary::after {
+    content: "−";
+  }
+  .quote-history summary::-webkit-details-marker {
+    display: none;
+  }
+  .quote-versions {
+    margin-top: 26px;
+    border-left: 2px solid #a9bec6;
+    padding-left: 22px;
+  }
+  .quote-version {
+    padding-bottom: 28px;
+    margin-bottom: 28px;
+    border-bottom: 1px solid var(--line);
+  }
+  .quote-version:last-child {
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+  .quote-version-heading {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    align-items: center;
+  }
+  .quote-version-heading > strong {
+    font-size: 14px;
+  }
+  .recording-time {
+    font-size: 10px;
+    color: var(--slate);
+    margin-top: 10px;
+  }
+  .revision-reason {
+    font-size: 13px;
+    line-height: 1.6;
+    margin-top: 15px;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+  .quote-evidence dl {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+    margin-top: 23px;
+  }
+  .quote-evidence dt {
+    font-size: 10px;
+    color: var(--slate);
+    margin-bottom: 8px;
+  }
+  .quote-evidence dd {
+    font-size: 12px;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+  }
+  .quote-evidence h4 {
+    font-size: 11px;
+    font-weight: 600;
+    margin: 23px 0 10px;
+  }
+  .quote-evidence pre {
+    font-size: 11px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    background: #dbe3e7;
+    padding: 14px;
+    border-radius: 6px;
+  }
+  .quote-evidence p,
+  .quote-evidence blockquote {
+    font-size: 12px;
+    line-height: 1.65;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+  .quote-evidence blockquote {
+    border-left: 2px solid #a9bec6;
+    padding-left: 14px;
+  }
+  .quote-form-section {
+    border: 0;
+    border-top: 1px solid var(--line);
+    padding-top: 22px;
+    display: grid;
+    gap: 18px;
+    min-width: 0;
+  }
+  .quote-form-section legend {
+    font-size: 14px;
+    font-weight: 600;
+    padding-right: 15px;
+  }
+  .quote-form-section label {
+    min-width: 0;
+    display: grid;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .quote-version-link {
+    font-size: 11px;
+    margin: 12px 0;
+  }
+  .quote-editor .record-form-grid input,
+  .quote-editor .record-form-grid select {
+    min-width: 0;
+    width: 100%;
+  }
+  .quote-editor .stack-form select {
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 12px;
+    background: #e6ebee;
+    color: var(--ink);
+  }
+  .quote-editor .stack-form .spec-input {
+    font-family: ui-monospace, monospace;
+    font-size: 12px;
+  }
+  .quote-editor .record-editor-icon {
+    margin-bottom: 18px;
+  }
+}
+@layer responsive {
+  @media (max-width: 1100px) {
+    .supplier-record {
+      grid-template-columns: 48px 1fr auto;
+    }
+    .supplier-capabilities {
+      grid-column: 2/-1;
+    }
+    .record-actions {
+      grid-column: 3;
+      grid-row: 1;
+    }
+    .quote-evidence dl {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 600px) {
+    .record-toolbar {
+      flex-direction: column;
+      gap: 18px;
+    }
+    .record-toolbar .button {
+      width: 100%;
+      justify-content: center;
+    }
+    .supplier-record {
+      grid-template-columns: 40px minmax(0, 1fr);
+      padding: 20px;
+      gap: 16px;
+    }
+    .supplier-record .supplier-avatar {
+      width: 40px;
+      height: 40px;
+    }
+    .supplier-record-name h2 {
+      font-size: 19px;
+    }
+    .supplier-capabilities {
+      grid-column: 1/-1;
+    }
+    .record-actions {
+      grid-column: 1/-1;
+      grid-row: auto;
+      justify-content: space-between;
+    }
+    .record-filters,
+    .record-form-grid {
+      grid-template-columns: 1fr;
+    }
+    .quotation-record {
+      padding: 21px;
+    }
+    .quotation-heading {
+      flex-direction: column;
+      gap: 14px;
+    }
+    .quotation-heading h2 {
+      font-size: 22px;
+    }
+    .quotation-summary {
+      gap: 20px;
+    }
+    .quotation-summary > button {
+      margin: 0;
+      flex-basis: 100%;
+    }
+    .quotation-summary strong {
+      font-size: 20px;
+    }
+    .quote-versions {
+      padding-left: 13px;
+    }
+    .quote-version-heading {
+      align-items: flex-start;
+    }
+    .quote-evidence dl {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .quote-evidence h4 {
+      margin-top: 20px;
+    }
+    .record-editor h2 {
+      font-size: 26px;
+    }
+    .capability-picker {
+      grid-template-columns: 1fr;
+    }
+    .quote-editor .stack-form input[type="datetime-local"] {
+      font-size: 12px;
+    }
+  }
+}

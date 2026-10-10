@@ -114,14 +114,16 @@ export function Login({ after }: { after?: () => void }) {
     </div>
   );
 }
-function Modal({
+export function Modal({
   children,
   onClose,
   wide = false,
+  label,
 }: {
   children: ReactNode;
   onClose: () => void;
   wide?: boolean;
+  label?: string;
 }) {
   const ref = useRef<HTMLDialogElement>(null);
   const { t, locale, setLocale } = useShop();
@@ -138,7 +140,7 @@ function Modal({
     <dialog
       ref={ref}
       className={`modal ${wide ? "wide-modal" : ""}`}
-      aria-label={t("review")}
+      aria-label={label ?? t("review")}
       onClose={onClose}
       onClick={(e) => {
         if (e.target === ref.current) {

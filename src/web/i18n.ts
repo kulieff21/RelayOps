@@ -492,6 +492,118 @@ export const messages = {
   back: ["Back", "Geri"],
   menu: ["Menu", "Menyu"],
   businessClock: ["Demo date", "Demo tarixi"],
+  quotations: ["Quotations", "Qiymət təklifləri"],
+  supplierDirectoryText: [
+    "Supplier records and the equipment they can supply.",
+    "Təchizatçı qeydləri və təmin edə bildikləri avadanlıq.",
+  ],
+  newSupplier: ["Add supplier", "Təchizatçı əlavə et"],
+  editSupplier: ["Edit supplier", "Təchizatçını redaktə et"],
+  saveSupplier: ["Save supplier", "Təchizatçını yadda saxla"],
+  supplierSaved: ["Supplier saved", "Təchizatçı yadda saxlanıldı"],
+  supplierName: ["Supplier name", "Təchizatçının adı"],
+  supplier: ["Supplier", "Təchizatçı"],
+  capabilities: ["Equipment categories", "Avadanlıq kateqoriyaları"],
+  supplierEditText: [
+    "These capabilities are checked before a quotation can be used. Changing them does not rewrite old evidence.",
+    "Təklifdən istifadə etməzdən əvvəl bu imkanlar yoxlanılır. Dəyişiklik köhnə sübutları yenidən yazmır.",
+  ],
+  viewQuotes: ["View quotations", "Qiymət təkliflərinə bax"],
+  readOnlyPurchasing: [
+    "Read-only access. A purchaser or owner can edit these records.",
+    "Yalnız baxış icazəsi. Bu qeydləri satınalma əməkdaşı və ya sahib redaktə edə bilər.",
+  ],
+  quoteDirectoryText: [
+    "Current supplier offers and their original evidence. Every revision remains in the history.",
+    "Təchizatçıların son təklifləri və ilkin sübutları. Hər düzəliş tarixçədə saxlanılır.",
+  ],
+  newQuote: ["Record quotation", "Qiymət təklifi əlavə et"],
+  reviseQuote: ["Record new version", "Yeni versiya əlavə et"],
+  saveQuote: ["Save quotation version", "Təklif versiyasını yadda saxla"],
+  saveIncompleteQuote: [
+    "Save incomplete version",
+    "Natamam versiyanı yadda saxla",
+  ],
+  quoteSaved: ["Quotation version saved", "Təklif versiyası yadda saxlanıldı"],
+  quoteEntryText: [
+    "Each save adds a version. Comparison uses only the latest. Blank fields mean unknown; an incomplete latest version requires clarification.",
+    "Hər qeyd yeni versiya yaradır. Müqayisə yalnız son versiyadan istifadə edir. Boş sahələr naməlumdur; natamam son versiya dəqiqləşdirmə tələb edir.",
+  ],
+  noQuotes: [
+    "No quotations match this view.",
+    "Bu görünüşə uyğun qiymət təklifi yoxdur.",
+  ],
+  addSupplierFirst: [
+    "Add a supplier before recording a quotation.",
+    "Qiymət təklifindən əvvəl təchizatçı əlavə et.",
+  ],
+  allSuppliers: ["All suppliers", "Bütün təchizatçılar"],
+  version: ["Version", "Versiya"],
+  versionHistory: ["Version history", "Versiya tarixçəsi"],
+  quoteCurrent: ["Latest version", "Son versiya"],
+  quoteSuperseded: ["Superseded", "Əvəzlənib"],
+  quoteIncomplete: ["Needs clarification", "Dəqiqləşdirmə tələb edir"],
+  quoteExpired: ["Expired", "Müddəti bitib"],
+  quoteIncompleteText: [
+    "Required information is missing. This version cannot be selected for purchasing.",
+    "Vacib məlumatlar çatışmır. Bu versiya satınalma üçün seçilə bilməz.",
+  ],
+  supplierStock: ["Supplier quantity available", "Təchizatçıda mövcud miqdar"],
+  minimumOrder: ["Minimum order quantity", "Minimum sifariş miqdarı"],
+  deliveryFee: ["Delivery charge", "Çatdırılma haqqı"],
+  otherFees: ["Other declared charges", "Digər bəyan edilmiş xərclər"],
+  quoteValidUntil: ["Valid until", "Etibarlılıq müddəti"],
+  supplierReceiptAt: [
+    "Supplier receipt promise",
+    "Təchizatçının qəbul tarixi vədi",
+  ],
+  availableAt: ["Availability confirmed at", "Mövcudluğun təsdiq vaxtı"],
+  quoteSpecs: [
+    "Quoted specifications (JSON)",
+    "Təklifin texniki xüsusiyyətləri (JSON)",
+  ],
+  quoteTerms: ["Terms and assumptions", "Şərtlər və fərziyyələr"],
+  quoteEvidence: ["Original supplier evidence", "Təchizatçının ilkin sübutu"],
+  revisionReason: ["Reason for this version", "Bu versiyanın səbəbi"],
+  recordedAt: ["Recorded", "Qeydə alınıb"],
+  recordingUnknown: [
+    "Recording time unavailable for this older record",
+    "Bu köhnə qeydin qeyd vaxtı məlum deyil",
+  ],
+  notProvided: ["Not provided", "Təqdim edilməyib"],
+  bakuTime: [
+    "Times are in Baku (UTC+4). Prices are gross AZN amounts; enter zero explicitly for no charge.",
+    "Vaxtlar Bakı vaxtıdır (UTC+4). Qiymətlər AZN ilə yekun məbləğdir; xərc yoxdursa, sıfır daxil et.",
+  ],
+  supplierEquipment: ["Supplier and equipment", "Təchizatçı və avadanlıq"],
+  quoteAvailability: ["Quantity and delivery", "Miqdar və çatdırılma"],
+  quotePricing: ["Price and charges", "Qiymət və xərclər"],
+  currency: ["Currency", "Valyuta"],
+  quoteSource: ["Terms and evidence", "Şərtlər və sübut"],
+  SUPPLIER_NOT_FOUND: [
+    "This supplier no longer exists. Reload the supplier list.",
+    "Bu təchizatçı mövcud deyil. Siyahını yenilə.",
+  ],
+  SUPPLIER_VERSION_CONFLICT: [
+    "This supplier changed while you were editing. Close this form, refresh the list and reopen the latest record.",
+    "Redaktə zamanı təchizatçı dəyişib. Formanı bağla, siyahını yenilə və son qeydi yenidən aç.",
+  ],
+  QUOTE_VERSION_CONFLICT: [
+    "A newer quotation version exists. Close this form, refresh the list and review it before recording another version.",
+    "Daha yeni təklif versiyası var. Formanı bağla, siyahını yenilə və növbəti versiyadan əvvəl onu yoxla.",
+  ],
+  SUPPLIER_CAPABILITY_MISMATCH: [
+    "The supplier does not support this equipment or delivery zone.",
+    "Təchizatçı bu avadanlığı və ya çatdırılma zonasını dəstəkləmir.",
+  ],
+  INVALID_QUOTE_AMOUNT: [
+    "Enter a non-negative amount with at most two decimal places.",
+    "Ən çox iki onluq rəqəmli, mənfi olmayan məbləğ daxil et.",
+  ],
+  INVALID_QUOTE_SPECS: [
+    "Enter a JSON object of specification names and text, number or boolean values.",
+    "Texniki xüsusiyyət adları və mətn, rəqəm və ya məntiqi dəyərlərdən ibarət JSON obyekti daxil et.",
+  ],
 } as const satisfies Record<string, readonly [string, string]>;
 export type MessageKey = keyof typeof messages;
 export const translate = (locale: Locale, key: MessageKey) =>
@@ -548,3 +660,5 @@ export const date = (locale: Locale, value: string) => {
   const part = (kind: string) => parts.find((p) => p.type === kind)!.value;
   return `${part("day")} ${azMonths[Number(part("month")) - 1]} ${part("year")}`;
 };
+export const dateTime = (locale: Locale, value: string) =>
+  `${date(locale, value)}, ${new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit", second: "2-digit", timeZone: "Asia/Baku" }).format(new Date(value))}`;

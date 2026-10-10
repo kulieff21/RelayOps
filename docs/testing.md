@@ -5,7 +5,7 @@ production API/frontend compilation. `npm run smoke` checks the compiled server 
 dedicated loopback port 3099 and then stops it. All checks use unpaid fictional records.
 CI runs the same check on Node 22.
 
-The suite contains 27 tests covering:
+The suite contains 33 tests covering:
 
 - Bilingual fixtures, reference totals and deterministic quote rejection reasons.
 - No draft reservation, accepted 8/12 split and duplicate order/case prevention.
@@ -25,6 +25,12 @@ The suite contains 27 tests covering:
 - Two independent Node processes cannot each reserve 5 of the same 8 switches.
 - Customer-owned collection reads, purchaser/operator/owner workspace scope and omitted secret/audit payload fields.
 - Complete paired EN/AZ UI entries, fixture category/spec coverage, Azerbaijani separators/months and Baku date boundaries.
+- Real supplier capabilities, purchaser/owner writes, operator/customer denial, optimistic supplier versions and idempotent creation/update.
+- Immutable quote rows/metadata, retained source evidence, latest-only comparison and rejection of an incomplete latest offer without falling back.
+- Strict quotation fields, exact minor-unit amounts, expiry, capability checks and operator product scope.
+- Two submissions with the same expected quotation version produce one revision and one conflict.
+- Injected quotation-audit failure rolls back the row, recording metadata and retry result together.
+- Migration 001 upgrades to 002 without losing supplier records; repeated migration, checksum tampering and unexpected-table refusal.
 
 The race test uses separate SQLite connections in separate OS processes and inspects
 stored effects. The restart test checks persistence; it does **not** demonstrate an
@@ -56,6 +62,22 @@ Font cmaps were checked for Azerbaijani glyphs; uppercase U+018F is supplied by 
 local Noto Sans fallback. Reduced-motion CSS and MotionConfig honor the user preference;
 the pause control was exercised, but OS-level reduced-motion emulation was not performed.
 Manual browser review is bounded evidence, not automated coverage of every UI combination.
+
+Supplier/quotation review exercised actual writes in the same local Chromium sandbox.
+Created a fictional storage supplier, revised its capability categories and checked
+that EN/AZ switching retained its name and selections. Entered `159,25` AZN with explicit
+zero fees and unknown dates, saved it as incomplete, then appended a 158.25 AZN revision.
+History retained both prices, original evidence and revision reasons. Recorded a complete
+Northlink v2 with unchanged seeded values after exercising the Baku date control; comparison
+used v2 and retained the 1,920 AZN reference total. Legacy v1 showed its recording time as
+unknown. Followed the supplier/product history deep link from comparison.
+
+Reviewed quotation history and the single-column AZ revision form at 390×844, measured
+page/dialog widths for overflow, and checked Escape closing/restoring focus to the revision
+button. The operator saw capability records and relevant switch history without edit
+controls; the unrelated storage quotation filter returned an empty view. Temporary viewport
+overrides were reset. New screenshots and synthetic QA records
+remain local; fixture reference totals remain unchanged.
 
 Full acceptance targets remain in `docs/product-spec.md`. Telegram callbacks, approval/PO
 execution, worker lease recovery, partial receipts, model limits and live provider

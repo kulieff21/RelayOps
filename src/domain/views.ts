@@ -1,4 +1,5 @@
 import { Business } from "./business.js";
+import { Purchasing } from "./purchasing.js";
 import { requireRole, type Actor } from "../shared/contracts.js";
 
 // Read models enforce the same actor scope as mutations; no raw table endpoints.
@@ -78,11 +79,7 @@ export class Views {
             created_at: string;
           }>("SELECT * FROM procurement_cases ORDER BY created_at DESC,id")
         : [],
-      suppliers: purchasing
-        ? store.all<{ id: string; name: string }>(
-            "SELECT id,name FROM suppliers ORDER BY name",
-          )
-        : [],
+      suppliers: new Purchasing(this.business).suppliers(actor),
       // Actor identities, arbitrary payloads and unrelated customer data are not exposed.
       audit: actor.roles.includes("owner")
         ? store.all<{
