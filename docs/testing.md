@@ -5,7 +5,7 @@ production API/frontend compilation. `npm run smoke` checks the compiled server 
 dedicated loopback port 3099 and then stops it. All checks use unpaid fictional records.
 CI runs the same check on Node 22.
 
-The suite contains 52 tests covering:
+The suite contains 63 tests covering:
 
 - Bilingual fixtures, reference totals and deterministic quote rejection reasons.
 - No draft reservation, accepted 8/12 split and duplicate order/case prevention.
@@ -44,7 +44,8 @@ The suite contains 52 tests covering:
 The race test uses separate SQLite connections in separate OS processes and inspects
 stored effects. The restart test checks persistence; it does **not** demonstrate an
 unimplemented approval worker's resumption. The supplier-text check demonstrates that
-text cannot change deterministic totals or role policy; no model dispatcher is evaluated.
+text cannot change deterministic totals or role policy. The dispatcher checks below
+exercise explicit model-request boundaries; they do not establish general prompt-injection resistance.
 
 ## OpenRouter adapter checks
 
@@ -65,6 +66,20 @@ verification, not general agent-loop, business-tool or AI-benefit evaluation.
 The 2026-10-10 live round trip passed; including two earlier schema diagnostics, four
 requests recorded 88 micro-USD total, zero held funds and no business actions. See
 [adapter setup/evidence](model-setup.md) for the bounded scope and token counts.
+
+## Tool dispatcher checks
+
+Eleven unpaid tests cover the seven strict tool contracts against real in-memory
+business services: adapter-compatible definitions, typed order/summary/quote results,
+selected locale, unknown functions, malformed/oversized/spoofed arguments, customer
+privacy including multi-role downscoping, trusted case restrictions, session binding,
+logout/expiry/role revocation, unexecuted human-confirmation requests, domain failures,
+expired consent and audit rollback with sanitized errors. A mocked provider/tool-result
+round trip connects the real adapter and dispatcher without a paid call.
+
+These establish the current dispatcher boundaries. The general agent loop, human
+confirmation/resume UI and durable tool-result orchestration remain later tasks;
+see [tool dispatch](tools.md). Named demo records and the USD 1 ledger are preserved.
 
 ## Browser review
 

@@ -19,6 +19,9 @@ Full case details, linked activity, proposal/decision history, PO/receipt inspec
 and model usage reads are available with role-scoped access and honest empty states.
 
 The server-side OpenRouter adapter and persistent shared spending guard are implemented.
+Typed tool dispatch validates model arguments, rechecks session/role/case scope and
+routes allowed calls to deterministic services. Model-requested confirmation,
+cancellation and returns produce human-confirmation requests without executing mutations.
 The website agent loop, Telegram approvals, leased workers and purchasing/receipt
 orchestration are planned. Their database records and architecture are prepared;
 adapter connection checks do not measure business-task success or AI gains. The approvals
@@ -30,6 +33,7 @@ See the [product specification](docs/product-spec.md), [architecture](docs/archi
 See [visual design](docs/design.md) and [frontend behavior](docs/frontend.md).
 See [OpenRouter setup and adapter verification](docs/model-setup.md) for the selected
 model, authorized spending policy and explicit paid diagnostic command.
+See [tool dispatch and authority](docs/tools.md) for the implemented server boundary.
 
 ## Run locally
 

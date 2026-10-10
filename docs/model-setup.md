@@ -1,7 +1,7 @@
 # OpenRouter setup and adapter
 
-The server-side adapter and persistent spending guard are implemented. The website
-conversation, business-tool dispatcher and general agent loop remain future work.
+The server-side adapter, persistent spending guard and authenticated business-tool
+dispatcher are implemented. The website conversation and general agent loop remain future work.
 Adapter diagnostics exercise a synthetic connection tool, not business-task execution.
 
 ## Model and verified provider policy

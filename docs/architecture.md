@@ -134,10 +134,17 @@ reads linked demand, evaluates quote results and drafts explanations/proposal re
 Neither assistant approves a supplier purchase, changes a budget or invents stock.
 
 `src/shared/contracts.ts` defines strict tool inputs, JSON schemas and role metadata.
-The future dispatcher must check the authenticated actor, the tool allowlist for the
-selected assistant and the service policy. Do not expose confirmation tools as unilateral
-model consent: dispatch them only with a trusted customer-confirmation event from the UI.
-Supplier/customer text is untrusted evidence. There is no tool dispatcher/model loop yet.
+`src/agent/tools.ts` implements typed dispatch with authenticated session resolution,
+assistant allowlists, role checks, customer-only authority and trusted procurement-case
+scope. Roles/expiry are rechecked on each call. `src/shared/tool-call.ts` supplies the
+same normalized function envelope used by the model adapter. Strict JSON arguments
+cannot supply an actor, role or authorization claim. Supplier/customer text is data.
+
+Model-requested confirmation/cancellation/returns yield confirmation_required without
+executing a mutation, even if confirmed=true is supplied. A future trusted UI event
+must obtain affirmative consent and invoke the ordinary authenticated business route,
+which revalidates rules. No dispatcher method accepts a model-created consent grant.
+See [tool dispatch](tools.md). The general agent loop remains unimplemented.
 
 Deterministic code computes available stock, sale totals, quote MOQ/excess/all-in price,
 deadline feasibility, reservation expiry, return eligibility and role/budget thresholds.

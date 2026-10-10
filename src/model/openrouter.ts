@@ -1,15 +1,7 @@
 import { z } from "zod";
 import type { ModelConfig } from "./config.js";
 import { ModelBudget } from "./budget.js";
-
-const call = z.strictObject({
-  id: z.string().min(1).max(200),
-  type: z.literal("function"),
-  function: z.strictObject({
-    name: z.string().regex(/^[A-Za-z][A-Za-z0-9_]{0,63}$/),
-    arguments: z.string().max(16000),
-  }),
-});
+import { toolCallSchema as call } from "../shared/tool-call.js";
 // Providers may add indexes/signatures. Normalize response metadata, keeping only
 // validated function fields; outgoing application messages remain strict.
 const responseCall = call

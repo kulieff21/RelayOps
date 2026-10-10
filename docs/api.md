@@ -101,8 +101,10 @@ need review. A confirmed exchange order has zero payable total and an explicit c
 in its consent summary. No real payment/refund processor is connected.
 
 Types and validation source: `src/shared/contracts.ts`; inferred service results preserve
-their TypeScript structure. `toolSchemas` exports the future agent JSON schemas with
-strict inputs and role metadata. API error codes are translated by the bilingual UI; raw
+their TypeScript structure. `toolSchemas` exports strict agent JSON schemas with role
+metadata. The server-side ToolDispatcher uses them with session-derived identity and
+assistant/case scope; see [tool dispatch](tools.md). No tool-execution HTTP endpoint is
+exposed yet. API error codes are translated by the bilingual UI; raw
 exceptions, passwords, tokens and database paths are not included in error responses.
 
 ## Case, purchasing and model-run reads
