@@ -12,6 +12,7 @@ import {
 } from "../shared/contracts.js";
 import { toolCallSchema, type ToolCall } from "../shared/tool-call.js";
 import type { CompletionInput } from "../model/openrouter.js";
+import { agentInstructions } from "./prompts.js";
 
 export type ToolName = keyof typeof toolContracts;
 export type ToolInput<N extends ToolName> = z.infer<
@@ -104,6 +105,12 @@ export class ToolDispatcher {
     const context = parsed.data;
     this.actor(context);
     return {
+      instructions: () =>
+        agentInstructions(
+          context.agent,
+          this.actor(context).locale,
+          context.agent === "procurement" ? context.caseId : undefined,
+        ),
       definitions: (): NonNullable<CompletionInput["tools"]> => {
         const actor = this.actor(context);
         return allowlist[context.agent]

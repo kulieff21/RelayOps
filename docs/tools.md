@@ -38,7 +38,9 @@ const definitions = tools.definitions();
 const observation = tools.dispatch(normalizedModelCall);
 ```
 
-The context never enters a model request. Its strict contract accepts agent, token,
+Session tokens and account roles never enter a model request. Canonical instructions
+use only the selected locale, assistant mode and trusted procurement case ID.
+The context strict contract accepts agent, token,
 optional selected locale and (for procurement) a required trusted caseId; it rejects
 supplied actor/role fields. Definitions and every dispatch resolve the current session
 through Auth. Expiry, logout and role revocation take effect on subsequent calls.
@@ -69,8 +71,9 @@ expired consent, closed cases and transaction rollback on an audit failure. A mo
 OpenRouter response is normalized, dispatched into a real catalog read and returned
 as a valid tool message to a second mocked completion. No paid request is needed.
 
-There is no general observe/action/result loop, conversation endpoint, persistent
-execution orchestration, assistant UI confirmation/resume flow or procurement proposal
-executor yet. Dispatch results are returned to the caller; the later loop must persist
-them separately from model prose and handle confirmation/error outcomes explicitly.
+The internal [observe/action/result loop](agent-loop.md) now feeds these results back
+to the model and stops for confirmation. It keeps model prose and tool evidence separate
+in invocation-local traces. A conversation endpoint, durable execution, assistant UI
+confirmation/resume and procurement proposal executor remain future work. The later
+persistence stage must store these results rather than infer effects from prose.
 Manual storefront/business routes continue to operate independently.

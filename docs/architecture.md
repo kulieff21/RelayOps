@@ -2,7 +2,8 @@
 
 Status: backend foundation and complete pre-agent bilingual storefront/operations views implemented.
 The server-side OpenRouter adapter and durable shared spending guard are implemented.
-The website agent loop, Telegram, durable job execution and purchasing/receipt
+The internal observe/action/result loop is implemented over authenticated tool dispatch.
+The website assistant connection, Telegram, durable job execution and purchasing/receipt
 orchestration are future stages. Adapter diagnostics do not execute these workflows.
 
 ## ADR 001: independently deployable clients and server
@@ -144,7 +145,10 @@ Model-requested confirmation/cancellation/returns yield confirmation_required wi
 executing a mutation, even if confirmed=true is supplied. A future trusted UI event
 must obtain affirmative consent and invoke the ordinary authenticated business route,
 which revalidates rules. No dispatcher method accepts a model-created consent grant.
-See [tool dispatch](tools.md). The general agent loop remains unimplemented.
+See [tool dispatch](tools.md) and [agent loop](agent-loop.md). The internal loop refreshes
+authentication before/after inference, serializes exact tool observations and stops for
+confirmation. It returns separate invocation-local model/tool records. Conversation
+endpoints, explicit business outcomes and durable execution/resume remain future work.
 
 Deterministic code computes available stock, sale totals, quote MOQ/excess/all-in price,
 deadline feasibility, reservation expiry, return eligibility and role/budget thresholds.

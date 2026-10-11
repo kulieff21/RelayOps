@@ -5,7 +5,7 @@ production API/frontend compilation. `npm run smoke` checks the compiled server 
 dedicated loopback port 3099 and then stops it. All checks use unpaid fictional records.
 CI runs the same check on Node 22.
 
-The suite contains 63 tests covering:
+The suite contains 81 tests covering:
 
 - Bilingual fixtures, reference totals and deterministic quote rejection reasons.
 - No draft reservation, accepted 8/12 split and duplicate order/case prevention.
@@ -77,9 +77,27 @@ logout/expiry/role revocation, unexecuted human-confirmation requests, domain fa
 expired consent and audit rollback with sanitized errors. A mocked provider/tool-result
 round trip connects the real adapter and dispatcher without a paid call.
 
-These establish the current dispatcher boundaries. The general agent loop, human
-confirmation/resume UI and durable tool-result orchestration remain later tasks;
-see [tool dispatch](tools.md). Named demo records and the USD 1 ledger are preserved.
+These establish the current dispatcher boundaries. Human confirmation/resume UI and
+durable tool-result orchestration remain later tasks; see [tool dispatch](tools.md).
+Named demo records and the USD 1 ledger are preserved.
+
+## Agent loop checks
+
+Eighteen unpaid tests exercise the server-only observe/action/result loop with real
+isolated business services. Multiple iterations and sequential batches preserve matching
+tool IDs and typed observations. Tests verify locale-controlled instructions, procurement
+quote evidence, preparation followed by unexecuted confirmation, cancellation/return
+boundaries, corrected argument rejections, own-order/case restrictions, duplicate-call
+refusal, inconsistent finish reasons, iteration/context bounds and auth loss during
+inference. Empty/truncated replies and provider/internal errors stop without retries;
+committed preparation evidence survives later inference failure, audit failure rolls
+back, and concurrent invocations do not share transcripts. One unpaid synthetic HTTP
+round trip joins the real OpenRouter adapter, loop and catalog dispatcher while keeping
+actual fixture usage/known zero cost separate from tool results.
+
+See [agent loop](agent-loop.md). Traces are invocation-local, not persisted or resumable.
+Explicit completion/clarification/escalation, aggregate limits, retry policy, website
+conversation and live business-task verification remain later phases.
 
 ## Browser review
 
@@ -171,6 +189,6 @@ sandbox QA records remain. Conversation preservation (06.07) is still dependent 
 Phase 09 conversation implementation; no conversation exists to exercise yet.
 
 Full acceptance targets remain in `docs/product-spec.md`. Telegram callbacks, approval/PO
-execution, worker lease recovery, partial receipts, general agent-loop limits and live
+execution, worker lease recovery, partial receipts, aggregate agent-loop limits and live
 business-task performance remain future work. Current checks do not establish public deployment
 readiness or AI-performance improvements.
