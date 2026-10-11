@@ -122,7 +122,7 @@ function OrderProgress({ progress }: { progress: Progress }) {
           <div className="assistant-facts">
             <Status value={c.status} />
             <span>
-              {t("aShortage")}: {c.quantity}
+              {t(c.status === "open" ? "aShortage" : "quantity")}: {c.quantity}
             </span>
           </div>
           {c.status === "open" && <p>{t("aUnknownDate")}</p>}
@@ -925,7 +925,14 @@ function Conversation() {
                 <div className="assistant-response">
                   <div className="assistant-facts" aria-live="polite">
                     <strong>{t("assistant")}</strong>
-                    <Status value={turn.status} />
+                    <Status
+                      value={
+                        turn.confirmation &&
+                        turn.confirmation.state !== "pending"
+                          ? turn.confirmation.state
+                          : turn.status
+                      }
+                    />
                     <small>{t(turn.mode === "mock" ? "aDemo" : "aLive")}</small>
                   </div>
                   {turn.status === "running" && (

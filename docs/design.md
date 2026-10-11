@@ -50,7 +50,7 @@ restore focus on close and support Escape. Live error/status regions communicate
 requests. Product artwork is original schematic SVG, not an actual manufacturer image.
 The connected assistant uses the shared axis and Manrope scale: a quiet conversation
 directory beside a continuous transcript, compact hardware/specification evidence rows
-and lavender reserved for exact human-confirmation summaries. The initial generic chat
-card grid was rejected during planning because records and consent need different
-hierarchy. Mobile stacks history without covering messages or the composer. Telegram
+and lavender reserved for exact human-confirmation summaries. This hierarchy reflects
+the distinction between a recorded answer and an affirmative business decision.
+Mobile stacks history without covering messages or the composer. Telegram
 and purchasing approval remain disconnected until subsequent phases.
