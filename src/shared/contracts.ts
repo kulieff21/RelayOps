@@ -62,6 +62,18 @@ export const toolContracts = {
     roles: ["customer", "operator", "purchaser", "owner"],
     input: z.strictObject({ orderId: id }),
   },
+  getDeliveryOptions: {
+    roles: ["customer"],
+    input: z.strictObject({
+      productId: id,
+      quantity,
+      deadline: z.iso.date().optional(),
+    }),
+  },
+  getOrderProgress: {
+    roles: ["customer"],
+    input: z.strictObject({ orderId: id }),
+  },
   prepareOrder: { roles: ["customer"], input: offerInput },
   confirmOrder: { roles: ["customer"], input: confirmInput },
   cancelOrder: {

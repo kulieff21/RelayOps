@@ -48,4 +48,9 @@ Desktop uses a split scene and sidebar workspace; tablet reduces columns; mobile
 stacks the hero and keeps the product selector in flow. Dialogs trap keyboard focus,
 restore focus on close and support Escape. Live error/status regions communicate
 requests. Product artwork is original schematic SVG, not an actual manufacturer image.
-AI and Telegram remain visibly disconnected until implemented in subsequent phases.
+The connected assistant uses the shared axis and Manrope scale: a quiet conversation
+directory beside a continuous transcript, compact hardware/specification evidence rows
+and lavender reserved for exact human-confirmation summaries. The initial generic chat
+card grid was rejected during planning because records and consent need different
+hierarchy. Mobile stacks history without covering messages or the composer. Telegram
+and purchasing approval remain disconnected until subsequent phases.

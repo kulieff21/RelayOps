@@ -2,7 +2,7 @@
 
 The server-side adapter, persistent spending guard and authenticated business-tool
 dispatcher, bounded agent loop and durable conversation/run recovery are implemented.
-The website conversation UI remains future work. Adapter and read-only agent diagnostics
+The [website customer assistant](customer-assistant.md) is connected. Adapter and read-only agent diagnostics
 have separate scopes; neither is a business-task performance evaluation.
 
 ## Model and verified provider policy
@@ -33,6 +33,7 @@ does not make inference calls on startup.
 
 ```dotenv
 OPENROUTER_API_KEY=
+ASSISTANT_LIVE_ENABLED=false
 OPENROUTER_MODEL=openai/gpt-6-luna
 OPENROUTER_PROVIDER=openai
 OPENROUTER_MAX_OUTPUT_TOKENS=512
@@ -130,3 +131,27 @@ ledger and named business demo were preserved; no reset or budget renewal occurr
 Evidence is local under artifacts/model/agent-live-smoke.json and agent-mock-smoke.json.
 This single read-only round trip establishes tool/loop/persistence capability, not
 reliability across business tasks, semantic accuracy in general or measurable AI gains.
+
+## Recorded website live turn (2026-10-11)
+
+After 128 unpaid tests and the isolated EN/AZ browser review, one explicitly selected
+live website request queried the real RelaySwitch catalog in Azerbaijani. Unlike the
+earlier forced-tool diagnostic, this used the ordinary authenticated customer HTTP
+queue/poll path and full customer tool definitions. It selected searchProducts and
+returned a strict completion describing the stored 24 ports, no PoE and zero available/
+incoming units. Fresh endpoint verification preceded both requests. Repeating the HTTP
+request and explicitly resuming its cached outcome caused no further inference.
+Orders, lines, reservations, cases, fulfillment, returns, movements and product stock/
+price/spec records remained unchanged. Only conversation/run/tool/usage evidence was added.
+
+| Request                         | Input tokens | Output tokens | Rounded cost (micro-USD) |
+| ------------------------------- | -----------: | ------------: | -----------------------: |
+| Customer catalog selection      |        1,847 |            27 |                      199 |
+| Azerbaijani terminal completion |        2,013 |           121 |                      262 |
+
+This turn cost **461 micro-USD ($0.000461)**. The original ledger now contains eight
+live requests, **820 micro-USD ($0.000820)** known, zero held and **$0.999180** remaining.
+Evaluation stays disabled. A reporting-only SQL column typo occurred after all turn/
+retry/no-mutation assertions passed; reporting was recovered from the same persisted
+run with no new inference. Local evidence: artifacts/model/customer-live-smoke.json.
+This single read verifies the connected path, not general customer-task reliability.

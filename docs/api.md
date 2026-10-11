@@ -107,6 +107,29 @@ assistant/case scope; see [tool dispatch](tools.md). No tool-execution HTTP endp
 exposed yet. API error codes are translated by the bilingual UI; raw
 exceptions, passwords, tokens and database paths are not included in error responses.
 
+## Customer conversations
+
+- GET `/api/assistant/settings`: public; default guided mock mode, live availability and
+  frozen business clock. No key, provider request or budget renewal.
+- GET `/api/assistant/conversations`: customer-only own conversation summaries.
+- GET `/api/assistant/conversations/:id` and `/api/assistant/turns/:id`: owned selected
+  history/evidence/status/confirmation/handoff; foreign IDs concealed as not found.
+- POST `/api/assistant/turns`: strict key, locale, optional conversation/action and
+  mock/live mode; 202 conversation/run IDs. Account/key/body idempotency precedes
+  background execution. One unfinished live turn globally; per-account admission limits.
+- POST `/api/assistant/turns/:id/resume`: `{locale:"en"|"az"}`; explicit authenticated
+  checkpoint recovery. Cached terminal outcomes require no inference.
+- POST `/api/assistant/turns/:id/decision`: `{decision:"confirm"|"decline",confirmed:true}`;
+  no model arguments, actor or substitute action accepted. Run-bound snapshot/expiry,
+  fresh business validation, server idempotency and atomic audit/effect commit.
+- POST `/api/assistant/turns/:id/handoff`: strict `{}`; idempotent owned support request.
+- GET `/api/assistant/handoffs`: operator/owner selected review references; customer denied.
+
+Contracts live in `src/shared/assistant.ts`; details in [customer assistant](customer-assistant.md).
+Full prompts/transcripts/checkpoints/provider IDs/session tokens and procurement budgets
+are not exposed by these customer routes. Guided action inputs use the same strict tool
+schemas; ordinary business routes remain available and enforce their existing policies.
+
 ## Case, purchasing and model-run reads
 
 - GET `/api/procurement/:id`: purchaser/owner; full case requirements, accepted consent

@@ -107,6 +107,8 @@ test("definitions fit assistant allowlists and adapter contracts; server locale 
     [
       "searchProducts",
       "getOrder",
+      "getDeliveryOptions",
+      "getOrderProgress",
       "prepareOrder",
       "confirmOrder",
       "cancelOrder",

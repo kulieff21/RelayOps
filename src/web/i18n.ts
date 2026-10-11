@@ -813,6 +813,183 @@ export const messages = {
   mock: ["Mock run", "Mock icra"],
   live: ["Live run", "Canlı icra"],
   recordedStatus: ["Recorded status", "Qeydə alınmış vəziyyət"],
+  assistantIntro: [
+    "Find the right equipment, check delivery and manage your own orders. Review every change before confirming it.",
+    "Uyğun avadanlığı tapın, çatdırılmanı yoxlayın və öz sifarişlərinizi idarə edin. Hər dəyişikliyi təsdiqdən əvvəl nəzərdən keçirin.",
+  ],
+  openConversation: ["Open conversation", "Söhbəti aç"],
+  aTitle: ["Let's get your order right.", "Sifarişinizi dəqiqləşdirək."],
+  aNew: ["New conversation", "Yeni söhbət"],
+  aHistory: ["Your conversations", "Söhbətləriniz"],
+  aEmpty: [
+    "Ask about a product or choose an action below.",
+    "Məhsul haqqında soruşun və ya aşağıdan əməliyyat seçin.",
+  ],
+  aDraft: ["Your message", "Mesajınız"],
+  aSend: ["Send message", "Mesajı göndər"],
+  aDemo: ["Guided demo", "Yönləndirilmiş demo"],
+  aLive: ["Live assistant", "Canlı assistent"],
+  aMode: ["Conversation mode", "Söhbət rejimi"],
+  aDemoNote: [
+    "Free guided demo. Use the action forms for exact product and order requests; answers use stored records.",
+    "Pulsuz yönləndirilmiş demo. Dəqiq məhsul və sifariş sorğuları üçün əməliyyat formalarından istifadə edin; cavablar qeydlərə əsaslanır.",
+  ],
+  aLiveNote: [
+    "Uses the connected model and the shared demo allowance. Order changes still need your confirmation.",
+    "Qoşulmuş modeldən və ümumi demo limitindən istifadə edir. Sifariş dəyişiklikləri üçün yenə təsdiqiniz tələb olunur.",
+  ],
+  aAction: ["Choose an action", "Əməliyyat seçin"],
+  aSearch: ["Find products", "Məhsul tap"],
+  aDelivery: ["Check stock & delivery", "Stok və çatdırılmanı yoxla"],
+  aPrepare: ["Prepare an order", "Sifariş xülasəsi hazırla"],
+  aProgress: ["Check my order", "Sifarişimi yoxla"],
+  aCancel: ["Cancel my order", "Sifarişimi ləğv et"],
+  aReturn: ["Return or exchange", "Qaytar və ya dəyiş"],
+  aQuery: ["Product or specification", "Məhsul və ya xüsusiyyət"],
+  aBuild: ["Send request", "Sorğunu göndər"],
+  aNoOrders: [
+    "You have no orders yet. Prepare an order to get started.",
+    "Hələ sifarişiniz yoxdur. Başlamaq üçün sifariş xülasəsi hazırlayın.",
+  ],
+  aCustomerOnly: [
+    "Sign in with a customer account to use the shopping assistant.",
+    "Alış-veriş assistenti üçün müştəri hesabına daxil olun.",
+  ],
+  aClock: ["Sandbox date", "Sandbox tarixi"],
+  aEvidence: ["Recorded result", "Qeydə alınmış nəticə"],
+  aStock: ["Available at this check", "Bu yoxlamada mövcuddur"],
+  aAllocation: ["Local allocation", "Yerli stokdan ayrılan"],
+  aShortage: ["Needs supply", "Təchizat tələb olunur"],
+  aUnknownDate: [
+    "Supplier confirmation required. A supply date has not been confirmed.",
+    "Təchizatçı təsdiqi tələb olunur. Təchizat tarixi hələ təsdiqlənməyib.",
+  ],
+  aNoReservation: [
+    "Availability check only; stock has not been reserved.",
+    "Yalnız mövcudluq yoxlamasıdır; stok rezerv edilməyib.",
+  ],
+  aNoPromise: [
+    "No delivery promise supports this deadline.",
+    "Bu son tarixi qarşılayan çatdırılma vədi yoxdur.",
+  ],
+  aSupported: ["Supported delivery", "Mümkün çatdırılma"],
+  aCase: ["Supply case", "Təchizat işi"],
+  aConfirmTitle: ["Review this change", "Bu dəyişikliyi nəzərdən keçirin"],
+  aConsent: [
+    "I have reviewed these exact details and want to proceed.",
+    "Bu dəqiq məlumatları nəzərdən keçirdim və davam etmək istəyirəm.",
+  ],
+  aConfirm: ["Confirm this change", "Bu dəyişikliyi təsdiqlə"],
+  aDecline: ["Decline", "İmtina et"],
+  aExpires: ["Valid until", "Etibarlıdır"],
+  aDecisionRecorded: ["Your decision is recorded.", "Qərarınız qeydə alınıb."],
+  aDecisionResult: [
+    "Recorded decision result",
+    "Qərarın qeydə alınmış nəticəsi",
+  ],
+  aSupport: ["Request human help", "İnsan dəstəyi istə"],
+  aSupportSaved: [
+    "Support request saved for staff review.",
+    "Dəstək sorğusu əməkdaş baxışı üçün saxlanılıb.",
+  ],
+  aProcurementSaved: [
+    "Supply case saved for procurement review.",
+    "Təchizat işi satınalma baxışı üçün saxlanılıb.",
+  ],
+  aTicket: ["Request reference", "Sorğu nömrəsi"],
+  aResume: ["Resume interrupted turn", "Yarımçıq mesajı davam etdir"],
+  aRetrySend: ["Retry the same request", "Eyni sorğunu təkrar göndər"],
+  aUncertain: [
+    "Delivery of your message is unconfirmed. Retry this same request to recover its result.",
+    "Mesajınızın çatması təsdiqlənməyib. Nəticəni bərpa etmək üçün eyni sorğunu təkrar göndərin.",
+  ],
+  aWorking: ["Checking your request…", "Sorğunuz yoxlanılır…"],
+  aReturnPolicy: [
+    "Returns require a delivered order within 14 days and available return quantity. Staff inspect the item before refund or exchange settlement.",
+    "Qaytarma üçün son 14 gündə çatdırılmış sifariş və qaytarıla bilən miqdar tələb olunur. Pulun qaytarılması və ya dəyişmədən əvvəl əməkdaş məhsulu yoxlayır.",
+  ],
+  completion: ["Answer ready", "Cavab hazırdır"],
+  clarification: ["More details needed", "Əlavə məlumat tələb olunur"],
+  confirmation_required: [
+    "Your confirmation needed",
+    "Təsdiqiniz tələb olunur",
+  ],
+  escalation: ["Staff review requested", "Əməkdaş baxışı istənilib"],
+  interrupted: ["Interrupted", "Yarımçıq qalıb"],
+  stopped: ["Stopped", "Dayandırılıb"],
+  declined: ["Declined", "İmtina edilib"],
+  tool_searchProducts: ["Look up catalog", "Kataloqu yoxla"],
+  tool_getDeliveryOptions: ["Check delivery", "Çatdırılmanı yoxla"],
+  tool_getOrder: ["Read order", "Sifarişi oxu"],
+  tool_getOrderProgress: ["Check order progress", "Sifarişin gedişatını yoxla"],
+  tool_prepareOrder: ["Prepare order summary", "Sifariş xülasəsi hazırla"],
+  tool_confirmOrder: ["Request order confirmation", "Sifariş təsdiqi istə"],
+  tool_cancelOrder: ["Request cancellation", "Ləğv təsdiqi istə"],
+  tool_requestReturn: ["Request return confirmation", "Qaytarma təsdiqi istə"],
+  ASSISTANT_LIVE_UNAVAILABLE: [
+    "Live mode is unavailable. Select the guided demo.",
+    "Canlı rejim mövcud deyil. Yönləndirilmiş demonu seçin.",
+  ],
+  ASSISTANT_LIVE_BUSY: [
+    "Another live turn is running. Wait, then retry.",
+    "Başqa canlı mesaj icra olunur. Gözləyin və təkrar cəhd edin.",
+  ],
+  ASSISTANT_DECISION_CONFLICT: [
+    "A different decision is already recorded. Refresh this conversation.",
+    "Başqa qərar artıq qeydə alınıb. Söhbəti yeniləyin.",
+  ],
+  CONVERSATION_NOT_FOUND: [
+    "This conversation is unavailable for your account. Start a new one.",
+    "Bu söhbət hesabınız üçün mövcud deyil. Yeni söhbət başlayın.",
+  ],
+  AGENT_RUN_BUSY: [
+    "This turn is still running. Wait for its result.",
+    "Bu mesaj hələ icra olunur. Nəticəni gözləyin.",
+  ],
+  AGENT_INTERRUPTED_MODEL_CALL: [
+    "The model request was interrupted. Resume to see its recorded outcome or request human help.",
+    "Model sorğusu yarımçıq qaldı. Qeydə alınmış nəticə üçün davam etdirin və ya insan dəstəyi istəyin.",
+  ],
+  MODEL_BUDGET_EXHAUSTED: [
+    "The shared live allowance is exhausted. Use the guided demo or request human help.",
+    "Ümumi canlı limit tükənib. Yönləndirilmiş demodan istifadə edin və ya insan dəstəyi istəyin.",
+  ],
+  MODEL_TIMEOUT: [
+    "The model did not respond in time. Request human help or send a new question.",
+    "Model vaxtında cavab vermədi. İnsan dəstəyi istəyin və ya yeni sual göndərin.",
+  ],
+  MODEL_UNAVAILABLE: [
+    "The live service is unavailable. Use the guided demo or request human help.",
+    "Canlı xidmət mövcud deyil. Yönləndirilmiş demodan istifadə edin və ya insan dəstəyi istəyin.",
+  ],
+  AGENT_TIME_LIMIT: [
+    "This turn reached its time limit. Request human help.",
+    "Bu mesaj vaxt limitinə çatdı. İnsan dəstəyi istəyin.",
+  ],
+  AGENT_TOKEN_LIMIT: [
+    "This conversation is too long for another model request. Start a new conversation.",
+    "Bu söhbət növbəti model sorğusu üçün çox uzundur. Yeni söhbət başlayın.",
+  ],
+  AGENT_ITERATION_LIMIT: [
+    "This turn reached its action limit. Request human help.",
+    "Bu mesaj əməliyyat limitinə çatdı. İnsan dəstəyi istəyin.",
+  ],
+  AGENT_CONTEXT_LIMIT: [
+    "This conversation is too long. Start a new conversation.",
+    "Bu söhbət çox uzundur. Yeni söhbət başlayın.",
+  ],
+  AGENT_MODEL_MISMATCH: [
+    "The original model configuration changed. Request human help for this turn.",
+    "İlkin model konfiqurasiyası dəyişib. Bu mesaj üçün insan dəstəyi istəyin.",
+  ],
+  aExecutionError: [
+    "The assistant could not complete this turn. Request human help or start a new conversation.",
+    "Assistent bu mesajı tamamlaya bilmədi. İnsan dəstəyi istəyin və ya yeni söhbət başlayın.",
+  ],
+  aProviderError: [
+    "The live model request could not be completed. It will not be retried automatically. Use the guided demo or request human help.",
+    "Canlı model sorğusu tamamlana bilmədi. Avtomatik təkrar edilməyəcək. Yönləndirilmiş demodan istifadə edin və ya insan dəstəyi istəyin.",
+  ],
 } as const satisfies Record<string, readonly [string, string]>;
 export type MessageKey = keyof typeof messages;
 export const translate = (locale: Locale, key: MessageKey) =>
@@ -820,7 +997,14 @@ export const translate = (locale: Locale, key: MessageKey) =>
 export const translatedCode = (locale: Locale, value: string) =>
   value in messages
     ? translate(locale, value as MessageKey)
-    : translate(locale, "INTERNAL_ERROR");
+    : translate(
+        locale,
+        value.startsWith("MODEL_")
+          ? "aProviderError"
+          : /^(AGENT_|TOOL_|ASSISTANT_)/.test(value)
+            ? "aExecutionError"
+            : "INTERNAL_ERROR",
+      );
 export const money = (locale: Locale, amount: number) => {
   const digits = amount % 100 === 0 ? 0 : 2;
   if (locale === "en")

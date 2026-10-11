@@ -5,7 +5,7 @@ production API/frontend compilation. `npm run smoke` checks the compiled server 
 dedicated loopback port 3099 and then stops it. All checks use unpaid fictional records.
 CI runs the same check on Node 22.
 
-The suite contains 111 tests covering:
+The suite contains 128 tests covering:
 
 - Bilingual fixtures, reference totals and deterministic quote rejection reasons.
 - No draft reservation, accepted 8/12 split and duplicate order/case prevention.
@@ -212,10 +212,36 @@ locale/history preservation, server-only session tokens, original mode/model bin
 previous-run evidence rejection, case-scoped staff summaries, deterministic real EN/AZ
 mock reads and null token/known-zero cost. Real adapter HTTP fixtures verify known billing
 for invalid terminal prose and durable unknown usage/held funds across business reset.
-The 001 migration upgrade check now includes 003 and preserves old supplier records.
+The 001 migration upgrade check now includes 004 and preserves old supplier records.
 
 The explicit agent smoke command verifies the same durable catalog loop, real tool result,
 strict completion and cached resume in mock mode before a separately requested paid live
 check. It has a read-only tool allowlist, two-call ceiling and no order/stock mutation.
 See [model setup](model-setup.md) for the actual bounded live result/cost; it is not
 an evaluation of business-process completion, semantic accuracy or AI gains.
+
+## Phase 10 customer assistant checks
+
+Seventeen unpaid tests exercise real business services and authenticated asynchronous
+HTTP queue/poll endpoints: identical request recovery/changed-content conflicts, cached
+resume without inference, hidden provider/session data, customer/multi-role boundaries,
+EN/AZ catalog/specs/quantity delivery, missing-field clarification, explicit consent and
+decline, price/stock/spec/version/expiry revalidation, duplicate order/cancel/return effects,
+return window/quantity and inspection separation, actual shortage requirements/handoff,
+saved support references, audit-failure atomic rollback and SQLite reopen with no replay.
+Mocked live requests verify no startup call, global concurrency and hourly admission.
+
+Reviewed the production bundle in disposable headless Chrome against an isolated seeded
+in-memory server because the in-app Browser runtime could not start. At 1440×1000 and
+390×844, document scroll/client widths matched (1425/1425 and 390/390). EN/AZ switching
+preserved the human draft, product, quantity 10, deadline and partial preference, along
+with the existing conversation. The affirmative checkbox started unchecked and disabled
+confirmation. A confirmed ten-mini-PC order created a real five-unit shortage case; its
+stored unknown date, support reference and order state were visible in Azerbaijani and
+English. Reload retained two turns and the recorded decision; own-order progress and
+confirmed cancellation followed the actual records. Account B showed no A history/draft.
+Reduced-motion media was honored and no runtime exception was observed. Screenshots and
+QA records stayed local; no named database reset/mutation or provider request in UI review.
+
+This verifies connected capabilities and the sampled UI paths, not general live-model
+semantic accuracy, purchasing-worker completion or an evaluation of AI performance gains.

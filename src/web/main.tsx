@@ -6,6 +6,7 @@ import { useMotionPreference } from "./motion";
 import "./styles.css";
 import "./purchasing.css";
 import "./operations.css";
+import "./assistant.css";
 
 function MotionRoot() {
   const reduced = useMotionPreference();

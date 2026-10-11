@@ -759,10 +759,9 @@ export function Dialogs() {
             <span />
           </div>
           <h2>{t("assistantTitle")}</h2>
-          <span className="badge">{t("disconnected")}</span>
-          <p>{t("assistantText")}</p>
-          <Link to="/business" className="button" onClick={() => open(null)}>
-            {t("bulkCTA")}
+          <p>{t("assistantIntro")}</p>
+          <Link to="/assistant" className="button" onClick={() => open(null)}>
+            {t("openConversation")}
             <ArrowUpRight size={18} />
           </Link>
         </div>

@@ -1,9 +1,9 @@
 # Agent execution and durable conversations
 
 Phase 09 implements a server-only observe/action/result loop, strict outcomes, bounded
-execution and authenticated durable conversations. It is an internal service; website
-conversation endpoints/UI, Telegram, purchasing workers and approval executors remain
-later stages. Startup, check and CI never make paid requests.
+execution and authenticated durable conversations. Phase 10 connects the website through
+the scoped [customer assistant](customer-assistant.md). Telegram, purchasing workers and
+approval executors remain later stages. Startup, check and CI never make paid requests.
 
 ## Invocation and explicit modes
 
@@ -106,13 +106,14 @@ text follows locale; status, reason, missing fields and evidence IDs are stable.
   successful/rejected evidence. Supply new human input through start in the same conversation.
 - escalation carries a controlled reason and optional evidence. The queue is selected
   by the server (customer_support/procurement_review) with handoff state not_created.
-  No ticket, notification or approval is created. no_feasible_quote requires the latest
+  The internal loop creates no ticket, notification or approval; the website service
+  persists its support handoff after this outcome. no_feasible_quote requires the latest
   successful deterministic comparison with actual clarification_or_escalation evidence;
   a later feasible comparison invalidates it.
 - confirmation_required stops before remaining calls or inference. It is a proposal,
   not customer consent. Cached resume returns it without executing skipped tools. A
-  future human action must use the existing authenticated business route and revalidate
-  ownership, version, expiry and business state. Human-confirmation UI belongs to Phase 10.
+  website human action uses a run-bound decision route, which revalidates ownership,
+  version, expiry and business state through the existing authenticated business services.
 - stopped carries a stable error code and independent correlation ID, without provider
   bodies, SQL details, credentials or private exception text.
 

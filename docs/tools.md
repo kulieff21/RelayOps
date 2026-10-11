@@ -8,21 +8,23 @@ provider metadata before handing the normalized ID/type/function fields to dispa
 
 ## Tool behavior
 
-| Tool           | Assistant             | Result                                                                                    |
-| -------------- | --------------------- | ----------------------------------------------------------------------------------------- |
-| searchProducts | Customer, procurement | Actual catalog/specifications/prices/availability in the selected application locale      |
-| getOrder       | Customer, procurement | Own customer order, or the order belonging to the trusted procurement case                |
-| prepareOrder   | Customer              | Stored expiring summary; no accepted order or stock reservation                           |
-| confirmOrder   | Customer              | confirmation_required for an owned, current offer; no order acceptance                    |
-| cancelOrder    | Customer              | confirmation_required for an owned order; no cancellation                                 |
-| requestReturn  | Customer              | confirmation_required for owned return/refund/exchange details; no return/refund mutation |
-| compareQuotes  | Procurement           | Deterministic stored quote comparison for the trusted active case; no approval/purchase   |
+| Tool               | Assistant             | Result                                                                                     |
+| ------------------ | --------------------- | ------------------------------------------------------------------------------------------ |
+| searchProducts     | Customer, procurement | Actual catalog/specifications/prices/availability in the selected application locale       |
+| getOrder           | Customer, procurement | Own customer order, or the order belonging to the trusted procurement case                 |
+| getDeliveryOptions | Customer              | Quantity-specific available stock/local delivery; no reservation or invented supplier date |
+| getOrderProgress   | Customer              | Own order, real shortage cases and recorded fulfillment promises; no procurement budgets   |
+| prepareOrder       | Customer              | Stored expiring summary; no accepted order or stock reservation                            |
+| confirmOrder       | Customer              | confirmation_required for an owned, current offer; no order acceptance                     |
+| cancelOrder        | Customer              | confirmation_required for an owned order; no cancellation                                  |
+| requestReturn      | Customer              | confirmation_required for owned return/refund/exchange details; no return/refund mutation  |
+| compareQuotes      | Procurement           | Deterministic stored quote comparison for the trusted active case; no approval/purchase    |
 
 The confirmation result is a proposed action, not an authorization token, eligibility
 guarantee or executed business result. Model-supplied confirmed=true cannot grant consent.
-The future conversation/UI must stop for affirmative human review and submit the ordinary
-authenticated business route, which rechecks current ownership, eligibility, price/stock,
-expiry and idempotency. This dispatcher provides no mutation bypass or consent-grant method.
+The connected website stops for affirmative human review and submits a run-bound decision
+route, which rechecks current ownership, eligibility, price/stock, expiry and idempotency
+through existing business services. This dispatcher provides no consent-grant method.
 
 ## Authenticated application context
 

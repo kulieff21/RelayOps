@@ -389,7 +389,12 @@ test("001 databases upgrade without losing records; migration tampering and fore
       )!.version,
       1,
     );
-    assert.equal(store.all("SELECT * FROM migrations").length, 3);
+    assert.equal(store.all("SELECT * FROM migrations").length, 4);
+    assert.ok(
+      store.one(
+        "SELECT name FROM sqlite_master WHERE name='assistant_confirmations'",
+      ),
+    );
     assert.ok(
       store.one("SELECT name FROM sqlite_master WHERE name='agent_execution'"),
     );

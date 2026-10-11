@@ -7,6 +7,10 @@ import { Views } from "../domain/views.js";
 import { Purchasing } from "../domain/purchasing.js";
 import { Operations } from "../domain/operations.js";
 import {
+  CustomerAssistant,
+  type CustomerModels,
+} from "../agent/customer-assistant.js";
+import {
   BusinessError,
   localeSchema,
   id,
@@ -14,7 +18,11 @@ import {
 } from "../shared/contracts.js";
 import { frozenClock, type Clock } from "../shared/time.js";
 
-export function createApp(store: Store, clock: Clock = frozenClock()) {
+export function createApp(
+  store: Store,
+  clock: Clock = frozenClock(),
+  models: CustomerModels = {},
+) {
   const app = Fastify({
     bodyLimit: 16384,
     logger: false,
@@ -25,6 +33,10 @@ export function createApp(store: Store, clock: Clock = frozenClock()) {
   const views = new Views(business);
   const purchasing = new Purchasing(business);
   const operations = new Operations(business);
+  const assistant = new CustomerAssistant(business, auth, models);
+  app.addHook("onClose", async () => {
+    await assistant.idle();
+  });
   const loginAttempts = new Map<string, { count: number; resets: number }>();
   const token = (header?: string) =>
     header?.startsWith("Bearer ") ? header.slice(7) : undefined;
@@ -113,6 +125,66 @@ export function createApp(store: Store, clock: Clock = frozenClock()) {
     data: views.workspace(actor(request.headers.authorization)),
   }));
   const params = (raw: unknown) => z.strictObject({ id }).parse(raw).id;
+  const customerContext = (
+    header: string | undefined,
+    locale?: "en" | "az",
+  ) => ({
+    agent: "customer" as const,
+    sessionToken: token(header) ?? "",
+    ...(locale ? { locale } : {}),
+  });
+  app.get("/api/assistant/settings", async () => ({
+    data: assistant.settings(),
+  }));
+  app.get("/api/assistant/conversations", async (request) => ({
+    data: assistant.list(customerContext(request.headers.authorization)),
+  }));
+  app.get("/api/assistant/conversations/:id", async (request) => ({
+    data: assistant.detail(
+      customerContext(request.headers.authorization),
+      params(request.params),
+    ),
+  }));
+  app.post("/api/assistant/turns", async (request, reply) =>
+    reply.code(202).send({
+      data: assistant.send(
+        customerContext(request.headers.authorization),
+        request.body,
+      ),
+    }),
+  );
+  app.get("/api/assistant/turns/:id", async (request) => ({
+    data: assistant.turn(
+      customerContext(request.headers.authorization),
+      params(request.params),
+    ),
+  }));
+  app.post("/api/assistant/turns/:id/resume", async (request, reply) => {
+    const input = z.strictObject({ locale: localeSchema }).parse(request.body);
+    return reply.code(202).send({
+      data: assistant.resume(
+        customerContext(request.headers.authorization, input.locale),
+        params(request.params),
+      ),
+    });
+  });
+  app.post("/api/assistant/turns/:id/decision", async (request) => ({
+    data: assistant.decide(
+      customerContext(request.headers.authorization),
+      params(request.params),
+      request.body,
+    ),
+  }));
+  app.post("/api/assistant/turns/:id/handoff", async (request) => ({
+    data: assistant.help(
+      customerContext(request.headers.authorization),
+      params(request.params),
+      request.body,
+    ),
+  }));
+  app.get("/api/assistant/handoffs", async (request) => ({
+    data: assistant.staffHandoffs(actor(request.headers.authorization)),
+  }));
   app.get("/api/procurement/:id", async (request) => ({
     data: operations.detail(
       actor(request.headers.authorization),

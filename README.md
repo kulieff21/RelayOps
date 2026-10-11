@@ -28,12 +28,14 @@ Aggregate time/token/iteration limits, classified safe retries and authenticated
 conversation checkpoints support restart recovery without replaying committed tools.
 An explicitly selected deterministic mock adapter supports unpaid tests and demos.
 Explicit completion, clarification and escalation outcomes use strict JSON and validated
-tool-result references; escalation reports a server-selected, not-yet-created handoff.
-The website assistant connection, Telegram approvals, leased workers and purchasing/receipt
-orchestration are planned. Their database records and architecture are prepared;
-adapter connection checks do not measure business-task success or AI gains. The approvals
-and assistant surfaces explicitly show their disconnected state. Review screens do
-not imply that future purchasing worker execution is already implemented.
+tool-result references. The connected `/assistant` website offers account-scoped durable
+conversations, real catalog/delivery/order evidence, explicit human confirmations and
+persistent support/procurement handoffs. Its free guided demo is the default; optional
+live mode uses the existing shared spending guard. Reload and polling never start inference.
+Telegram approvals, leased workers and purchasing/receipt orchestration are planned.
+Their database records and architecture are prepared; adapter connection checks do not
+measure business-task success or AI gains. Purchasing review screens do not imply that
+future worker execution is already implemented.
 
 See the [product specification](docs/product-spec.md), [architecture](docs/architecture.md),
 [API contracts](docs/api.md) and [verification scope](docs/testing.md).
@@ -71,7 +73,10 @@ frontend listen on loopback only. If changing the API port, update Vite's local 
 Optionally copy `.env.example` to `.env` to change the port or frozen business clock.
 Fixture time is **2026-10-12 08:00 UTC**, explicitly reported by health; sessions expire
 using real time. Provider credentials are optional and only consumed by explicitly selected
-live adapter/agent diagnostics; ordinary server startup and checks do not make inference calls.
+live adapter/agent diagnostics or opt-in website live turns; ordinary server startup and
+checks do not make inference calls. Set `ASSISTANT_LIVE_ENABLED=true` with the server-side
+key to offer live mode; it does not change the website's default guided mode or renew the
+shared USD 1 development allowance. See [customer assistant](docs/customer-assistant.md).
 
 ```sh
 npm run check       # types, lint, format, tests and production compilation

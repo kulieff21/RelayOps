@@ -16,6 +16,7 @@ import { Home, Collection, ProductPage, BusinessPage } from "./Storefront";
 import { Dialogs } from "./Dialogs";
 import { AccountPage, OrderPage } from "./Orders";
 import { WorkspacePage } from "./Workspace";
+import { AssistantPage } from "./Assistant";
 
 export function Brand({ small = false }: { small?: boolean }) {
   return (
@@ -47,6 +48,12 @@ function Header() {
             {t("collection")}
           </Link>
           <Link to="/business">{t("business")}</Link>
+          <Link
+            to="/assistant"
+            className={url === "/assistant" ? "active" : ""}
+          >
+            {t("assistant")}
+          </Link>
           <Link to="/workspace/overview">
             {t("workspace")}
             <ArrowUpRight size={14} />
@@ -94,7 +101,7 @@ function Header() {
   );
 }
 function Footer() {
-  const { t, open } = useShop();
+  const { t } = useShop();
   return (
     <footer className="site-footer">
       <div className="container">
@@ -107,9 +114,7 @@ function Footer() {
             <Link to="/collection">{t("collection")}</Link>
             <Link to="/account">{t("myOrders")}</Link>
             <Link to="/business">{t("business")}</Link>
-            <button onClick={() => open({ type: "help" })}>
-              {t("assistant")}
-            </button>
+            <Link to="/assistant">{t("assistant")}</Link>
           </div>
         </div>
         <div className="footer-bottom">
@@ -248,6 +253,8 @@ export function App() {
       <BusinessPage />
     ) : path === "/account" ? (
       <AccountPage />
+    ) : path === "/assistant" ? (
+      <AssistantPage key={session?.account.id ?? "guest"} />
     ) : path.startsWith("/orders/") ? (
       <OrderPage id={decodeURIComponent(path.slice(8))} />
     ) : staff ? (

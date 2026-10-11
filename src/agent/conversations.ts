@@ -83,13 +83,18 @@ export class Conversations {
     raw: RunRequest,
     conversationId?: string,
   ): Promise<ConversationRun> {
+    const prepared = this.prepare(context, raw, conversationId);
+    return this.resume(context, prepared.runId);
+  }
+  // Queue a turn synchronously; HTTP can persist its request key in this same
+  // transaction, then execute/poll outside the SQLite transaction.
+  prepare(context: ToolContext, raw: RunRequest, conversationId?: string) {
     const request = runRequest.safeParse(raw);
     if (!request.success) throw new BusinessError("AGENT_INPUT_INVALID", 400);
     const scope = this.scope(context),
-      runId = randomUUID(),
-      token = randomUUID();
+      runId = randomUUID();
     const selectedId = conversationId ?? randomUUID();
-    const state = this.store.transaction(() => {
+    this.store.transaction(() => {
       const timestamp = new Date(this.wallTime()).toISOString();
       if (!conversationId)
         this.store.run(
@@ -154,8 +159,8 @@ export class Conversations {
         runId,
         selectedId,
         JSON.stringify(state),
-        token,
-        this.wallTime() + 150000,
+        null,
+        null,
         timestamp,
       );
       this.store.run(
@@ -165,9 +170,8 @@ export class Conversations {
         timestamp,
         selectedId,
       );
-      return state;
     });
-    return this.execute(context, selectedId, runId, token, state);
+    return { conversationId: selectedId, runId };
   }
   async resume(context: ToolContext, runId: string): Promise<ConversationRun> {
     id.parse(runId);

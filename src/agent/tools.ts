@@ -2,6 +2,7 @@ import { randomUUID } from "node:crypto";
 import { z } from "zod";
 import { Auth } from "../domain/auth.js";
 import { Business } from "../domain/business.js";
+import { CustomerEvidence } from "../domain/customer-evidence.js";
 import {
   BusinessError,
   id,
@@ -22,6 +23,8 @@ export type ToolInput<N extends ToolName> = z.infer<
 type Outputs = {
   searchProducts: ReturnType<Business["search"]>;
   getOrder: ReturnType<Business["getOrder"]>;
+  getDeliveryOptions: ReturnType<CustomerEvidence["delivery"]>;
+  getOrderProgress: ReturnType<CustomerEvidence["order"]>;
   prepareOrder: ReturnType<Business["prepareOrder"]>;
   confirmOrder: ReturnType<Business["confirmOrder"]>;
   cancelOrder: ReturnType<Business["cancelOrder"]>;
@@ -70,6 +73,8 @@ const allowlist = {
   customer: [
     "searchProducts",
     "getOrder",
+    "getDeliveryOptions",
+    "getOrderProgress",
     "prepareOrder",
     "confirmOrder",
     "cancelOrder",
@@ -82,6 +87,10 @@ const descriptions: Record<ToolName, string> = {
     "Search stored products, specifications, prices and current availability. The selected application locale takes precedence.",
   getOrder:
     "Read an authorized order and its actual stored status. Customer mode reads own orders; procurement mode reads only the bound case order.",
+  getDeliveryOptions:
+    "Read current stock allocation and supported Baku delivery for a quantity/deadline, without making a reservation. Supplier arrival remains unknown for shortages.",
+  getOrderProgress:
+    "Read this customer's owned order, shortage case status and recorded fulfillment promises. Never invent a supply date or expose purchasing budgets.",
   prepareOrder:
     "Prepare an expiring versioned order summary without reserving stock. This is not an accepted order or a supply guarantee.",
   confirmOrder:
@@ -186,6 +195,14 @@ export class ToolDispatcher {
       searchProducts: (actor, input) =>
         this.business.search(input.query, actor.locale),
       getOrder: (actor, input) => this.business.getOrder(actor, input.orderId),
+      getDeliveryOptions: (_actor, input) =>
+        new CustomerEvidence(this.business).delivery(
+          input.productId,
+          input.quantity,
+          input.deadline,
+        ),
+      getOrderProgress: (actor, input) =>
+        new CustomerEvidence(this.business).order(actor, input.orderId),
       prepareOrder: (actor, input) => this.business.prepareOrder(actor, input),
       compareQuotes: (actor, input) =>
         this.business.compareQuotes(actor, input.caseId),
