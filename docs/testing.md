@@ -5,7 +5,7 @@ production API/frontend compilation. `npm run smoke` checks the compiled server 
 dedicated loopback port 3099 and then stops it. All checks use unpaid fictional records.
 CI runs the same check on Node 22.
 
-The suite contains 153 tests covering:
+The suite contains 182 tests covering:
 
 - Bilingual fixtures, reference totals and deterministic quote rejection reasons.
 - No draft reservation, accepted 8/12 split and duplicate order/case prevention.
@@ -212,7 +212,7 @@ locale/history preservation, server-only session tokens, original mode/model bin
 previous-run evidence rejection, case-scoped staff summaries, deterministic real EN/AZ
 mock reads and null token/known-zero cost. Real adapter HTTP fixtures verify known billing
 for invalid terminal prose and durable unknown usage/held funds across business reset.
-The 001 migration upgrade check now includes 006 and preserves old supplier records.
+The 001 migration upgrade check now includes 007 and preserves old supplier records.
 
 The explicit agent smoke command verifies the same durable catalog loop, real tool result,
 strict completion and cached resume in mock mode before a separately requested paid live
@@ -297,5 +297,34 @@ provider/transport errors and CLI failure output omit credentials and private UR
 
 These synthetic HTTP and local process checks do not prove a live Telegram connection,
 actual message delivery or approval persistence/recovery. No Telegram request is made
-by the ordinary API startup or checks. Operator bot/token/mapping inputs are still
-required at 12.01–12.03. See [Telegram onboarding](telegram-setup.md).
+by the ordinary API startup or checks. Each operator must explicitly verify their
+bot/token/mapping. See [Telegram onboarding](telegram-setup.md).
+
+## Purchasing approval checks
+
+Nineteen new unpaid tests cover immutable request/summary binding, EN/AZ controls,
+strict authenticated HTTP boundaries and hidden Telegram IDs, exact mapped private
+callback identity, duplicate/conflicting website decisions, expiry, changed stock and
+supplier evidence, owner revocation, mapping changes and atomic audit rollback.
+Budget reservation excludes itself during revalidation and is released on invalidation.
+Actual adapter HTTP fixtures exercise sending, callbacks, terminal message edits,
+offset persistence, uncertain-send recovery without replay, exclusive receiver leases,
+three-attempt edit limits and a website decision during an in-flight send.
+
+A pending request survives SQLite close/reopen. A real child process exits after a
+decision commit; reopening returns the cached callback and exactly one decision,
+budget allocation and continuation job. The 001/005 migration checks preserve old
+records/checksums while applying new 007 tables; previous migrations remain unchanged.
+
+The production UI was reviewed in disposable headless Chrome against an isolated
+in-memory server after the in-app Browser kernel could not start. At 1280×1000 and
+390×844, document scroll/client widths matched (1265/1265 and 390/390). A simulated
+pending request preserved its reason across polling and EN/AZ changes. Rejection,
+reload, a new guided revision and approval persisted two separate decisions and one
+192000-minor-unit allocation, with no purchase order or browser runtime exception.
+Real-send controls were disabled in this isolated review. Screenshots remain ignored.
+
+Bot identity and operator mapping were verified separately using explicit live setup;
+actual approval-message/button delivery still needs the operator's live action.
+Continuation checkpoints/jobs are persisted; purchasing/revision executors are not
+implemented or claimed by these tests. See [Telegram approvals](telegram-approvals.md).

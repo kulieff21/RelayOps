@@ -37,7 +37,7 @@ export class Operations {
     if (!row) throw new BusinessError("CASE_NOT_FOUND", 404);
     return row;
   }
-  detail(actor: Actor, caseId: string): CaseDetail {
+  detail(actor: Actor, caseId: string, excludeAllocation?: string): CaseDetail {
     const row = this.case(actor, caseId);
     const store = this.business.store,
       now = this.business.clock.now();
@@ -81,8 +81,10 @@ export class Operations {
             : r.status,
       }));
     const allocations = store.all<{ status: string; amount: number }>(
-      "SELECT status,amount FROM budget_allocations WHERE case_id=?",
+      "SELECT status,amount FROM budget_allocations WHERE case_id=? AND (? IS NULL OR proposal_id!=?)",
       caseId,
+      excludeAllocation ?? null,
+      excludeAllocation ?? null,
     );
     const sum = (status: string) =>
       allocations

@@ -87,8 +87,14 @@ export class TelegramSetupApi {
     private settings: ReturnType<typeof telegramTokenConfig>,
     private transport: typeof fetch = fetch,
   ) {}
-  private async call(
-    method: "getMe" | "getWebhookInfo" | "getUpdates",
+  protected async call(
+    method:
+      | "getMe"
+      | "getWebhookInfo"
+      | "getUpdates"
+      | "sendMessage"
+      | "editMessageText"
+      | "answerCallbackQuery",
     body: object = {},
   ) {
     // Telegram authenticates in the URL: never allow redirects or print raw

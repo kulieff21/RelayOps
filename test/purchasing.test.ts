@@ -389,7 +389,7 @@ test("001 databases upgrade without losing records; migration tampering and fore
       )!.version,
       1,
     );
-    assert.equal(store.all("SELECT * FROM migrations").length, 6);
+    assert.equal(store.all("SELECT * FROM migrations").length, 7);
     assert.ok(
       store.one(
         "SELECT name FROM sqlite_master WHERE name='procurement_requests'",
@@ -469,7 +469,17 @@ test("005 databases gain deletion protection without changing applied checksums 
         "SELECT name FROM sqlite_master WHERE name='proposal_no_delete'",
       ),
     );
-    assert.equal(store.all("SELECT * FROM migrations").length, 6);
+    assert.equal(store.all("SELECT * FROM migrations").length, 7);
+    assert.ok(
+      store.one(
+        "SELECT name FROM sqlite_master WHERE name='approval_delivery'",
+      ),
+    );
+    assert.ok(
+      store.one(
+        "SELECT name FROM sqlite_master WHERE name='telegram_receiver'",
+      ),
+    );
   } finally {
     store.close();
   }

@@ -4,8 +4,9 @@ Status: backend foundation and complete pre-agent bilingual storefront/operation
 The server-side OpenRouter adapter and durable shared spending guard are implemented.
 The internal observe/action/result loop is implemented over authenticated tool dispatch,
 with aggregate limits, safe classified retries and durable conversation/run recovery.
-The website assistant connection, Telegram, durable job execution and purchasing/receipt
-orchestration are future stages. Adapter diagnostics do not execute these workflows.
+Website/procurement assistants and durable Telegram/website approvals are implemented.
+General job execution and purchasing/receipt orchestration remain future stages.
+Adapter diagnostics do not execute these workflows.
 
 ## ADR 001: independently deployable clients and server
 
@@ -86,11 +87,13 @@ Use versioned compare-and-set updates to reject stale workers. Waiting processes
 in-memory timer as their only source of truth. Poll persisted deadlines and ready jobs;
 check expiry again at the action boundary. Business dates never depend on session time.
 
-Telegram local development will use long polling, persisted update IDs and offset,
+Telegram local development uses opt-in long polling, persisted update IDs and offset,
 without an inbound tunnel. Hosted operation will use an HTTPS webhook validated using
 Telegram's webhook secret header, plus explicit Telegram user/chat-to-account mapping.
 Callbacks reference an opaque request ID, not a role or amount supplied by Telegram text.
-Send/receive adapters, bot setup, mappings and actual callbacks remain future work.
+Bot onboarding, mapped private callbacks and leased send/receive adapters are implemented.
+See [Telegram approvals](telegram-approvals.md) for uncertain-send recovery and the
+persisted continuation boundary; hosted webhooks and purchasing executors remain later.
 
 Proposals are immutable after submission. Expiry is min(quote expiry, submission+24h).
 First valid authorized decision wins. In one transaction record the decision, reserve

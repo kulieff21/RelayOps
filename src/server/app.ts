@@ -6,6 +6,7 @@ import { Business } from "../domain/business.js";
 import { Views } from "../domain/views.js";
 import { Purchasing } from "../domain/purchasing.js";
 import { Operations } from "../domain/operations.js";
+import { Approvals, type ApprovalOptions } from "../domain/approvals.js";
 import {
   ProcurementAssistant,
   type ProcurementModels,
@@ -27,6 +28,7 @@ export function createApp(
   clock: Clock = frozenClock(),
   models: CustomerModels = {},
   procurementModels: ProcurementModels = { live: models.live },
+  approvalOptions?: ApprovalOptions,
 ) {
   const app = Fastify({
     bodyLimit: 16384,
@@ -38,6 +40,7 @@ export function createApp(
   const views = new Views(business);
   const purchasing = new Purchasing(business);
   const operations = new Operations(business);
+  const approvals = new Approvals(business, auth, approvalOptions);
   const assistant = new CustomerAssistant(business, auth, models);
   const procurementAssistant = new ProcurementAssistant(
     business,
@@ -350,6 +353,40 @@ export function createApp(
       params(request.params),
     ),
   }));
+  app.get("/api/procurement/:id/approvals", async (request) => ({
+    data: approvals.state(
+      actor(request.headers.authorization),
+      params(request.params),
+    ),
+  }));
+  app.post(
+    "/api/procurement/:id/proposals/:proposalId/approval",
+    async (request) => {
+      const p = z.strictObject({ id, proposalId: id }).parse(request.params);
+      return {
+        data: approvals.submit(
+          actor(request.headers.authorization),
+          p.id,
+          p.proposalId,
+          request.body,
+        ),
+      };
+    },
+  );
+  app.post(
+    "/api/procurement/:id/approvals/:requestId/decision",
+    async (request) => {
+      const p = z.strictObject({ id, requestId: id }).parse(request.params);
+      return {
+        data: approvals.decide(
+          actor(request.headers.authorization),
+          p.id,
+          p.requestId,
+          request.body,
+        ),
+      };
+    },
+  );
   app.post("/api/reservations/expire", async (request) => ({
     data: business.expireReservations(actor(request.headers.authorization)),
   }));

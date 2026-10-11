@@ -1,9 +1,8 @@
 # Telegram onboarding checkpoint
 
-The setup CLI is implemented; live bot creation, token verification and recipient
-mapping require the operator. Durable approval requests, update receiver, messages,
-decisions and purchasing continuation are not implemented at this checkpoint.
-The API does not read these credentials or start Telegram on launch. Nothing in
+The setup CLI verifies an operator-owned bot and explicitly selected private recipient.
+Durable requests and decisions are documented in [Telegram approvals](telegram-approvals.md).
+The API reads the selected mapping but does not connect to Telegram on launch. Nothing in
 the setup CLI sends a message or grants purchasing authority.
 
 ## Create the bot and verify its recipient
@@ -52,9 +51,8 @@ automatic retries. No provider inference, business writes or reset occurs.
 
 Unpaid synthetic HTTP tests exercise real request/response handling, role checks,
 bot identity, pairing expiry/replay/ambiguity and fixed error output. These are not
-live Telegram verification or durable approval/restart tests. Tasks 12.01–12.03
-remain incomplete until the actual operator-owned bot/token/mapping are verified.
-The canonical plan remains 185/357; continue at 12.01 rather than skipping setup.
+live Telegram verification. Complete actual bot/token/mapping verification before
+enabling delivery; approval persistence/restart tests are documented separately.
 
 Official references: [bot creation](https://core.telegram.org/bots/features#creating-a-new-bot),
 [private start links](https://core.telegram.org/bots/features#deep-linking),

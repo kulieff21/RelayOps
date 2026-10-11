@@ -36,10 +36,11 @@ The case-scoped procurement assistant reads accepted demand and current quotatio
 compares feasible options and saves immutable purchasing drafts with EN/AZ explanations,
 alternatives, guarded revisions and durable recovery. Guided mode is free; explicit live
 mode shares the original spending guard. Drafts require a separate human purchasing decision.
-Telegram approvals, leased workers and purchasing/receipt orchestration are planned.
-Their database records and architecture are prepared; adapter connection checks do not
-measure business-task success or AI gains. Purchasing review screens do not imply that
-future worker execution is already implemented.
+Durable Telegram/website approvals bind a human decision to one draft, reserve sandbox
+budget and queue a persisted continuation. An explicitly started leased polling receiver
+sends requested approvals and handles mapped private-chat callbacks. Purchasing/receipt
+executors remain planned; an approval does not mean stock arrived. Adapter connection
+checks do not measure business-task success or AI gains.
 
 See the [product specification](docs/product-spec.md), [architecture](docs/architecture.md),
 [API contracts](docs/api.md) and [verification scope](docs/testing.md).
@@ -51,6 +52,8 @@ for the implemented server boundaries and their remaining limits.
 See [procurement assistant](docs/procurement-agent.md) for proposal evidence and revisions.
 See [Telegram onboarding](docs/telegram-setup.md) for the explicit bot/token/private
 recipient setup CLI. Setup does not enable approvals or send messages.
+See [Telegram approvals](docs/telegram-approvals.md) for opt-in delivery, simulated
+website decisions, recovery limits and the remaining purchasing boundary.
 
 ## Run locally
 

@@ -1,5 +1,21 @@
 export function auditName(locale: string, action: string) {
   const labels: Record<string, [string, string]> = {
+    "approval.requested": [
+      "Purchasing decision requested",
+      "Satınalma qərarı istəndi",
+    ],
+    "approval.expired": [
+      "Approval expired; budget released",
+      "Təsdiqin müddəti bitdi; büdcə azad edildi",
+    ],
+    "approval.invalidated": [
+      "Approval invalidated; new proposal required",
+      "Təsdiq etibarsızdır; yeni təklif tələb olunur",
+    ],
+    "approval.delivery_recovered": [
+      "Telegram delivery confirmed by recipient",
+      "Telegram göndərişi alıcı tərəfindən təsdiqləndi",
+    ],
     "proposal.prepared": [
       "Purchasing draft prepared",
       "Satınalma layihəsi hazırlandı",

@@ -2,6 +2,73 @@ import type { Locale } from "./types.js";
 
 // A tuple always carries both source and translation; missing keys are type errors.
 export const messages = {
+  approvalBoundary: [
+    "An approval reserves purchasing budget; it does not purchase, receive or deliver goods.",
+    "Təsdiq satınalma büdcəsini rezerv edir; satınalma, qəbul və çatdırılma icra etmir.",
+  ],
+  approvalDisconnected: [
+    "Configure a verified approver before requesting a decision.",
+    "Qərar istəməzdən əvvəl təsdiqlənmiş qərarverəni təyin edin.",
+  ],
+  approvalRecipient: ["Approver", "Qərarverən"],
+  approvalMock: ["Create simulated approval", "Simulyasiya təsdiqi yarat"],
+  approvalSend: ["Send approval to Telegram", "Təsdiqi Telegram-a göndər"],
+  approvalLiveDisabled: [
+    "Live Telegram delivery is disabled in this session.",
+    "Bu sessiyada canlı Telegram göndərişi deaktivdir.",
+  ],
+  approvalTelegram: ["Live Telegram approval", "Canlı Telegram təsdiqi"],
+  approvalSimulation: [
+    "Simulated approval — no message sent",
+    "Simulyasiya təsdiqi — mesaj göndərilməyib",
+  ],
+  approvalDelivery: ["Message delivery", "Mesajın göndərişi"],
+  approvalSendUnknown: [
+    "Delivery is uncertain; no automatic resend. Check Telegram or record the decision here.",
+    "Göndəriş qeyri-müəyyəndir; avtomatik təkrar yoxdur. Telegram-ı yoxlayın və ya qərarı burada qeyd edin.",
+  ],
+  approvalRecorded: ["Recorded decision", "Qeydə alınmış qərar"],
+  approvalReason: ["Decision reason", "Qərarın səbəbi"],
+  approvalApprove: [
+    "Approve purchasing budget",
+    "Satınalma büdcəsini təsdiq et",
+  ],
+  approvalReject: ["Reject proposal", "Təklifi rədd et"],
+  approval_delivery_queued: ["Queued", "Növbədə"],
+  approval_delivery_sending: ["Sending", "Göndərilir"],
+  approval_delivery_sent: ["Sent / simulated", "Göndərilib / simulyasiya"],
+  approval_delivery_unknown: [
+    "Uncertain — review required",
+    "Qeyri-müəyyən — yoxlama tələb olunur",
+  ],
+  APPROVAL_NOT_CONFIGURED: [
+    "The approver is not configured.",
+    "Qərarverən təyin edilməyib.",
+  ],
+  APPROVER_UNAVAILABLE: [
+    "The configured approver no longer has owner access.",
+    "Təyin edilmiş qərarverənin owner icazəsi yoxdur.",
+  ],
+  APPROVAL_MAPPING_CHANGED: [
+    "The approver mapping changed. Prepare a new proposal.",
+    "Qərarverən dəyişib. Yeni təklif hazırlayın.",
+  ],
+  APPROVAL_ALREADY_SUBMITTED: [
+    "This version already has an approval request.",
+    "Bu versiya üçün təsdiq sorğusu artıq var.",
+  ],
+  PROPOSAL_NOT_APPROVABLE: [
+    "This proposal is expired, changed or awaiting a decision.",
+    "Bu təklifin müddəti bitib, dəyişib və ya qərar gözləyir.",
+  ],
+  TELEGRAM_LIVE_DISABLED: [
+    "Live Telegram delivery is disabled.",
+    "Canlı Telegram göndərişi deaktivdir.",
+  ],
+  APPROVAL_SUMMARY_TOO_LARGE: [
+    "The approval summary is too large; staff review is required.",
+    "Təsdiq xülasəsi çox uzundur; əməkdaş yoxlaması lazımdır.",
+  ],
   procurementAgent: ["Procurement assistant", "Satınalma assistenti"],
   procurementMode: ["Assistant mode", "Assistent rejimi"],
   purchasingDraft: ["Purchasing draft", "Satınalma layihəsi"],

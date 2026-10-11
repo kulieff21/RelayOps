@@ -51,7 +51,7 @@ Each mutation's key must be 8–100 characters. Retry identical input with the s
 reusing it for a different request returns `IDEMPOTENCY_CONFLICT`. Obtaining a new offer
 is required after stock/specification/price changed: `NEW_CONSENT_REQUIRED`. A purchaser
 cannot approve more than 100000 minor units; over-budget totals always fail policy checks.
-There is no approval/PO execution endpoint yet. Policy helpers are not human decisions.
+The approval endpoints below accept actual human decisions; PO execution remains later.
 
 ## Supplier and quotation records
 
@@ -171,3 +171,20 @@ other authorized staff; full transcripts, provider IDs, tokens and private confi
 are never returned. Both assistants share live admission; no live fallback to mock.
 POST prepares only a proposal draft and audit evidence, never approval/budget/PO/receipt.
 GET/poll/reload do not execute inference. See [procurement assistant](procurement-agent.md).
+
+## Purchasing approvals
+
+- GET `/api/procurement/:id/approvals`: purchaser/owner; configured recipient account/locale,
+  live availability and safe request/version/mode/delivery/decision/effective status.
+- POST `/api/procurement/:id/proposals/:proposalId/approval`: purchaser/owner;
+  strict `{mode:"mock"|"live",expectedVersion,key}`. Binds the current valid draft;
+  live queues a Telegram message, mock explicitly sends none.
+- POST `/api/procurement/:id/approvals/:requestId/decision`: mapped owner only;
+  strict `{decision:"approved"|"rejected",reason,key}`. Fresh session, request expiry,
+  immutable version and current evidence validation precede the transactional decision.
+
+No supplied actor/recipient/amount/locale or foreign case binding is accepted. Responses
+omit bot/user/chat IDs, message IDs, tokens and raw provider errors. GET is read-only.
+First valid decision wins across website and Telegram; approval reserves budget and
+queues a future purchasing job, with no PO/receipt executor or model call.
+See [Telegram approvals](telegram-approvals.md) for delivery and restart behavior.

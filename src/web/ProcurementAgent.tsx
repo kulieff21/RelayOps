@@ -5,6 +5,7 @@ import { useData } from "./data";
 import { ApiError, mutationKey, readSaved, request, save } from "./api";
 import { DataState, Status } from "./Orders";
 import { dateTime, money, translatedCode } from "./i18n";
+import { ApprovalActions } from "./ApprovalActions";
 import type {
   ProcurementRequest,
   ProcurementTurn,
@@ -282,6 +283,7 @@ export function ProcurementAgent({
                       {proposal.snapshot.modelNote.text}
                     </p>
                   </details>
+                  <ApprovalActions proposal={proposal} />
                 </article>
               ))}
             </div>

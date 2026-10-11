@@ -29,10 +29,18 @@ export class Procurement {
       .filter((s) => quotations.some((q) => q.supplier_id === s.id));
     return { quotations, suppliers };
   }
-  evidence(actor: Actor, caseId: string): ProcurementEvidence {
+  evidence(
+    actor: Actor,
+    caseId: string,
+    excludeAllocation?: string,
+  ): ProcurementEvidence {
     // One coherent SQLite read transaction also when called without durable execution.
     return this.business.store.transaction(() => {
-      const comparison = this.business.compareQuotes(actor, caseId);
+      const comparison = this.business.compareQuotes(
+        actor,
+        caseId,
+        excludeAllocation,
+      );
       const { quotations, suppliers } = this.quotations(actor, caseId);
       const source = {
         requirements: comparison.requirements,
@@ -217,8 +225,11 @@ export class Procurement {
       } else {
         try {
           if (
-            this.evidence(actor, row.case_id).fingerprint !==
-            snapshot.evidence.fingerprint
+            this.evidence(
+              actor,
+              row.case_id,
+              row.status === "approved" ? row.id : undefined,
+            ).fingerprint !== snapshot.evidence.fingerprint
           )
             invalidationReasons.push("PROCUREMENT_EVIDENCE_STALE");
         } catch (error) {

@@ -771,7 +771,7 @@ export class Business {
       credit: line.unit_price * row.quantity,
     };
   }
-  compareQuotes(actor: Actor, caseId: string) {
+  compareQuotes(actor: Actor, caseId: string, excludeAllocation?: string) {
     requireRole(actor, "purchaser", "owner");
     const row = this.store.one<{
       product_id: string;
@@ -783,7 +783,12 @@ export class Business {
     if (!row) throw new BusinessError("CASE_NOT_FOUND", 404);
     if (row.status === "closed") throw new BusinessError("CASE_CLOSED");
     const product = this.product(row.product_id);
-    const requirements = procurementRequirements(this, actor, caseId);
+    const requirements = procurementRequirements(
+      this,
+      actor,
+      caseId,
+      excludeAllocation,
+    );
     const req: Requirement = {
       productId: product.id,
       specs: JSON.stringify(requirements.specs ?? {}),

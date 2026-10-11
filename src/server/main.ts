@@ -11,6 +11,7 @@ import { OpenRouter } from "../model/openrouter.js";
 import { join } from "node:path";
 import { projectRoot } from "./config.js";
 import type { CustomerModels } from "../agent/customer-assistant.js";
+import { telegramMappingConfig } from "../telegram/setup.js";
 
 const values = config();
 mkdirSync(dirname(values.databasePath), { recursive: true });
@@ -33,7 +34,19 @@ if (process.env.ASSISTANT_LIVE_ENABLED === "true") {
     },
   };
 }
-const app = createApp(store, frozenClock(values.DEMO_CLOCK), models);
+const approvalOptions = process.env.TELEGRAM_APPROVER_ACCOUNT_ID?.trim()
+  ? {
+      mapping: telegramMappingConfig(),
+      liveEnabled: process.env.TELEGRAM_APPROVALS_ENABLED === "true",
+    }
+  : undefined;
+const app = createApp(
+  store,
+  frozenClock(values.DEMO_CLOCK),
+  models,
+  { live: models.live },
+  approvalOptions,
+);
 await app.listen({ host: values.HOST, port: values.PORT });
 console.log(
   `RelayOps sandbox API: http://${values.HOST}:${values.PORT} (frozen business clock ${values.DEMO_CLOCK})`,

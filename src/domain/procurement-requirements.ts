@@ -11,8 +11,13 @@ export function procurementRequirements(
   business: Business,
   actor: Actor,
   caseId: string,
+  excludeAllocation?: string,
 ) {
-  const detail = new Operations(business).detail(actor, caseId);
+  const detail = new Operations(business).detail(
+    actor,
+    caseId,
+    excludeAllocation,
+  );
   const { case: row, order, inventory, budget, reservations } = detail;
   const summary = JSON.parse(
     business.store.one<{ summary: string }>(
