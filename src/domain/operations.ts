@@ -214,6 +214,11 @@ export class Operations {
       }),
       purchaseOrders: purchaseOrders.map((po) => ({
         ...po,
+        supplierAcknowledgement:
+          store.one<NonNullable<PurchaseRecord["supplierAcknowledgement"]>>(
+            "SELECT mode,outcome,created_at FROM supplier_acknowledgements WHERE purchase_order_id=?",
+            po.id,
+          ) ?? null,
         receipts: store
           .all<Omit<ReceiptRecord, "serials"> & { serials: string }>(
             "SELECT id,purchase_order_id,quantity,inspection,serials,exception_reason,created_at FROM goods_receipts WHERE purchase_order_id=? ORDER BY created_at,id",

@@ -3,8 +3,8 @@
 The approval service, private-chat long-polling receiver and case review controls are
 implemented. A human submits one immutable purchasing draft and records its decision
 in Telegram or the authenticated website. Approval reserves sandbox purchasing budget;
-it does not create a purchase order, receive stock or complete customer delivery.
-Those executors remain a later stage.
+it does not itself receive stock or complete customer delivery. A separately invoked
+[sandbox continuation](purchase-continuation.md) can create the approved purchase order.
 
 ## Run the integration
 
@@ -46,7 +46,7 @@ In one SQLite transaction, decision, audit, proposal status, budget allocation,
 process checkpoint and one deduplicated continuation job commit. Approval selects
 `purchasing_ready` / `purchase.after_approval`; rejection selects
 `proposal_revision_required` / `procurement.after_rejection`. These are persisted
-handoffs, with no purchasing or autonomous revision executor yet. Rejection requires a
+handoffs consumed by the explicit sandbox continuation worker. Rejection requires a
 new immutable proposal and approval request; it cannot transfer its decision.
 
 Expiry, revoked/changed recipient mapping or changed consent, inventory, quotations,
@@ -75,7 +75,7 @@ send also schedules the terminal message edit after delivery succeeds.
 The CLI stops after three consecutive receiver failures. Restart it after investigating
 the fixed error code; preserve the database and allow an abandoned 120-second lease
 to expire. It does not reset business records or invoke a model. Multi-instance hosting,
-webhooks, purchasing/receipt execution and unrestricted deployment are outside this
+webhooks, receipt execution and unrestricted deployment are outside this
 local receiver's verification scope.
 
 ## Verification
@@ -87,7 +87,9 @@ decisions, audit rollback, uncertain-send recovery, leases, bounded edits and a 
 decision during sending. SQLite close/reopen verifies a pending request; a real child
 process exits after decision commit and resumes with one decision/allocation/job.
 EN/AZ controls and simulated mode are reviewed separately from actual delivery.
-These checks do not establish live Telegram button delivery or purchasing completion.
+These isolated checks do not establish live Telegram button delivery. A separately
+observed operator-owned live EN approval recorded one decision/allocation and the
+successful terminal message edit. Receipt and delivery completion remain later.
 
 Protocol references: [polling acknowledgement](https://core.telegram.org/bots/api#getupdates),
 [inline controls](https://core.telegram.org/bots/api#inlinekeyboardbutton),

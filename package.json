@@ -9,6 +9,7 @@
   "scripts": {
     "telegram:setup": "node --env-file-if-exists=.env --import tsx scripts/telegram-setup.ts",
     "telegram:worker": "node --env-file-if-exists=.env --import tsx scripts/telegram-worker.ts",
+    "process:worker": "node --env-file-if-exists=.env --import tsx scripts/process-worker.ts",
     "agent:smoke": "node --env-file-if-exists=.env --import tsx scripts/agent-smoke.ts",
     "model:verify": "node --env-file-if-exists=.env --import tsx scripts/verify-model.ts",
     "model:smoke": "node --env-file-if-exists=.env --import tsx scripts/model-smoke.ts",

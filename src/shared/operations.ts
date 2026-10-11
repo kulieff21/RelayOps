@@ -64,6 +64,11 @@ export interface PurchaseRecord {
   status: string;
   created_at: string;
   receipts: ReceiptRecord[];
+  supplierAcknowledgement: {
+    mode: "mock";
+    outcome: "acknowledged" | "failed";
+    created_at: string;
+  } | null;
 }
 export interface PurchasingRecords {
   businessClock: string;

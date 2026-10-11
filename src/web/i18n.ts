@@ -2,6 +2,10 @@ import type { Locale } from "./types.js";
 
 // A tuple always carries both source and translation; missing keys are type errors.
 export const messages = {
+  supplierMockBoundary: [
+    "Simulated supplier response · no physical receipt",
+    "Simulyasiya təchizatçı cavabı · fiziki qəbul yoxdur",
+  ],
   approvalBoundary: [
     "An approval reserves purchasing budget; it does not purchase, receive or deliver goods.",
     "Təsdiq satınalma büdcəsini rezerv edir; satınalma, qəbul və çatdırılma icra etmir.",
@@ -856,8 +860,8 @@ export const messages = {
     "Sifariş edilmiş, qəbul edilmiş və ləğv edilmiş miqdarlar, hər qəbulun yoxlama qeydi ilə.",
   ],
   fulfillmentNotConnected: [
-    "Purchasing and receipt execution are not connected yet",
-    "Satınalma və mal qəbulu icrası hələ qoşulmayıb",
+    "Sandbox purchasing is connected; goods receipt is the next stage",
+    "Sandbox satınalma qoşulub; mal qəbulu növbəti mərhələdir",
   ],
   receiptBoundary: [
     "An order is incoming supply, not physical stock. Receipt and inspection are separate records; sellable allocation must be verified before fulfillment.",

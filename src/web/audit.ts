@@ -37,6 +37,26 @@ export function auditName(locale: string, action: string) {
       "Satınalma sifarişi qeydə alındı",
     ],
     "goods.received": ["Goods receipt recorded", "Mal qəbulu qeydə alındı"],
+    "supplier.acknowledged": [
+      "Sandbox supplier acknowledged",
+      "Sandbox təchizatçı təsdiqlədi",
+    ],
+    "supplier.failed": [
+      "Sandbox supplier failed; review required",
+      "Sandbox təchizatçı uğursuz oldu; baxış tələb olunur",
+    ],
+    "reservation.extended": [
+      "Stock hold extended within accepted deadline",
+      "Stok rezervi razılaşdırılmış müddətə uzadıldı",
+    ],
+    "procurement.revision_ready": [
+      "Revised draft requires a new decision",
+      "Yenilənmiş layihəyə yeni qərar lazımdır",
+    ],
+    "continuation.escalated": [
+      "Business process needs review",
+      "Biznes prosesinə baxış lazımdır",
+    ],
     "agent.completed": ["Agent run completed", "Agent icrası tamamlandı"],
     "tool.completed": ["Tool call completed", "Alət çağırışı tamamlandı"],
     "supplier.created": ["Supplier added", "Təchizatçı əlavə edildi"],

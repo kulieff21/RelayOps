@@ -186,5 +186,6 @@ GET/poll/reload do not execute inference. See [procurement assistant](procuremen
 No supplied actor/recipient/amount/locale or foreign case binding is accepted. Responses
 omit bot/user/chat IDs, message IDs, tokens and raw provider errors. GET is read-only.
 First valid decision wins across website and Telegram; approval reserves budget and
-queues a future purchasing job, with no PO/receipt executor or model call.
+queues a purchasing job, with no immediate receipt or model call. The separate explicit
+sandbox worker consumes it; purchase reads include a labelled mock supplier acknowledgement.
 See [Telegram approvals](telegram-approvals.md) for delivery and restart behavior.

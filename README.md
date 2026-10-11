@@ -38,8 +38,9 @@ alternatives, guarded revisions and durable recovery. Guided mode is free; expli
 mode shares the original spending guard. Drafts require a separate human purchasing decision.
 Durable Telegram/website approvals bind a human decision to one draft, reserve sandbox
 budget and queue a persisted continuation. An explicitly started leased polling receiver
-sends requested approvals and handles mapped private-chat callbacks. Purchasing/receipt
-executors remain planned; an approval does not mean stock arrived. Adapter connection
+sends requested approvals and handles mapped private-chat callbacks. An explicit sandbox
+worker creates a unique approved PO/mock acknowledgement or a new rejected-draft revision.
+Receipt executors remain planned; an approval does not mean stock arrived. Adapter connection
 checks do not measure business-task success or AI gains.
 
 See the [product specification](docs/product-spec.md), [architecture](docs/architecture.md),
@@ -54,6 +55,8 @@ See [Telegram onboarding](docs/telegram-setup.md) for the explicit bot/token/pri
 recipient setup CLI. Setup does not enable approvals or send messages.
 See [Telegram approvals](docs/telegram-approvals.md) for opt-in delivery, simulated
 website decisions, recovery limits and the remaining purchasing boundary.
+See [sandbox continuation](docs/purchase-continuation.md) for the explicit worker,
+unique approved PO, mock supplier acknowledgement and rejection revision.
 
 ## Run locally
 

@@ -480,6 +480,12 @@ export function PurchaseView({
               ]}
             />
             <h3>{t("goodsReceipts")}</h3>
+            {po.supplierAcknowledgement && (
+              <p className="record-warning">
+                {t("supplierMockBoundary")} ·{" "}
+                <Status value={po.supplierAcknowledgement.outcome} />
+              </p>
+            )}
             {!po.receipts.length ? (
               <Empty text="noReceipts" />
             ) : (

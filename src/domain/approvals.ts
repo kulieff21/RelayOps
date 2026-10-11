@@ -93,6 +93,16 @@ export class Approvals {
   }
   effective(row: ApprovalRow) {
     if (!["pending", "approved"].includes(row.status)) return row.status;
+    // Once a purchase commits, the approval is historical authorization. Expiry
+    // or later evidence changes cannot undo an acknowledged purchasing obligation.
+    if (
+      row.status === "approved" &&
+      this.store.one(
+        "SELECT id FROM purchase_orders WHERE proposal_id=?",
+        row.proposal_id,
+      )
+    )
+      return "approved";
     if (
       this.wallTime() >= row.expires_wall ||
       Date.parse(this.business.clock.now()) >= Date.parse(row.expires_at)

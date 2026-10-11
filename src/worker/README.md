@@ -1,5 +1,6 @@
 # Reserved worker boundary
 
-Durable process/job records are present. The leased worker executor, OpenRouter loops,
-Telegram adapters and purchasing/receipt continuation will be implemented in their
-integration stages. See `docs/architecture.md` for checkpoint and retry semantics.
+The explicit continuation worker consumes approval/rejection jobs in one synchronous
+transaction: validated sandbox PO/mock acknowledgement or a new draft requiring review.
+Use `npm run process:worker -- --once`. No supplier network, inference, receipt or
+fulfillment execution runs here. See `docs/purchase-continuation.md` for recovery limits.

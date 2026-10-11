@@ -5,7 +5,8 @@ The server-side OpenRouter adapter and durable shared spending guard are impleme
 The internal observe/action/result loop is implemented over authenticated tool dispatch,
 with aggregate limits, safe classified retries and durable conversation/run recovery.
 Website/procurement assistants and durable Telegram/website approvals are implemented.
-General job execution and purchasing/receipt orchestration remain future stages.
+An explicit atomic sandbox continuation consumes approval/rejection jobs; receipt and
+fulfillment orchestration remain future stages. See [continuation](purchase-continuation.md).
 Adapter diagnostics do not execute these workflows.
 
 ## ADR 001: independently deployable clients and server

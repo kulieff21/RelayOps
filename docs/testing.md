@@ -5,7 +5,7 @@ production API/frontend compilation. `npm run smoke` checks the compiled server 
 dedicated loopback port 3099 and then stops it. All checks use unpaid fictional records.
 CI runs the same check on Node 22.
 
-The suite contains 182 tests covering:
+The suite contains 195 tests covering:
 
 - Bilingual fixtures, reference totals and deterministic quote rejection reasons.
 - No draft reservation, accepted 8/12 split and duplicate order/case prevention.
@@ -325,6 +325,26 @@ reload, a new guided revision and approval persisted two separate decisions and 
 Real-send controls were disabled in this isolated review. Screenshots remain ignored.
 
 Bot identity and operator mapping were verified separately using explicit live setup;
-actual approval-message/button delivery still needs the operator's live action.
-Continuation checkpoints/jobs are persisted; purchasing/revision executors are not
-implemented or claimed by these tests. See [Telegram approvals](telegram-approvals.md).
+an operator-owned live EN button approval subsequently recorded one decision and
+allocation, delivered message and successful terminal edit. See [Telegram approvals](telegram-approvals.md).
+
+## Sandbox continuation checks
+
+Thirteen unpaid tests validate fresh approved request/decision/owner binding, expiry,
+changed inventory/budget/consent, one acknowledged PO, exact reserved-to-committed budget,
+unchanged physical stock/order state and zero receipts. Mock acknowledgement is immutable;
+simulated failure retains evidence, releases its allocation and excludes incoming supply.
+Reservations extend within the accepted deadline; historical executed approvals retain
+their purchasing obligation after later expiry or revoked authority.
+
+Rejection creates a new deterministic immutable draft requiring a separate human decision;
+no feasible quote escalates. Audit failure rolls back PO, allocation, acknowledgement,
+reservation extension and job claim. Active/abandoned/exhausted leases are checked.
+A real child process exits after continuation commit and resumes with one completed job;
+two independent OS processes compete for one PO without repeating it. Migration 008
+preserves existing checksums/records. Goods receipt/fulfillment execution remains later.
+
+The production PO view was reviewed in disposable headless Chrome against an isolated
+server at 1280×1000 and 390×844. EN/AZ mock supplier disclosure, acknowledged quantity 12,
+received quantity zero, committed budget and reload passed, with matching document
+scroll/client widths (1265/1265 and 390/390) and no runtime exception.
