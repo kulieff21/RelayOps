@@ -32,6 +32,7 @@ export function applicationTables() {
 // Keep the experimental Node 22 SQLite API behind this synchronous adapter.
 export class Store {
   readonly db: DatabaseSync;
+  private transactionDepth = 0;
   constructor(path = ":memory:") {
     this.db = new DatabaseSync(path);
     this.db.exec(
@@ -48,14 +49,22 @@ export class Store {
     return this.db.prepare(sql).all(...args) as T[];
   }
   transaction<T>(action: () => T): T {
-    this.db.exec("BEGIN IMMEDIATE");
+    const nested = this.transactionDepth > 0;
+    const savepoint = `store_${this.transactionDepth}`;
+    this.db.exec(nested ? `SAVEPOINT ${savepoint}` : "BEGIN IMMEDIATE");
+    this.transactionDepth++;
     try {
       const result = action();
-      this.db.exec("COMMIT");
+      if (result instanceof Promise)
+        throw new Error("Async SQLite transaction refused");
+      this.db.exec(nested ? `RELEASE ${savepoint}` : "COMMIT");
       return result;
     } catch (error) {
-      this.db.exec("ROLLBACK");
+      this.db.exec(nested ? `ROLLBACK TO ${savepoint}` : "ROLLBACK");
+      if (nested) this.db.exec(`RELEASE ${savepoint}`);
       throw error;
+    } finally {
+      this.transactionDepth--;
     }
   }
   migrate() {

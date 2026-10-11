@@ -5,7 +5,7 @@ production API/frontend compilation. `npm run smoke` checks the compiled server 
 dedicated loopback port 3099 and then stops it. All checks use unpaid fictional records.
 CI runs the same check on Node 22.
 
-The suite contains 91 tests covering:
+The suite contains 111 tests covering:
 
 - Bilingual fixtures, reference totals and deterministic quote rejection reasons.
 - No draft reservation, accepted 8/12 split and duplicate order/case prevention.
@@ -77,8 +77,7 @@ logout/expiry/role revocation, unexecuted human-confirmation requests, domain fa
 expired consent and audit rollback with sanitized errors. A mocked provider/tool-result
 round trip connects the real adapter and dispatcher without a paid call.
 
-These establish the current dispatcher boundaries. Human confirmation/resume UI and
-durable tool-result orchestration remain later tasks; see [tool dispatch](tools.md).
+These establish the current dispatcher boundaries. Human confirmation/resume UI remains a later task; see [tool dispatch](tools.md).
 Named demo records and the USD 1 ledger are preserved.
 
 ## Agent loop checks
@@ -95,14 +94,14 @@ back, and concurrent invocations do not share transcripts. One unpaid synthetic 
 round trip joins the real OpenRouter adapter, loop and catalog dispatcher while keeping
 actual fixture usage/known zero cost separate from tool results.
 
-See [agent loop](agent-loop.md). Traces are invocation-local, not persisted or resumable.
+See [agent loop](agent-loop.md). Conversations now persists and resumes internal run traces.
 Ten additional outcome tests verify strict completion/clarification/escalation contracts,
 successful/rejected/cross-run evidence restrictions, EN/AZ missing-field questions,
 server-bound queues without actual handoff creation, no-feasible-quote evidence including
 superseded comparisons, malformed/overprivileged outputs, confirmation precedence and
 auth loss. The real adapter with synthetic HTTP retains known billing for invalid terminal
-JSON without an automatic repair request. Aggregate limits, retry policy, website
-conversation and live business-task verification remain later phases.
+JSON without an automatic repair request. Website conversation/UI and broader live
+business-task evaluation remain later phases.
 
 ## Browser review
 
@@ -194,6 +193,29 @@ sandbox QA records remain. Conversation preservation (06.07) is still dependent 
 Phase 09 conversation implementation; no conversation exists to exercise yet.
 
 Full acceptance targets remain in `docs/product-spec.md`. Telegram callbacks, approval/PO
-execution, worker lease recovery, partial receipts, aggregate agent-loop limits and live
-business-task performance remain future work. Current checks do not establish public deployment
+execution, business-worker lease recovery, partial receipts and live business-task
+performance evaluation remain future work. Current checks do not establish public deployment
 readiness or AI-performance improvements.
+
+## Phase 09 execution recovery checks
+
+Twenty new unpaid tests verify token admission/aggregate usage/output limits, unknown
+token allowances, timeout/late-model behavior, deadline-covered retry backoff, pre-billing
+metadata retries, non-retry of ambiguous billable failures, SQLite transient retries
+after inner rollback or outer lock failure, exhausted retry stops and atomic rollback
+when evidence insertion fails. Three real child-process exits and SQLite reopen checks
+verify prepared-offer recovery without duplicate effects/audit, a committed confirmation
+stop without skipped calls, and interrupted-model stop without another provider attempt.
+
+Tests also cover concurrent conversation ownership/resume, fresh auth on cached results,
+locale/history preservation, server-only session tokens, original mode/model binding,
+previous-run evidence rejection, case-scoped staff summaries, deterministic real EN/AZ
+mock reads and null token/known-zero cost. Real adapter HTTP fixtures verify known billing
+for invalid terminal prose and durable unknown usage/held funds across business reset.
+The 001 migration upgrade check now includes 003 and preserves old supplier records.
+
+The explicit agent smoke command verifies the same durable catalog loop, real tool result,
+strict completion and cached resume in mock mode before a separately requested paid live
+check. It has a read-only tool allowlist, two-call ceiling and no order/stock mutation.
+See [model setup](model-setup.md) for the actual bounded live result/cost; it is not
+an evaluation of business-process completion, semantic accuracy or AI gains.

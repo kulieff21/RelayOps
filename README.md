@@ -23,14 +23,17 @@ Typed tool dispatch validates model arguments, rechecks session/role/case scope 
 routes allowed calls to deterministic services. Model-requested confirmation,
 cancellation and returns produce human-confirmation requests without executing mutations.
 The internal observe/action/result loop now feeds typed tool observations back to the
-model, stops for human confirmation and preserves separate invocation-local evidence.
+model, stops for human confirmation and preserves separate durable evidence.
+Aggregate time/token/iteration limits, classified safe retries and authenticated
+conversation checkpoints support restart recovery without replaying committed tools.
+An explicitly selected deterministic mock adapter supports unpaid tests and demos.
 Explicit completion, clarification and escalation outcomes use strict JSON and validated
 tool-result references; escalation reports a server-selected, not-yet-created handoff.
 The website assistant connection, Telegram approvals, leased workers and purchasing/receipt
 orchestration are planned. Their database records and architecture are prepared;
 adapter connection checks do not measure business-task success or AI gains. The approvals
 and assistant surfaces explicitly show their disconnected state. Review screens do
-not imply that future purchasing or agent execution is already implemented.
+not imply that future purchasing worker execution is already implemented.
 
 See the [product specification](docs/product-spec.md), [architecture](docs/architecture.md),
 [API contracts](docs/api.md) and [verification scope](docs/testing.md).
@@ -67,8 +70,8 @@ frontend listen on loopback only. If changing the API port, update Vite's local 
 
 Optionally copy `.env.example` to `.env` to change the port or frozen business clock.
 Fixture time is **2026-10-12 08:00 UTC**, explicitly reported by health; sessions expire
-using real time. Provider credentials are optional and only consumed by the explicit
-OpenRouter diagnostic; ordinary server startup and checks do not make inference calls.
+using real time. Provider credentials are optional and only consumed by explicitly selected
+live adapter/agent diagnostics; ordinary server startup and checks do not make inference calls.
 
 ```sh
 npm run check       # types, lint, format, tests and production compilation

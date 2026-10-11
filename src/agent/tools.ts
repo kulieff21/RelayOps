@@ -106,6 +106,12 @@ export class ToolDispatcher {
     const context = parsed.data;
     this.actor(context);
     return {
+      scope: () => ({
+        actorId: this.actor(context).id,
+        agent: context.agent,
+        locale: this.actor(context).locale,
+        caseId: context.agent === "procurement" ? context.caseId : null,
+      }),
       handoffQueue: (): HandoffQueue => {
         this.actor(context);
         return context.agent === "customer"
@@ -294,7 +300,13 @@ export class ToolDispatcher {
         toolCallId: callId,
         error: {
           code:
-            error instanceof BusinessError ? error.code : "TOOL_INTERNAL_ERROR",
+            error instanceof BusinessError
+              ? error.code
+              : error instanceof Error &&
+                  "errcode" in error &&
+                  (error.errcode === 5 || error.errcode === 6)
+                ? "TOOL_TEMPORARILY_UNAVAILABLE"
+                : "TOOL_INTERNAL_ERROR",
           correlationId: randomUUID(),
         },
       };

@@ -2,7 +2,8 @@
 
 Status: backend foundation and complete pre-agent bilingual storefront/operations views implemented.
 The server-side OpenRouter adapter and durable shared spending guard are implemented.
-The internal observe/action/result loop is implemented over authenticated tool dispatch.
+The internal observe/action/result loop is implemented over authenticated tool dispatch,
+with aggregate limits, safe classified retries and durable conversation/run recovery.
 The website assistant connection, Telegram, durable job execution and purchasing/receipt
 orchestration are future stages. Adapter diagnostics do not execute these workflows.
 
@@ -244,3 +245,17 @@ outside its accounting. A future agent entry point must always use this adapter/
 persist all execution outcomes and supply trusted actor context to a validated dispatcher.
 No public completion endpoint or website conversation exists yet. The explicit local
 diagnostic stores actual usage and a synthetic tool result in existing run/usage tables.
+
+## Durable agent turns
+
+Migration 003 adds account/agent/case-scoped conversations and leased execution state.
+Conversations starts a bounded turn, resumes an interrupted local checkpoint or returns a
+cached terminal outcome. Tool effects, existing audit, separate typed evidence and cursor
+updates commit together using synchronous nested savepoints. No transaction spans inference.
+A provider call interrupted by a crash is never automatically replayed. Known/unknown
+usage persists independently of reply validity, with the separate shared spending ledger.
+See [agent execution](agent-loop.md) for limits, recovery and human boundaries.
+
+This service is internal; it does not expose an unmetered completion endpoint, start
+inference on server startup, create Telegram approvals or execute purchasing jobs.
+Explicit mock/live diagnostics use the same authenticated business-tool boundaries.

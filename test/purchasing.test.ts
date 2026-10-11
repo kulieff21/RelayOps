@@ -389,7 +389,10 @@ test("001 databases upgrade without losing records; migration tampering and fore
       )!.version,
       1,
     );
-    assert.equal(store.all("SELECT * FROM migrations").length, 2);
+    assert.equal(store.all("SELECT * FROM migrations").length, 3);
+    assert.ok(
+      store.one("SELECT name FROM sqlite_master WHERE name='agent_execution'"),
+    );
     store.run("UPDATE migrations SET checksum='bad' WHERE version='002'");
     assert.throws(() => store.migrate(), /checksum/);
     store.run(

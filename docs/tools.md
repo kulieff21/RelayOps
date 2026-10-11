@@ -60,6 +60,7 @@ Unknown functions, arbitrary executable names, malformed JSON, non-object/extra 
 wrong scalar types, spoofed identity and oversized arguments are rejected before effects.
 Argument text is limited to 16,000 bytes. Domain errors retain their codes; unexpected
 exceptions become TOOL_INTERNAL_ERROR without raw input, session tokens or SQL details.
+SQLite BUSY/LOCKED errors become TOOL_TEMPORARILY_UNAVAILABLE for bounded rollback-safe retries.
 No outcome turns model prose into evidence of a business action.
 
 ## Verified scope and remaining work
@@ -73,7 +74,7 @@ as a valid tool message to a second mocked completion. No paid request is needed
 
 The internal [observe/action/result loop](agent-loop.md) now feeds these results back
 to the model and stops for confirmation. It keeps model prose and tool evidence separate
-in invocation-local traces. A conversation endpoint, durable execution, assistant UI
-confirmation/resume and procurement proposal executor remain future work. The later
-persistence stage must store these results rather than infer effects from prose.
+in traces and durable typed records. Conversations persists effect/evidence/checkpoint
+atomically and resumes from the saved batch cursor. A conversation endpoint, assistant UI
+confirmation/resume and procurement proposal executor remain future work.
 Manual storefront/business routes continue to operate independently.

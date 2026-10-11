@@ -52,6 +52,11 @@ export type UsageObservation = {
   outputTokens: number | null;
   costMicroUsd: number | null;
 };
+export type CompletionOptions = {
+  signal?: AbortSignal;
+  maxOutputTokens?: number;
+  observeUsage?: (usage: UsageObservation) => void;
+};
 export class ModelResponseError extends Error {
   constructor(
     readonly diagnostic: {
@@ -162,7 +167,7 @@ export class OpenRouter {
     private transport: typeof fetch = fetch,
     private observeUsage: (usage: UsageObservation) => void = () => {},
   ) {}
-  async complete(raw: CompletionInput) {
+  async complete(raw: CompletionInput, options: CompletionOptions = {}) {
     const parsed = completionInput.safeParse(raw);
     if (!parsed.success) throw new Error("MODEL_INPUT_INVALID");
     const input = parsed.data;
@@ -177,7 +182,22 @@ export class OpenRouter {
     )
       throw new Error("MODEL_TOOLS_INVALID");
     // One deadline covers catalogue and completion. Never automatically retry an ambiguous billable call.
-    const signal = AbortSignal.timeout(this.settings.timeoutMs);
+    const signal = options.signal
+      ? AbortSignal.any([
+          options.signal,
+          AbortSignal.timeout(this.settings.timeoutMs),
+        ])
+      : AbortSignal.timeout(this.settings.timeoutMs);
+    const maxOutput = Math.min(
+      this.settings.maxOutputTokens,
+      options.maxOutputTokens ?? this.settings.maxOutputTokens,
+    );
+    if (!Number.isSafeInteger(maxOutput) || maxOutput < 1)
+      throw new Error("MODEL_INPUT_INVALID");
+    const observe = (record: UsageObservation) => {
+      this.observeUsage(record);
+      options.observeUsage?.(record);
+    };
     let metadata: unknown;
     try {
       const r = await this.transport(
@@ -228,7 +248,7 @@ export class OpenRouter {
       tools: input.tools,
       tool_choice: input.toolChoice,
       stream: false,
-      [outputParameter]: this.settings.maxOutputTokens,
+      [outputParameter]: maxOutput,
       provider: {
         order: [selected.tag],
         only: [selected.tag],
@@ -247,10 +267,10 @@ export class OpenRouter {
         : {}),
     };
     const body = JSON.stringify(request);
-    const reserved = reservation(selected, this.settings.maxOutputTokens);
+    const reserved = reservation(selected, maxOutput);
     signal.throwIfAborted();
     const attemptId = this.budget.reserve(this.settings.model, reserved);
-    this.observeUsage({
+    observe({
       attemptId,
       providerRequestId: null,
       inputTokens: null,
@@ -304,7 +324,7 @@ export class OpenRouter {
     const providerId = z
       .object({ id: z.string().min(1).max(200) })
       .safeParse(data);
-    this.observeUsage({
+    observe({
       attemptId,
       providerRequestId: providerId.success ? providerId.data.id : null,
       inputTokens: knownUsage?.prompt_tokens ?? null,

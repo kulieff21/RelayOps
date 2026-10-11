@@ -1,138 +1,179 @@
-# Observe/action/result execution loop
+# Agent execution and durable conversations
 
-`src/agent/loop.ts` implements the server-only 09.09/09.10 loop and explicit terminal outcomes over the existing OpenRouter
-adapter and authenticated tool dispatcher. It is an internal module, not a conversation
-endpoint or a connected website assistant. Server startup does not invoke it.
+Phase 09 implements a server-only observe/action/result loop, strict outcomes, bounded
+execution and authenticated durable conversations. It is an internal service; website
+conversation endpoints/UI, Telegram, purchasing workers and approval executors remain
+later stages. Startup, check and CI never make paid requests.
 
-## Invocation
+## Invocation and explicit modes
 
 ```ts
-const loop = new AgentLoop(openRouter, new ToolDispatcher(business, auth));
-const result = await loop.run(
-  {
-    agent: "customer",
-    sessionToken: tokenFromAuthenticatedRequest,
-    locale: "az",
-  },
-  { userText: "Check the stored availability of RelaySwitch 24G." },
+const conversations = new Conversations(store, dispatcher, {
+  mode: "mock",
+  id: "relayops/deterministic-mock",
+  adapter: new MockModel({ scenario: "catalog", query: "RelaySwitch" }),
+});
+const turn = await conversations.start(
+  { agent: "customer", sessionToken: authenticatedToken, locale: "az" },
+  { userText: "Check the stored switch availability." },
+);
+const cached = await conversations.resume(context, turn.runId);
+const followUp = await conversations.start(
+  context,
+  { userText: "My next requirement." },
+  turn.conversationId,
 );
 ```
 
-Construct `openRouter` with the existing validated configuration and persistent
-`runtime/model-budget.sqlite` ledger. Never construct a new spending pool per run.
-The interface permits injecting scripted completions or synthetic HTTP for unpaid
-tests. The example is not a command that runs automatically or a new paid diagnostic.
+For live mode, explicitly select an OpenRouter adapter backed by the existing shared
+`runtime/model-budget.sqlite`. Never create a budget per run. A live failure never
+silently becomes a mock success. The mock adapter requires no key/network/ledger and
+supports deterministic catalog, quotation and clarification demos plus scripted fixtures.
+Its functional response is deterministic for identical inputs; attempt UUIDs identify
+separate executions. Mock cost is known zero; provider token counts remain null because
+no provider tokenization occurred. The run record labels mock/live explicitly.
 
-Each invocation starts with one trusted system instruction and one user message.
-The caller cannot supply arbitrary conversation history or system messages. Context
-is validated and captured by ToolDispatcher; session tokens and account roles are
-not forwarded to the model. Canonical English instructions in `src/agent/prompts.ts`
-select English/Azerbaijani responses from authenticated application context, explain
-the sandbox and require stored evidence, clarification and human confirmation.
-Procurement instructions include the server-bound case ID, never a model-created scope.
+Callers provide user text and trusted application context, never arbitrary history,
+roles or system messages. Conversations owns history and binds its account, agent mode
+and procurement case. Selected locale can change between turns/resume without losing
+the conversation. Canonical English instructions select EN/AZ replies and sandbox,
+evidence, clarification and human-confirmation rules. Tokens and account roles are not
+sent to the model or persisted in checkpoints. User text itself is stored as user data.
 
-## Execution
+## Execution and limits
 
-1. Recheck the session and current roles, refresh instructions/tool definitions and
-   validate the whole outgoing context before any provider call.
-2. Observe the adapter completion. Check finish reason, normalized calls, advertised
-   tool names and unique IDs before dispatching any call in the batch. IDs cannot be
-   reused within the same invocation.
-3. Recheck authentication after inference, including for text-only replies. Execute
-   calls sequentially through the existing dispatcher and retain their typed results.
-4. Send each exact result back as a `tool` message with the matching `tool_call_id`.
-   Ordinary argument/domain rejections remain explicit observations the model may
-   correct. Authentication failures and unexpected tool exceptions halt execution.
-5. Repeat until a validated terminal outcome, human-confirmation request or bounded stop.
+Before each request the loop reauthenticates, refreshes definitions/instructions and
+validates the outgoing context. It normalizes/validates the completion, rechecks
+permissions after inference, validates the entire batch and dispatches tools sequentially.
+Exact typed tool results are sent back with matching IDs. A duplicate ID in the current
+run, unadvertised function, inconsistent finish reason, empty/truncated reply or malformed
+outcome cannot become success. Ordinary argument/domain rejections may be corrected.
 
-The loop defaults to four model iterations; server callers may select one through
-eight. A batch contains at most eight calls. Each request retains the adapter's
-32-message/16 KB input boundary and per-call deadline/output-token/spending controls.
-Oversized results or growing context stop without truncating business evidence or
-making a further provider request. Failed requests are never automatically retried.
-Aggregate run deadlines/token limits and a classified retry policy remain 09.11/09.12.
+| Run option      | Default | Allowed maximum |
+| --------------- | ------: | --------------: |
+| maxIterations   |       4 |               8 |
+| maxTimeMs       |  60,000 |         120,000 |
+| maxTokens       |  64,000 |         128,000 |
+| maxOutputTokens |     512 |           2,048 |
+| maxRetries      |       1 |               2 |
 
-## Returned evidence and boundaries
+Iterations include failed catalogue attempts. A batch has at most eight calls. Requests
+retain the adapter's 32-message and 16,000-byte bounds. Output caps use the smaller of
+adapter configuration and the run cap. A run-wide AbortSignal covers metadata, completion
+and retry backoff; a timeout race also prevents late replies from executing tools if a
+model implementation ignores cancellation. Limits are checked between synchronous tools.
+SQLite transactions cannot be preempted halfway; an already committed tool remains
+recorded if a subsequent boundary detects elapsed time.
 
-- `completion` closes the current assistant turn with a message and one or more
-  successful tool call IDs from this invocation. It does not complete a business process.
-- `clarification` carries a concrete question, unique missing-field identifiers and
-  optional references to this invocation's successful or rejected tool results.
-- `escalation` carries a message, a controlled reason and optional local evidence IDs.
-  Its queue is server-derived: customer_support or procurement_review. Handoff state
-  is explicitly not_created; this outcome creates no ticket, notification or approval.
-- `confirmation_required` returns the dispatcher's validated pending action and stops
-  before later calls in that batch or any additional inference. It grants no consent
-  or eligibility guarantee. A future human-confirmation flow must use and revalidate
-  the existing authenticated business routes.
-- `stopped` returns a stable error code and independent correlation ID. Empty or
-  truncated replies, invalid calls, authority loss, limits and provider failures
-  cannot become successful responses. Unexpected errors omit private details.
+Token admission reserves serialized input bytes + 1,024 framing units + the output cap.
+This is a conservative allowance, not an exact provider tokenizer measurement. After a
+response, known input/output counts replace that allowance in the run total; missing
+counts consume the full allowance and remain null in usage records. Further requests
+are refused if their allowance would exceed maxTokens. Reported aggregate/output
+overruns stop before tool execution. Provider input counts are only known afterward;
+this policy cannot promise an exact pre-billing input-token ceiling if a provider's
+reported count exceeds the allowance. Independent input/output and spending caps apply.
 
-Final text must be exactly one JSON object matching `src/shared/agent-outcome.ts`.
-Canonical prompts embed its JSON schema and ask for localized message/question text;
-status, reason, field identifiers and evidence IDs remain stable in both locales.
-The adapter needs no new response-format parameter or provider capability. The loop
-validates the response itself; arbitrary prose, Markdown fences, malformed/extra fields,
-unknown outcomes and duplicate/missing identifiers are not silently treated as completion.
-Invalid structure yields AGENT_OUTCOME_INVALID. Invented/previous-run evidence, rejected
-completion evidence or pending/skipped references yield AGENT_EVIDENCE_INVALID.
+The elapsed execution budget and iteration/token/retry counters persist across resume;
+time while the process is offline does not consume active execution time. In-flight
+model requests interrupted by a crash are stopped, never reissued.
 
-Completion requires at least one real successful tool result. With no actionable request
-or missing requirements, ask for clarification; unsupported requests can be escalated.
-The no_feasible_quote reason requires citing the latest successful compareQuotes result
-in this invocation with actual clarification_or_escalation data. A feasible or uncited
-later comparison invalidates that reason. Other reason labels are model requests for
-review, not server proof of a policy exception. No model-created handoff destination,
-identity, role, consent flag or business-completion assertion is accepted.
+## Classified retries
 
-For example, a clarification before tools can return:
+One shared run retry counter bounds metadata and tool retries. Only catalogue GET
+failures, which occur before any billable POST/reservation, are provider-retry eligible.
+Backoff is 100/200 ms and consumes the aggregate deadline/iteration budget. No retry for
+ambiguous completion transport/non-2xx/body failures, authentication/credit errors,
+invalid model prose or unknown charges. Their reservations remain held in the shared
+ledger until independently known billing is available.
 
-```json
-{
-  "status": "clarification",
-  "question": "How many units and by which date?",
-  "missingFields": ["quantity", "deadline"],
-  "evidenceToolCallIds": []
-}
-```
+SQLite BUSY/LOCKED tool failures can retry after rollback. The durable service wraps
+effect, audit, evidence and checkpoint in one synchronous transaction; nested business
+transactions use savepoints. Outer transaction lock failures also retry with backoff.
+An exhausted transient error stops later calls. Argument/domain failures are model
+observations, not automatically repeated writes. Unexpected tool errors halt execution.
+No SQL transaction spans a model request or retry wait.
 
-Confirmation-required results take precedence over terminal-looking text in a tool-call
-response. Unexpected/system failures remain stopped; they are not model-selected
-escalation. Neither clarification nor escalation resumes automatically or mutates the
-business database. A future caller must gather human input and use authenticated routes.
+## Outcomes and human boundaries
 
-All results carry attempted model iteration counts and separate `steps`. Each step
-contains the adapter completion/usage, exact typed tool results and IDs of calls
-skipped after a stop. A prepared order summary remains recorded if later inference
-fails; no retry or rollback claim erases that committed business effect. Model prose
-is kept apart from tool evidence and is never used to authorize an order mutation.
-In-flight failures still use the adapter's durable billing ledger and usage observer;
-the loop does not invent usage for a failed call or convert unknown values to zero.
+Final text must be exactly one object matching `src/shared/agent-outcome.ts`; no fences,
+extra fields or arbitrary prose. Canonical prompts embed its schema. Message/question
+text follows locale; status, reason, missing fields and evidence IDs are stable.
 
-These traces are internal and invocation-local. Do not expose them as public API
-payloads: they may include owned order details, model prose and proposed action inputs.
-There is no persistent run/conversation checkpoint, replay, resume or atomic transaction
-across a tool batch. Calls following confirmation are explicitly skipped, not executed
-in the background. Durable state/tool-result storage belongs to 09.13/09.14.
+- completion closes this assistant turn and requires successful current-run tool IDs.
+  It does not complete a business process or prove every sentence is semantically grounded.
+- clarification carries a concrete question, unique missing fields and optional real
+  successful/rejected evidence. Supply new human input through start in the same conversation.
+- escalation carries a controlled reason and optional evidence. The queue is selected
+  by the server (customer_support/procurement_review) with handoff state not_created.
+  No ticket, notification or approval is created. no_feasible_quote requires the latest
+  successful deterministic comparison with actual clarification_or_escalation evidence;
+  a later feasible comparison invalidates it.
+- confirmation_required stops before remaining calls or inference. It is a proposal,
+  not customer consent. Cached resume returns it without executing skipped tools. A
+  future human action must use the existing authenticated business route and revalidate
+  ownership, version, expiry and business state. Human-confirmation UI belongs to Phase 10.
+- stopped carries a stable error code and independent correlation ID, without provider
+  bodies, SQL details, credentials or private exception text.
+
+Previous-turn evidence IDs do not authorize completion in a new run. Pending/skipped,
+invented and rejected completion references are refused. Customer mode stays customer-only
+for multi-role accounts; procurement remains bound to one real case/order.
+
+## Persistence and recovery
+
+Migration 003 adds agent_conversations and agent_execution without changing applied
+migration checksums. Conversation history stores user/outcome messages, including
+clarification and pending-action summaries; it does not leave dangling tool-call pairs
+between turns. Active execution stores the exact working transcript, phase, batch cursor,
+seen IDs, counters and traces. Private state is internal and is not a public API payload.
+
+Tool evidence is separately recorded in tool_calls, with a run-scoped storage ID and
+original tool ID in correlation_id/result. Model usage is separately recorded in
+model_usage. Checkpoints include recoverable copies of observations; business audit
+remains an independent append-only trail. Procurement runs link to case-scoped diagnostic
+process records without advancing or completing the purchasing business process. Existing
+staff read views expose only selected status/tool/usage fields, never transcripts.
+
+Only one unfinished run owns a conversation. Transactions claim a 150-second lease,
+longer than the maximum active run deadline; checkpoints renew it. After an actual crash,
+resume waits for lease expiry and checks fresh authentication, account/mode/case and the
+original model/mode binding. A completed outcome is returned unchanged without inference.
+A tools/ready checkpoint continues from the stored cursor and limits. A model_pending
+checkpoint yields AGENT_INTERRUPTED_MODEL_CALL: even a received response might not have
+been durably observed, so it is never paid for again automatically. Terminal tool results
+committed just before a crash still enforce their stop boundary on recovery.
+
+Each tool's business effect, audit, typed evidence and next cursor commit together.
+Evidence/checkpoint failure rolls the business effect back. A prepared offer already
+committed in an earlier tool remains present if later inference fails. This is not a
+transaction over a whole batch, an external-provider exactly-once guarantee, a leased
+business worker or an automatic recovery scheduler.
+
+Usage observations persist the actual attempt with null values before billable POST,
+and independently update known tokens/cost afterward, even for invalid terminal output.
+Null never becomes an invented zero and later null observations never erase known values.
+Lost/unknown requests retain held spending across restart and business reset. All live
+requests use the same original USD 1 ceiling; evaluation stays disabled at USD 0.
 
 ## Verification
 
-Eighteen unpaid tests in `test/agent.test.ts` exercise real isolated SQLite services,
-scripted model completions and the real OpenRouter adapter with synthetic HTTP. They
-cover multiple iterations/batched calls, EN/AZ instructions, deterministic quotation
-evidence, preparation followed by confirmation, unexecuted cancellation/return,
-argument correction, customer/case scope, duplicate IDs, inconsistent replies,
-iteration/context bounds, logout/expiry/role revocation during inference, empty/truncated
-replies, provider failures without retries, transaction rollback and concurrent run
-isolation. The adapter round trip retains known zero usage/cost independently of tools.
+The previous 18 loop and 10 outcome tests remain, together with 20 new unpaid execution
+tests. Coverage includes aggregate admission/output/time limits, abort-ignoring models,
+bounded catalogue/SQLite retries, rollback of evidence failures, concurrent ownership,
+locale/history/cross-run evidence, null/zero/known/unknown usage and spending preservation.
+Three child-process fixtures exit after real commits: offer preparation, confirmation
+and an in-flight model marker. Reopening the database verifies remaining-batch recovery,
+no duplicate offer/audit, no skipped action and no paid replay.
 
-No paid general-loop call, named-demo mutation, Telegram message or website conversation
-was used to verify this stage. Ten additional unpaid tests in `test/outcomes.test.ts` cover the three outcomes,
-EN/AZ questions, actual successful/rejected evidence, strict schema/authority rejection,
-invented/cross-run IDs, feasible/no-feasible/superseded comparison evidence, server queue
-binding even after caller-object changes, confirmation precedence, session revocation
-and independently retained known billing for invalid terminal JSON. No paid call or
-named-demo mutation was used. Evidence references are validated; arbitrary prose can
-still misdescribe that evidence. These tests do not establish live model reliability,
-semantic grounding of every sentence or general prompt-injection resistance.
+```sh
+npm run check
+npm run agent:smoke -- --mock  # deterministic real catalog tool, no inference charge
+npm run agent:smoke -- --live  # explicitly paid: at most two completion requests
+```
+
+The diagnostic restricts live inference to one real searchProducts read and a strict
+terminal completion, persists actual usage/evidence and verifies cached resume. It makes
+no stock/order/purchasing mutation. Generated evidence stays under ignored artifacts/model.
+See model-setup.md for recorded live costs. One smoke is capability evidence, not a
+reliability benchmark, AI-benefit evaluation or general prompt-injection guarantee.

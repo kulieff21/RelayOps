@@ -1,8 +1,9 @@
 # OpenRouter setup and adapter
 
 The server-side adapter, persistent spending guard and authenticated business-tool
-dispatcher are implemented. The website conversation and general agent loop remain future work.
-Adapter diagnostics exercise a synthetic connection tool, not business-task execution.
+dispatcher, bounded agent loop and durable conversation/run recovery are implemented.
+The website conversation UI remains future work. Adapter and read-only agent diagnostics
+have separate scopes; neither is a business-task performance evaluation.
 
 ## Model and verified provider policy
 
@@ -63,8 +64,8 @@ and stops future calls. See [usage accounting](https://openrouter.ai/docs/cookbo
 
 This controls calls through RelayOps, assuming advertised provider pricing/token caps
 are honored. It does not alter the OpenRouter account/key limit or account for unrelated
-key use. The adapter never grants business authority; future tool dispatch must validate
-arguments and derive identity from authenticated server context, following the
+key use. The adapter never grants business authority; implemented tool dispatch validates
+arguments and derives identity from authenticated server context, following the
 [tool-calling contract](https://openrouter.ai/docs/guides/features/tool-calling).
 
 ## Verification commands
@@ -72,7 +73,9 @@ arguments and derive identity from authenticated server context, following the
 ```sh
 npm run model:verify           # public metadata only, no key or inference
 npm run check                  # unpaid mocked tests and application checks
-npm run model:smoke -- --live  # explicitly paid: at most two completion requests
+npm run model:smoke -- --live  # explicitly paid synthetic adapter diagnostic: at most two calls
+npm run agent:smoke -- --mock  # unpaid deterministic business-tool loop and cached resume
+npm run agent:smoke -- --live  # explicitly paid read-only business-tool loop: at most two calls
 ```
 
 The live smoke forces a synthetic connectionProbe, validates its exact nonce, records
@@ -100,3 +103,30 @@ comes from the persistent ledger, not an invented token estimate.
 
 This is one synthetic successful round trip plus two diagnostic failures, not evidence
 of business-agent reliability, order automation or model performance gains.
+
+## Recorded business-tool loop check (2026-10-11)
+
+After all 111 unpaid tests and the deterministic mock smoke passed, an explicitly
+bounded live Conversations run used the existing shared ledger. Fresh endpoint metadata
+was verified before each request. The diagnostic allowed only searchProducts, forced
+one real RelaySwitch catalog read and then required a strict completion with tools disabled.
+It persisted the real tool result, actual usage, terminal outcome and conversation.
+Authenticated cached resume returned the same outcome with no extra inference.
+
+| Request                             | Input tokens | Output tokens | Rounded cost (micro-USD) |
+| ----------------------------------- | -----------: | ------------: | -----------------------: |
+| Real catalog tool call              |          886 |            23 |                      101 |
+| Evidence-backed terminal completion |        1,033 |           132 |                      170 |
+
+The completion correctly described the recorded 24-port managed non-PoE switch with
+zero available and zero incoming stock. No order, stock, shortage, approval or purchasing
+mutation occurred. Reference case fixture-006 remains open with 12 missing and its
+4,580 AZN accepted sale total. Mock and live diagnostic records are labelled separately.
+
+The two new requests cost **271 micro-USD ($0.000271)**. Across all six recorded live
+requests, total known spending is **359 micro-USD ($0.000359)**, held funds are zero
+and remaining budget is **$0.999641**. Evaluation remains disabled at USD 0. The original
+ledger and named business demo were preserved; no reset or budget renewal occurred.
+Evidence is local under artifacts/model/agent-live-smoke.json and agent-mock-smoke.json.
+This single read-only round trip establishes tool/loop/persistence capability, not
+reliability across business tasks, semantic accuracy in general or measurable AI gains.
