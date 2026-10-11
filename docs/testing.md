@@ -5,7 +5,7 @@ production API/frontend compilation. `npm run smoke` checks the compiled server 
 dedicated loopback port 3099 and then stops it. All checks use unpaid fictional records.
 CI runs the same check on Node 22.
 
-The suite contains 128 tests covering:
+The suite contains 153 tests covering:
 
 - Bilingual fixtures, reference totals and deterministic quote rejection reasons.
 - No draft reservation, accepted 8/12 split and duplicate order/case prevention.
@@ -30,7 +30,7 @@ The suite contains 128 tests covering:
 - Strict quotation fields, exact minor-unit amounts, expiry, capability checks and operator product scope.
 - Two submissions with the same expected quotation version produce one revision and one conflict.
 - Injected quotation-audit failure rolls back the row, recording metadata and retry result together.
-- Migration 001 upgrades to 002 without losing supplier records; repeated migration, checksum tampering and unexpected-table refusal.
+- Migrations 001 and 005 upgrade through 006 without losing records or rewriting applied checksums; repeated migration, checksum tampering and unexpected-table refusal.
 
 - Full case consent/specification/quantity data, effective reservation expiry, budget
   allocation totals, closed-case history and non-mutating reads.
@@ -212,7 +212,7 @@ locale/history preservation, server-only session tokens, original mode/model bin
 previous-run evidence rejection, case-scoped staff summaries, deterministic real EN/AZ
 mock reads and null token/known-zero cost. Real adapter HTTP fixtures verify known billing
 for invalid terminal prose and durable unknown usage/held funds across business reset.
-The 001 migration upgrade check now includes 004 and preserves old supplier records.
+The 001 migration upgrade check now includes 006 and preserves old supplier records.
 
 The explicit agent smoke command verifies the same durable catalog loop, real tool result,
 strict completion and cached resume in mock mode before a separately requested paid live
@@ -245,3 +245,41 @@ QA records stayed local; no named database reset/mutation or provider request in
 
 This verifies connected capabilities and the sampled UI paths, not general live-model
 semantic accuracy, purchasing-worker completion or an evaluation of AI performance gains.
+
+## Phase 11 procurement assistant checks
+
+Twenty-four unpaid procurement tests and one applied-005 upgrade test bring the suite
+to 153. They verify the reference 12-unit / 1,920 AZN draft and excluded alternatives,
+accepted consent specifications rather than mutable catalog specs, remaining demand,
+expired reservations, MOQ/excess, all declared fees, budget/date constraints and stable
+cost/delivery/supplier-ID ties. Missing, malformed and contradictory evidence blocks
+drafts; an incomplete latest quote never falls back to a historical offer.
+
+Tests check immutable content/history, idempotent retry, stale evidence/version conflicts,
+revision reasons, rejected-decision preservation, expiry and pending/approved revision
+blocks. Authentication, case/account privacy, revocation and server-bound versions are
+exercised through actual services and asynchronous HTTP queue/poll/resume routes. Audit
+or tool-evidence failure rolls back all draft effects. Independent OS processes compete
+for one SQLite proposal version; another process exits after draft/tool/checkpoint commit
+and resumes with exactly one proposal and audit. SQLite reopen and a terminal-marker gap
+recover without inference. A later explanatory-model failure preserves the saved draft.
+
+Synthetic HTTP exercises the actual OpenRouter adapter over all five guided model/tool
+steps with an isolated budget ledger. Shared customer/procurement live admission and
+unknown-charge failure without mock fallback are tested. No real provider request was
+made for Phase 11; this is adapter-path verification, not live semantic evaluation.
+
+The production bundle was reviewed in the in-app Browser against an isolated seeded
+in-memory server. EN/AZ preparation, reason preservation on locale change, version-2
+revision, saved evidence and reload history passed. The old draft became superseded;
+authoritative explanations, amount separators and Baku delivery/expiry dates displayed
+in both languages. At 1280-pixel desktop and 390×844 mobile widths, document scroll/client
+widths matched (1265/1265 and 375/375). Azerbaijani text wrapped without clipping, the logo
+loaded and no browser runtime error was observed. Temporary viewport override/tab were
+closed; no UI writes touched the named demo. Read-only fingerprints verified original
+business/conversation records and the eight-request / 820-micro-USD ledger unchanged.
+
+All 153 tests, types/lint/format/build and compiled HTTP startup passed. Existing migration
+005 was preserved byte-for-byte; the deletion guard is a separate 006 migration. Approval
+delivery, Telegram callbacks, purchasing/receipt workers and live procurement performance
+remain outside these checks. See [procurement assistant](procurement-agent.md).

@@ -1,5 +1,13 @@
 export function auditName(locale: string, action: string) {
   const labels: Record<string, [string, string]> = {
+    "proposal.prepared": [
+      "Purchasing draft prepared",
+      "Satınalma layihəsi hazırlandı",
+    ],
+    "proposal.superseded": [
+      "Proposal replaced by a new version",
+      "Təklif yeni versiya ilə əvəzləndi",
+    ],
     "proposal.submitted": [
       "Purchasing proposal submitted",
       "Satınalma təklifi təqdim edildi",

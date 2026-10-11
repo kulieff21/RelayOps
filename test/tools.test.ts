@@ -117,7 +117,14 @@ test("definitions fit assistant allowlists and adapter contracts; server locale 
   );
   assert.deepEqual(
     procurement.definitions().map((t) => t.function.name),
-    ["searchProducts", "getOrder", "compareQuotes"],
+    [
+      "searchProducts",
+      "getOrder",
+      "getProcurementRequirements",
+      "getSupplierQuotes",
+      "compareQuotes",
+      "preparePurchaseProposal",
+    ],
   );
   assert.ok(
     completionInput.safeParse({

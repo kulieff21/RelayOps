@@ -12,6 +12,7 @@ import { DataState, Status } from "./Orders";
 import { dateTime, money, translatedCode, type MessageKey } from "./i18n";
 import { auditName } from "./audit";
 import { usageSummary } from "../shared/usage";
+import { ProcurementAgent } from "./ProcurementAgent";
 import type {
   AuditRecord,
   CaseDetail,
@@ -98,7 +99,7 @@ export function AuditTimeline({ records }: { records: AuditRecord[] }) {
   );
 }
 export function CaseDetails({ caseId }: { caseId: string }) {
-  const { t, locale, products } = useShop();
+  const { t, locale, products, session } = useShop();
   const { data, error } = useData<CaseDetail>(
     `/api/procurement/${encodeURIComponent(caseId)}`,
   );
@@ -132,6 +133,11 @@ export function CaseDetails({ caseId }: { caseId: string }) {
           ),
         )}
       </nav>
+      <ProcurementAgent
+        key={`${caseId}:${session?.account.id}`}
+        caseId={caseId}
+        closed={row.status === "closed"}
+      />
       <div className="case-detail-columns">
         <section className="operation-section">
           <h3>{t("customerRequirement")}</h3>

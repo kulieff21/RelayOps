@@ -2,6 +2,69 @@ import type { Locale } from "./types.js";
 
 // A tuple always carries both source and translation; missing keys are type errors.
 export const messages = {
+  procurementAgent: ["Procurement assistant", "Satınalma assistenti"],
+  procurementMode: ["Assistant mode", "Assistent rejimi"],
+  purchasingDraft: ["Purchasing draft", "Satınalma layihəsi"],
+  procurementAgentText: [
+    "Review accepted demand and current quotations, then save a purchasing draft with its alternatives.",
+    "Qəbul edilmiş tələbi və cari təklifləri yoxlayın, sonra alternativləri ilə satınalma layihəsini saxlayın.",
+  ],
+  prepareProposal: ["Prepare purchasing draft", "Satınalma layihəsi hazırla"],
+  reviseProposal: ["Prepare revised draft", "Yenilənmiş layihə hazırla"],
+  proposalRevisionReason: ["Reason for revision", "Yeniləmə səbəbi"],
+  proposalHumanBoundary: [
+    "A saved draft needs a separate human purchasing decision. Stock, budget allocations and purchase orders do not change.",
+    "Saxlanılmış layihə ayrıca insan satınalma qərarı tələb edir. Stok, büdcə ayırmaları və satınalma sifarişləri dəyişmir.",
+  ],
+  procurementMockCost: [
+    "Guided demo is free and uses actual case records.",
+    "Yönləndirilmiş demo pulsuzdur və işin real qeydlərindən istifadə edir.",
+  ],
+  procurementLiveCost: [
+    "Live requests use the original shared $1 model budget.",
+    "Canlı sorğular ilkin ortaq $1 model büdcəsindən istifadə edir.",
+  ],
+  procurementRunning: [
+    "Reading requirements and quotations; comparing and preparing the draft…",
+    "Tələb və təkliflər oxunur; müqayisə edilir və layihə hazırlanır…",
+  ],
+  proposalEvidence: ["Review saved evidence", "Saxlanılmış sübutlara bax"],
+  proposalAgentNote: [
+    "Agent explanation (original language)",
+    "Agent izahı (ilkin dil)",
+  ],
+  PROPOSAL_VERSION_CONFLICT: [
+    "Another proposal version was saved. Refresh the case before revising.",
+    "Başqa təklif versiyası saxlanılıb. Yeniləmədən əvvəl işi yeniləyin.",
+  ],
+  PROCUREMENT_EVIDENCE_STALE: [
+    "Requirements, stock, budget or quotation evidence changed. Prepare a revised draft.",
+    "Tələb, stok, büdcə və ya təklif məlumatları dəyişib. Yenilənmiş layihə hazırlayın.",
+  ],
+  PROPOSAL_REVISION_REASON_REQUIRED: [
+    "Provide a reason for revising this proposal.",
+    "Təklifin yenilənməsi üçün səbəb yazın.",
+  ],
+  PROPOSAL_REVISION_REASON_MISMATCH: [
+    "The revision reason changed. Start a new revision.",
+    "Yeniləmə səbəbi dəyişib. Yeni yeniləmə başladın.",
+  ],
+  PROPOSAL_AWAITING_DECISION: [
+    "The proposal already has an active decision or purchase. Review that process first.",
+    "Təklif üçün aktiv qərar və ya satınalma var. Əvvəlcə həmin prosesi yoxlayın.",
+  ],
+  PROPOSAL_EXPIRED: [
+    "This proposal expired. Recheck quotations before preparing a new version.",
+    "Təklifin müddəti bitib. Yeni versiyadan əvvəl təchizatçı təkliflərini yenidən yoxlayın.",
+  ],
+  PROCUREMENT_RUN_BUSY: [
+    "This case already has an active run. Resume or wait for it.",
+    "Bu işin aktiv icrası var. Davam etdirin və ya gözləyin.",
+  ],
+  NO_FEASIBLE_QUOTE: [
+    "No supplier quotation meets the current requirements.",
+    "Heç bir təchizatçı təklifi cari tələblərə uyğun deyil.",
+  ],
   pending: ["Pending", "Gözlənilir"],
   approved: ["Approved", "Təsdiqləndi"],
   expired: ["Expired", "Müddəti bitdi"],
@@ -660,8 +723,8 @@ export const messages = {
   ],
   processStatus: ["Stored process status", "Qeydə alınmış proses vəziyyəti"],
   processBoundary: [
-    "The process checkpoint is saved. Automatic execution is not connected yet.",
-    "Prosesin davam nöqtəsi saxlanılır. Avtomatik icra hələ qoşulmayıb.",
+    "Saved agent turns do not complete the supply case. Purchasing execution is not connected yet.",
+    "Saxlanılmış agent icraları təchizat işini tamamlamır. Satınalma icrası hələ qoşulmayıb.",
   ],
   noProcesses: [
     "No process checkpoint has been recorded.",

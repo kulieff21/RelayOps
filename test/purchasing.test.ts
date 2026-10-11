@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 import { createHash } from "node:crypto";
 import { Store } from "../src/db/database.js";
 import { seed, DEMO_PASSWORD } from "../src/db/seed.js";
@@ -389,7 +389,12 @@ test("001 databases upgrade without losing records; migration tampering and fore
       )!.version,
       1,
     );
-    assert.equal(store.all("SELECT * FROM migrations").length, 4);
+    assert.equal(store.all("SELECT * FROM migrations").length, 6);
+    assert.ok(
+      store.one(
+        "SELECT name FROM sqlite_master WHERE name='procurement_requests'",
+      ),
+    );
     assert.ok(
       store.one(
         "SELECT name FROM sqlite_master WHERE name='assistant_confirmations'",
@@ -416,6 +421,55 @@ test("001 databases upgrade without losing records; migration tampering and fore
     );
     store.db.exec("CREATE TABLE unrelated_private_data(value TEXT)");
     assert.throws(() => store.migrate(), /Unrecognized/);
+  } finally {
+    store.close();
+  }
+});
+
+test("005 databases gain deletion protection without changing applied checksums or business records", () => {
+  const store = new Store();
+  try {
+    const directory = new URL("../migrations/", import.meta.url);
+    store.db.exec(
+      "CREATE TABLE migrations(version TEXT PRIMARY KEY, checksum TEXT NOT NULL) STRICT",
+    );
+    for (const name of readdirSync(directory)
+      .filter((name) => /^00[1-5]-.+\.sql$/.test(name))
+      .sort()) {
+      const sql = readFileSync(new URL(name, directory), "utf8");
+      store.db.exec(sql);
+      store.run(
+        "INSERT INTO migrations VALUES (?,?)",
+        name.slice(0, 3),
+        createHash("sha256").update(sql).digest("hex"),
+      );
+    }
+    seed(store);
+    const applied = store.all("SELECT * FROM migrations ORDER BY version");
+    const quotes = store.all("SELECT * FROM quotes ORDER BY id");
+    const orders = store.all("SELECT * FROM orders ORDER BY id");
+    assert.equal(
+      store.one(
+        "SELECT name FROM sqlite_master WHERE name='proposal_no_delete'",
+      ),
+      undefined,
+    );
+    store.migrate();
+    store.migrate();
+    assert.deepEqual(
+      store.all(
+        "SELECT * FROM migrations WHERE version<='005' ORDER BY version",
+      ),
+      applied,
+    );
+    assert.deepEqual(store.all("SELECT * FROM quotes ORDER BY id"), quotes);
+    assert.deepEqual(store.all("SELECT * FROM orders ORDER BY id"), orders);
+    assert.ok(
+      store.one(
+        "SELECT name FROM sqlite_master WHERE name='proposal_no_delete'",
+      ),
+    );
+    assert.equal(store.all("SELECT * FROM migrations").length, 6);
   } finally {
     store.close();
   }

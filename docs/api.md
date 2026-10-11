@@ -152,3 +152,22 @@ Read types: `src/shared/operations.ts`. The SQL selects public fields explicitly
 omitting arbitrary snapshots, checkpoints, provider IDs, raw tool inputs/results,
 idempotency keys and Telegram mappings. These sandbox lists return the recorded history;
 production pagination/large-volume scaling remains a later deployment concern.
+
+## Procurement assistant
+
+- GET `/api/procurement/:id/agent`: purchaser/owner; proposal snapshots/effective status,
+  default mock/live availability and the requesting account's latest turn.
+- POST `/api/procurement/:id/agent`: strict `{mode:"mock"|"live",locale:"en"|"az",
+key,expectedVersion,revisionReason:string|null}`; queues a bounded turn and returns
+  HTTP 202 `{runId}`. Identical key/body returns the existing run; changed body conflicts.
+- GET `/api/procurement/:id/agent/:runId`: owned case/run status, selected terminal outcome
+  and actual saved draft; foreign staff run IDs are concealed.
+- POST `/api/procurement/:id/agent/:runId/resume`: strict `{}`; fresh authenticated recovery
+  or cached completion without additional inference.
+
+No customer/operator access or model-supplied identity. Human-provided expected version
+and revision reason remain server-bound throughout the run. Case history can be read by
+other authorized staff; full transcripts, provider IDs, tokens and private configuration
+are never returned. Both assistants share live admission; no live fallback to mock.
+POST prepares only a proposal draft and audit evidence, never approval/budget/PO/receipt.
+GET/poll/reload do not execute inference. See [procurement assistant](procurement-agent.md).

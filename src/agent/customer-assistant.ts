@@ -144,9 +144,12 @@ export class CustomerAssistant {
       }
       if (
         input.mode === "live" &&
-        this.store.one(
+        (this.store.one(
           "SELECT run_id FROM assistant_requests WHERE mode='live' AND status!='done'",
-        )
+        ) ||
+          this.store.one(
+            "SELECT run_id FROM procurement_requests WHERE json_extract(request,'$.mode')='live' AND status!='done'",
+          ))
       )
         throw new BusinessError("ASSISTANT_LIVE_BUSY", 409);
       const since = new Date(
@@ -218,10 +221,13 @@ export class CustomerAssistant {
       throw new BusinessError("AGENT_RUN_BUSY", 409);
     if (
       row.mode === "live" &&
-      this.store.one(
+      (this.store.one(
         "SELECT run_id FROM assistant_requests WHERE mode='live' AND status!='done' AND run_id!=?",
         runId,
-      )
+      ) ||
+        this.store.one(
+          "SELECT run_id FROM procurement_requests WHERE json_extract(request,'$.mode')='live' AND status!='done'",
+        ))
     )
       throw new BusinessError("ASSISTANT_LIVE_BUSY", 409);
     this.schedule(context, row);

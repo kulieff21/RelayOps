@@ -56,10 +56,16 @@ export class Operations {
         )!.summary,
       ),
     );
+    let rawSpecs: unknown = null;
+    try {
+      if (summary.productSpecs) rawSpecs = JSON.parse(summary.productSpecs);
+    } catch {
+      /* Preserve absent/invalid consent specifications as unknown. */
+    }
     const spec = summary.productSpecs
       ? z
           .record(z.string(), z.union([z.string(), z.number(), z.boolean()]))
-          .safeParse(JSON.parse(summary.productSpecs))
+          .safeParse(rawSpecs)
       : null;
     const reservations = store
       .all<Omit<CaseDetail["reservations"][number], "effectiveStatus">>(

@@ -93,8 +93,8 @@ procurement runs linked to cases; owners see all runs. Mock/live labels remain d
 Known-entry subtotals show their coverage; missing records and null costs are unknown,
 not zero. USD rendering retains six decimals. Provider request identifiers, tool
 arguments/results, checkpoints and credentials stay private. The adapter/executor
-is implemented for customer conversations; purchasing execution and proposal/PO creation
-remain later stages. Freshly seeded demos have no run, proposal or PO records.
+is implemented for customer conversations and procurement drafts; purchasing execution and
+PO creation remain later stages. Freshly seeded demos have no run, proposal or PO records.
 
 Proposal, purchase, audit and usage case filters use shareable query parameters;
 locale changes, reload and browser Back preserve their meaning. The complete panel
@@ -102,6 +102,14 @@ is translated into Azerbaijani. These are database-backed read views, not claime
 agent or purchasing workflow completion.
 
 ## Locale and accessibility
+
+The case detail includes a guided/live procurement assistant, explicit prepare/revise
+controls, a required revision reason, idempotent async polling/resume and saved draft
+history. Both EN/AZ explanations cite actual quotations and excluded alternatives.
+Locale switches preserve the reason/mode; reload retrieves recorded versions. Original
+agent notes/reasons retain their authored language. Reads show effective expired/stale
+statuses without changing history. Preparation creates drafts only, not approvals or
+purchases. See [procurement assistant](procurement-agent.md).
 
 `/assistant` uses account-scoped durable history and an explicit guided/live selector.
 Typed product/delivery/order evidence and run-bound confirmation summaries show actual

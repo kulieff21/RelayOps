@@ -259,3 +259,21 @@ See [agent execution](agent-loop.md) for limits, recovery and human boundaries.
 This service is internal; it does not expose an unmetered completion endpoint, start
 inference on server startup, create Telegram approvals or execute purchasing jobs.
 Explicit mock/live diagnostics use the same authenticated business-tool boundaries.
+
+## Procurement draft orchestration
+
+Phase 11 adds a case-scoped authenticated asynchronous entry point using Conversations,
+the same adapter/budget and a distinct explicit ProcurementMock. Accepted consent defines
+specifications; effective reservations define remaining demand. Procurement captures
+transactionally coherent requirements, latest quotes/capabilities, budget and deterministic
+alternatives. A fingerprint plus expected version gates immutable draft preparation.
+The server selects/computes all business fields; EN/AZ explanations and a separately
+labelled original-language model note are saved in the proposal snapshot.
+
+Migrations 005/006 add durable procurement request bindings and protect all proposal versions,
+including drafts. Revision inserts another version and supersedes only an old draft.
+Model tools commit proposal/audit/evidence/checkpoint together; committed proposals survive
+explanation failure and restart without duplicate effects. Reads compute stale/expired
+status without rewriting history. Both assistants share live admission and the original
+spending guard. No Telegram approval, budget allocation, PO, receipt or purchasing worker
+executes at this stage. See [procurement assistant](procurement-agent.md).

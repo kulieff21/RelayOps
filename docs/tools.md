@@ -8,17 +8,20 @@ provider metadata before handing the normalized ID/type/function fields to dispa
 
 ## Tool behavior
 
-| Tool               | Assistant             | Result                                                                                     |
-| ------------------ | --------------------- | ------------------------------------------------------------------------------------------ |
-| searchProducts     | Customer, procurement | Actual catalog/specifications/prices/availability in the selected application locale       |
-| getOrder           | Customer, procurement | Own customer order, or the order belonging to the trusted procurement case                 |
-| getDeliveryOptions | Customer              | Quantity-specific available stock/local delivery; no reservation or invented supplier date |
-| getOrderProgress   | Customer              | Own order, real shortage cases and recorded fulfillment promises; no procurement budgets   |
-| prepareOrder       | Customer              | Stored expiring summary; no accepted order or stock reservation                            |
-| confirmOrder       | Customer              | confirmation_required for an owned, current offer; no order acceptance                     |
-| cancelOrder        | Customer              | confirmation_required for an owned order; no cancellation                                  |
-| requestReturn      | Customer              | confirmation_required for owned return/refund/exchange details; no return/refund mutation  |
-| compareQuotes      | Procurement           | Deterministic stored quote comparison for the trusted active case; no approval/purchase    |
+| Tool                       | Assistant             | Result                                                                                         |
+| -------------------------- | --------------------- | ---------------------------------------------------------------------------------------------- |
+| searchProducts             | Customer, procurement | Actual catalog/specifications/prices/availability in the selected application locale           |
+| getOrder                   | Customer, procurement | Own customer order, or the order belonging to the trusted procurement case                     |
+| getDeliveryOptions         | Customer              | Quantity-specific available stock/local delivery; no reservation or invented supplier date     |
+| getOrderProgress           | Customer              | Own order, real shortage cases and recorded fulfillment promises; no procurement budgets       |
+| prepareOrder               | Customer              | Stored expiring summary; no accepted order or stock reservation                                |
+| confirmOrder               | Customer              | confirmation_required for an owned, current offer; no order acceptance                         |
+| cancelOrder                | Customer              | confirmation_required for an owned order; no cancellation                                      |
+| requestReturn              | Customer              | confirmation_required for owned return/refund/exchange details; no return/refund mutation      |
+| compareQuotes              | Procurement           | Deterministic stored quote comparison for the trusted active case; no approval/purchase        |
+| getProcurementRequirements | Procurement           | Accepted specs, effective reservations, current demand, budget and blockers                    |
+| getSupplierQuotes          | Procurement           | Latest immutable quotation records and current capabilities for the bound product              |
+| preparePurchaseProposal    | Procurement           | Immutable draft from a fresh comparison fingerprint and expected version; no approval/purchase |
 
 The confirmation result is a proposed action, not an authorization token, eligibility
 guarantee or executed business result. Model-supplied confirmed=true cannot grant consent.
@@ -77,6 +80,10 @@ as a valid tool message to a second mocked completion. No paid request is needed
 The internal [observe/action/result loop](agent-loop.md) now feeds these results back
 to the model and stops for confirmation. It keeps model prose and tool evidence separate
 in traces and durable typed records. Conversations persists effect/evidence/checkpoint
-atomically and resumes from the saved batch cursor. A conversation endpoint, assistant UI
-confirmation/resume and procurement proposal executor remain future work.
+atomically and resumes from the saved batch cursor. Customer conversation/confirmation
+endpoints and case-scoped procurement draft preparation are connected. Purchasing approval,
+PO/receipt execution and Telegram remain future work. Procurement draft tools return compact
+IDs/status/amounts; full immutable evidence stays in the authenticated case view. The bound
+human version/revision reason cannot be replaced by model arguments. See [procurement
+assistant](procurement-agent.md).
 Manual storefront/business routes continue to operate independently.

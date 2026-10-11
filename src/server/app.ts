@@ -7,6 +7,10 @@ import { Views } from "../domain/views.js";
 import { Purchasing } from "../domain/purchasing.js";
 import { Operations } from "../domain/operations.js";
 import {
+  ProcurementAssistant,
+  type ProcurementModels,
+} from "../agent/procurement-assistant.js";
+import {
   CustomerAssistant,
   type CustomerModels,
 } from "../agent/customer-assistant.js";
@@ -22,6 +26,7 @@ export function createApp(
   store: Store,
   clock: Clock = frozenClock(),
   models: CustomerModels = {},
+  procurementModels: ProcurementModels = { live: models.live },
 ) {
   const app = Fastify({
     bodyLimit: 16384,
@@ -34,8 +39,14 @@ export function createApp(
   const purchasing = new Purchasing(business);
   const operations = new Operations(business);
   const assistant = new CustomerAssistant(business, auth, models);
+  const procurementAssistant = new ProcurementAssistant(
+    business,
+    auth,
+    procurementModels,
+  );
   app.addHook("onClose", async () => {
     await assistant.idle();
+    await procurementAssistant.idle();
   });
   const loginAttempts = new Map<string, { count: number; resets: number }>();
   const token = (header?: string) =>
@@ -133,6 +144,51 @@ export function createApp(
     sessionToken: token(header) ?? "",
     ...(locale ? { locale } : {}),
   });
+  const procurementContext = (header: string | undefined, caseId: string) => ({
+    agent: "procurement" as const,
+    sessionToken: token(header) ?? "",
+    caseId,
+  });
+  app.get("/api/procurement/:id/agent", async (request) => ({
+    data: procurementAssistant.state(
+      procurementContext(request.headers.authorization, params(request.params)),
+    ),
+  }));
+  app.post("/api/procurement/:id/agent", async (request, reply) =>
+    reply.code(202).send({
+      data: procurementAssistant.send(
+        procurementContext(
+          request.headers.authorization,
+          params(request.params),
+        ),
+        request.body,
+      ),
+    }),
+  );
+  const procurementRunParams = (raw: unknown) =>
+    z.strictObject({ id, runId: id }).parse(raw);
+  app.get("/api/procurement/:id/agent/:runId", async (request) => {
+    const { id: caseId, runId } = procurementRunParams(request.params);
+    return {
+      data: procurementAssistant.turn(
+        procurementContext(request.headers.authorization, caseId),
+        runId,
+      ),
+    };
+  });
+  app.post(
+    "/api/procurement/:id/agent/:runId/resume",
+    async (request, reply) => {
+      z.strictObject({}).parse(request.body);
+      const { id: caseId, runId } = procurementRunParams(request.params);
+      return reply.code(202).send({
+        data: procurementAssistant.resume(
+          procurementContext(request.headers.authorization, caseId),
+          runId,
+        ),
+      });
+    },
+  );
   app.get("/api/assistant/settings", async () => ({
     data: assistant.settings(),
   }));

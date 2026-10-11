@@ -4,6 +4,7 @@ import { Store } from "../db/database.js";
 import { digest } from "./auth.js";
 import { evaluateQuote, exactTotal, type Requirement } from "./quotes.js";
 import { capabilitiesSchema } from "../shared/purchasing.js";
+import { procurementRequirements } from "./procurement-requirements.js";
 import {
   BusinessError,
   requireRole,
@@ -782,18 +783,14 @@ export class Business {
     if (!row) throw new BusinessError("CASE_NOT_FOUND", 404);
     if (row.status === "closed") throw new BusinessError("CASE_CLOSED");
     const product = this.product(row.product_id);
-    const order = this.getOrder(actor, row.order_id);
-    const allocated = this.store.one<{ amount: number }>(
-      "SELECT COALESCE(SUM(amount),0) amount FROM budget_allocations WHERE case_id=? AND status IN ('reserved','committed')",
-      caseId,
-    )!.amount;
+    const requirements = procurementRequirements(this, actor, caseId);
     const req: Requirement = {
       productId: product.id,
-      specs: product.specs,
-      quantity: row.quantity,
-      budget: row.budget - allocated,
-      deadline: order.deadline,
-      destination: "baku",
+      specs: JSON.stringify(requirements.specs ?? {}),
+      quantity: Math.max(1, requirements.requiredQuantity),
+      budget: requirements.budget.remaining,
+      deadline: requirements.deadline,
+      destination: requirements.destination,
     };
     const options = this.store
       .all<{ id: string; supplier_id: string }>(
@@ -802,6 +799,8 @@ export class Business {
       )
       .map((quote) => {
         const option = evaluateQuote(quote, req, this.clock.now());
+        option.reasons.push(...requirements.blockers);
+        if (requirements.blockers.length) option.feasible = false;
         const supplier = this.store.one<{ capabilities: string }>(
           "SELECT capabilities FROM suppliers WHERE id=?",
           quote.supplier_id,
@@ -831,6 +830,7 @@ export class Business {
       );
     return {
       caseId,
+      requirements,
       options,
       selectedQuoteId: feasible[0]?.id ?? null,
       outcome: feasible.length ? "feasible" : "clarification_or_escalation",

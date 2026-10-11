@@ -85,6 +85,24 @@ export const toolContracts = {
     roles: ["purchaser", "owner"],
     input: z.strictObject({ caseId: id }),
   },
+  getProcurementRequirements: {
+    roles: ["purchaser", "owner"],
+    input: z.strictObject({ caseId: id }),
+  },
+  getSupplierQuotes: {
+    roles: ["purchaser", "owner"],
+    input: z.strictObject({ caseId: id }),
+  },
+  preparePurchaseProposal: {
+    roles: ["purchaser", "owner"],
+    input: z.strictObject({
+      caseId: id,
+      expectedVersion: z.number().int().nonnegative(),
+      evidenceFingerprint: z.string().regex(/^[a-f0-9]{64}$/),
+      rationale: z.string().trim().min(1).max(2000),
+      revisionReason: z.string().trim().min(1).max(1000).nullable(),
+    }),
+  },
 } as const;
 export const toolSchemas = Object.fromEntries(
   Object.entries(toolContracts).map(([name, contract]) => [

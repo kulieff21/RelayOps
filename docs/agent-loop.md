@@ -178,3 +178,19 @@ terminal completion, persists actual usage/evidence and verifies cached resume. 
 no stock/order/purchasing mutation. Generated evidence stays under ignored artifacts/model.
 See model-setup.md for recorded live costs. One smoke is capability evidence, not a
 reliability benchmark, AI-benefit evaluation or general prompt-injection guarantee.
+
+## Phase 11 procurement entry point
+
+The authenticated case API now binds procurement runs to human-requested expected version
+and revision reason. It uses the same durable executor and spending guard, with a distinct
+explicit guided mock for actual requirement/quote/comparison/draft tools. The four-step
+sequence normally takes five model responses including terminal completion. Compact draft
+tool results retain IDs/status/quantity/total; complete immutable source evidence is stored
+in the proposal and returned only by authenticated case reads. Model prose is separately
+labelled and does not prove a purchasing decision or execution.
+
+Proposal, audit, tool evidence and cursor commit together; real process-exit tests verify
+that resume does not create a second proposal/audit. A saved draft remains visible after
+later model failure. HTTP scheduler marker gaps reconcile against committed terminal
+execution without another call. No business worker or Telegram decision starts here.
+See [procurement assistant](procurement-agent.md) for bounds and supported revisions.

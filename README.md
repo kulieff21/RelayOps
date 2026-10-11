@@ -32,6 +32,10 @@ tool-result references. The connected `/assistant` website offers account-scoped
 conversations, real catalog/delivery/order evidence, explicit human confirmations and
 persistent support/procurement handoffs. Its free guided demo is the default; optional
 live mode uses the existing shared spending guard. Reload and polling never start inference.
+The case-scoped procurement assistant reads accepted demand and current quotations,
+compares feasible options and saves immutable purchasing drafts with EN/AZ explanations,
+alternatives, guarded revisions and durable recovery. Guided mode is free; explicit live
+mode shares the original spending guard. Drafts require a separate human purchasing decision.
 Telegram approvals, leased workers and purchasing/receipt orchestration are planned.
 Their database records and architecture are prepared; adapter connection checks do not
 measure business-task success or AI gains. Purchasing review screens do not imply that
@@ -44,6 +48,7 @@ See [OpenRouter setup and adapter verification](docs/model-setup.md) for the sel
 model, authorized spending policy and explicit paid diagnostic command.
 See [tool dispatch and authority](docs/tools.md) and [agent loop](docs/agent-loop.md)
 for the implemented server boundaries and their remaining limits.
+See [procurement assistant](docs/procurement-agent.md) for proposal evidence and revisions.
 
 ## Run locally
 
