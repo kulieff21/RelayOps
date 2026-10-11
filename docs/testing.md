@@ -5,7 +5,7 @@ production API/frontend compilation. `npm run smoke` checks the compiled server 
 dedicated loopback port 3099 and then stops it. All checks use unpaid fictional records.
 CI runs the same check on Node 22.
 
-The suite contains 81 tests covering:
+The suite contains 91 tests covering:
 
 - Bilingual fixtures, reference totals and deterministic quote rejection reasons.
 - No draft reservation, accepted 8/12 split and duplicate order/case prevention.
@@ -96,7 +96,12 @@ round trip joins the real OpenRouter adapter, loop and catalog dispatcher while 
 actual fixture usage/known zero cost separate from tool results.
 
 See [agent loop](agent-loop.md). Traces are invocation-local, not persisted or resumable.
-Explicit completion/clarification/escalation, aggregate limits, retry policy, website
+Ten additional outcome tests verify strict completion/clarification/escalation contracts,
+successful/rejected/cross-run evidence restrictions, EN/AZ missing-field questions,
+server-bound queues without actual handoff creation, no-feasible-quote evidence including
+superseded comparisons, malformed/overprivileged outputs, confirmation precedence and
+auth loss. The real adapter with synthetic HTTP retains known billing for invalid terminal
+JSON without an automatic repair request. Aggregate limits, retry policy, website
 conversation and live business-task verification remain later phases.
 
 ## Browser review

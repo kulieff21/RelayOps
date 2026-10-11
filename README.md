@@ -24,6 +24,8 @@ routes allowed calls to deterministic services. Model-requested confirmation,
 cancellation and returns produce human-confirmation requests without executing mutations.
 The internal observe/action/result loop now feeds typed tool observations back to the
 model, stops for human confirmation and preserves separate invocation-local evidence.
+Explicit completion, clarification and escalation outcomes use strict JSON and validated
+tool-result references; escalation reports a server-selected, not-yet-created handoff.
 The website assistant connection, Telegram approvals, leased workers and purchasing/receipt
 orchestration are planned. Their database records and architecture are prepared;
 adapter connection checks do not measure business-task success or AI gains. The approvals

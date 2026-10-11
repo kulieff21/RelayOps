@@ -8,6 +8,8 @@ import {
 import { BusinessError } from "../shared/contracts.js";
 import { toolCallSchema } from "../shared/tool-call.js";
 import { ToolDispatcher, type ToolContext, type ToolResult } from "./tools.js";
+import type { AgentOutcome } from "../shared/agent-outcome.js";
+import { resolveAgentOutcome } from "./outcomes.js";
 
 export type ModelCompletion = Awaited<ReturnType<OpenRouter["complete"]>>;
 export interface AgentModel {
@@ -21,7 +23,7 @@ export type AgentStep = {
 type Trace = { iterations: number; steps: AgentStep[] };
 export type AgentResult = Trace &
   (
-    | { status: "responded"; content: string }
+    | AgentOutcome
     | {
         status: "confirmation_required";
         pending: Extract<ToolResult, { status: "confirmation_required" }>;
@@ -137,8 +139,13 @@ export class AgentLoop {
           return stop("MODEL_RESPONSE_INVALID");
         if (!toolCalls.length) {
           if (!content?.trim()) return stop("MODEL_EMPTY_RESPONSE");
-          // A model response is prose, not a claim of verified business completion.
-          return { status: "responded", content, iterations, steps };
+          const resolved = resolveAgentOutcome(
+            content,
+            steps.flatMap((step) => step.toolResults),
+            tools.handoffQueue(),
+          );
+          if (!resolved.ok) return stop(resolved.code);
+          return { ...resolved.outcome, iterations, steps };
         }
         messages.push({
           role: "assistant",

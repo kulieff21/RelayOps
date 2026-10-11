@@ -1,4 +1,5 @@
 import type { Locale } from "../shared/contracts.js";
+import { agentOutcomeJsonSchema } from "../shared/agent-outcome.js";
 
 export function agentInstructions(
   agent: "customer" | "procurement",
@@ -18,5 +19,9 @@ export function agentInstructions(
     "Order acceptance, cancellation and return tools only request human confirmation. Stop for confirmation; model-supplied confirmed=true is never customer consent. Purchasing approval is a separate human decision.",
     "A rejected tool has not succeeded. Use its error code to clarify or correct missing/invalid information; do not claim the requested action happened.",
     "Ask for missing requirements and explain when human help is required. Do not approve purchases, change budgets or invent a policy exception.",
+    "When no further tool call is needed, return exactly one JSON object matching the terminal-outcome schema below. No Markdown, code fences or surrounding prose. Localize message/question only; keep status, reason, field names and evidence IDs unchanged.",
+    "completion ends this assistant turn, never a business process. Cite at least one successful tool call ID from this invocation; do not cite rejected, pending, skipped or invented calls. Preparing a summary is not accepting an order.",
+    "Use clarification for missing requirements; include a concrete question and the missing fields. Use escalation when human review is needed; the server selects its destination. Do not claim a support ticket, notification, approval or handoff has been created. no_feasible_quote requires cited compareQuotes evidence with no feasible option.",
+    `Terminal-outcome schema: ${JSON.stringify(agentOutcomeJsonSchema)}`,
   ].join("\n");
 }

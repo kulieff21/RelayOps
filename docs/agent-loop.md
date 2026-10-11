@@ -1,6 +1,6 @@
 # Observe/action/result execution loop
 
-`src/agent/loop.ts` implements the server-only 09.09 loop over the existing OpenRouter
+`src/agent/loop.ts` implements the server-only 09.09/09.10 loop and explicit terminal outcomes over the existing OpenRouter
 adapter and authenticated tool dispatcher. It is an internal module, not a conversation
 endpoint or a connected website assistant. Server startup does not invoke it.
 
@@ -43,7 +43,7 @@ Procurement instructions include the server-bound case ID, never a model-created
 4. Send each exact result back as a `tool` message with the matching `tool_call_id`.
    Ordinary argument/domain rejections remain explicit observations the model may
    correct. Authentication failures and unexpected tool exceptions halt execution.
-5. Repeat until a text response, human-confirmation request or bounded stop.
+5. Repeat until a validated terminal outcome, human-confirmation request or bounded stop.
 
 The loop defaults to four model iterations; server callers may select one through
 eight. A batch contains at most eight calls. Each request retains the adapter's
@@ -54,8 +54,13 @@ Aggregate run deadlines/token limits and a classified retry policy remain 09.11/
 
 ## Returned evidence and boundaries
 
-- `responded` returns model prose. It does not mean a business process completed;
-  typed completion/clarification/escalation outcomes are the next task, 09.10.
+- `completion` closes the current assistant turn with a message and one or more
+  successful tool call IDs from this invocation. It does not complete a business process.
+- `clarification` carries a concrete question, unique missing-field identifiers and
+  optional references to this invocation's successful or rejected tool results.
+- `escalation` carries a message, a controlled reason and optional local evidence IDs.
+  Its queue is server-derived: customer_support or procurement_review. Handoff state
+  is explicitly not_created; this outcome creates no ticket, notification or approval.
 - `confirmation_required` returns the dispatcher's validated pending action and stops
   before later calls in that batch or any additional inference. It grants no consent
   or eligibility guarantee. A future human-confirmation flow must use and revalidate
@@ -63,6 +68,39 @@ Aggregate run deadlines/token limits and a classified retry policy remain 09.11/
 - `stopped` returns a stable error code and independent correlation ID. Empty or
   truncated replies, invalid calls, authority loss, limits and provider failures
   cannot become successful responses. Unexpected errors omit private details.
+
+Final text must be exactly one JSON object matching `src/shared/agent-outcome.ts`.
+Canonical prompts embed its JSON schema and ask for localized message/question text;
+status, reason, field identifiers and evidence IDs remain stable in both locales.
+The adapter needs no new response-format parameter or provider capability. The loop
+validates the response itself; arbitrary prose, Markdown fences, malformed/extra fields,
+unknown outcomes and duplicate/missing identifiers are not silently treated as completion.
+Invalid structure yields AGENT_OUTCOME_INVALID. Invented/previous-run evidence, rejected
+completion evidence or pending/skipped references yield AGENT_EVIDENCE_INVALID.
+
+Completion requires at least one real successful tool result. With no actionable request
+or missing requirements, ask for clarification; unsupported requests can be escalated.
+The no_feasible_quote reason requires citing the latest successful compareQuotes result
+in this invocation with actual clarification_or_escalation data. A feasible or uncited
+later comparison invalidates that reason. Other reason labels are model requests for
+review, not server proof of a policy exception. No model-created handoff destination,
+identity, role, consent flag or business-completion assertion is accepted.
+
+For example, a clarification before tools can return:
+
+```json
+{
+  "status": "clarification",
+  "question": "How many units and by which date?",
+  "missingFields": ["quantity", "deadline"],
+  "evidenceToolCallIds": []
+}
+```
+
+Confirmation-required results take precedence over terminal-looking text in a tool-call
+response. Unexpected/system failures remain stopped; they are not model-selected
+escalation. Neither clarification nor escalation resumes automatically or mutates the
+business database. A future caller must gather human input and use authenticated routes.
 
 All results carry attempted model iteration counts and separate `steps`. Each step
 contains the adapter completion/usage, exact typed tool results and IDs of calls
@@ -90,5 +128,11 @@ replies, provider failures without retries, transaction rollback and concurrent 
 isolation. The adapter round trip retains known zero usage/cost independently of tools.
 
 No paid general-loop call, named-demo mutation, Telegram message or website conversation
-was used to verify this stage. Scripted test responses do not establish live model
-reliability, semantic grounding of arbitrary prose or general prompt-injection resistance.
+was used to verify this stage. Ten additional unpaid tests in `test/outcomes.test.ts` cover the three outcomes,
+EN/AZ questions, actual successful/rejected evidence, strict schema/authority rejection,
+invented/cross-run IDs, feasible/no-feasible/superseded comparison evidence, server queue
+binding even after caller-object changes, confirmation precedence, session revocation
+and independently retained known billing for invalid terminal JSON. No paid call or
+named-demo mutation was used. Evidence references are validated; arbitrary prose can
+still misdescribe that evidence. These tests do not establish live model reliability,
+semantic grounding of every sentence or general prompt-injection resistance.

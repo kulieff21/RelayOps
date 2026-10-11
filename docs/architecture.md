@@ -147,8 +147,11 @@ must obtain affirmative consent and invoke the ordinary authenticated business r
 which revalidates rules. No dispatcher method accepts a model-created consent grant.
 See [tool dispatch](tools.md) and [agent loop](agent-loop.md). The internal loop refreshes
 authentication before/after inference, serializes exact tool observations and stops for
-confirmation. It returns separate invocation-local model/tool records. Conversation
-endpoints, explicit business outcomes and durable execution/resume remain future work.
+confirmation. It returns separate invocation-local model/tool records and validates
+explicit completion/clarification/escalation against strict terminal JSON and local
+evidence references. Escalation destinations come from trusted assistant scope and
+remain not_created until a future real handoff. Completion closes the assistant turn,
+not a business process. Conversation endpoints and durable execution/resume remain future work.
 
 Deterministic code computes available stock, sale totals, quote MOQ/excess/all-in price,
 deadline feasibility, reservation expiry, return eligibility and role/budget thresholds.

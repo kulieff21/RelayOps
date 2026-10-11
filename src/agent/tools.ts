@@ -13,6 +13,7 @@ import {
 import { toolCallSchema, type ToolCall } from "../shared/tool-call.js";
 import type { CompletionInput } from "../model/openrouter.js";
 import { agentInstructions } from "./prompts.js";
+import type { HandoffQueue } from "../shared/agent-outcome.js";
 
 export type ToolName = keyof typeof toolContracts;
 export type ToolInput<N extends ToolName> = z.infer<
@@ -105,6 +106,12 @@ export class ToolDispatcher {
     const context = parsed.data;
     this.actor(context);
     return {
+      handoffQueue: (): HandoffQueue => {
+        this.actor(context);
+        return context.agent === "customer"
+          ? "customer_support"
+          : "procurement_review";
+      },
       instructions: () =>
         agentInstructions(
           context.agent,
