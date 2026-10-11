@@ -283,3 +283,19 @@ All 153 tests, types/lint/format/build and compiled HTTP startup passed. Existin
 005 was preserved byte-for-byte; the deletion guard is a separate 006 migration. Approval
 delivery, Telegram callbacks, purchasing/receipt workers and live procurement performance
 remain outside these checks. See [procurement assistant](procurement-agent.md).
+
+## Telegram onboarding checks
+
+Ten unpaid tests cover strict token/recipient configuration without leaking inputs,
+explicit read-only setup requests, no construction-time calls, refused redirects,
+bot/token identity and existing-webhook refusal. Pairing checks reject expired or
+wrong-bot sessions, older/foreign nonces, group/bot/edited/forged messages and
+ambiguous recipients; repeated messages from the same recipient remain a candidate.
+Real SQLite account roles are checked, including owner-role revocation, without
+creating approval records. Response size limits cover headers and streamed content;
+provider/transport errors and CLI failure output omit credentials and private URLs.
+
+These synthetic HTTP and local process checks do not prove a live Telegram connection,
+actual message delivery or approval persistence/recovery. No Telegram request is made
+by the ordinary API startup or checks. Operator bot/token/mapping inputs are still
+required at 12.01–12.03. See [Telegram onboarding](telegram-setup.md).

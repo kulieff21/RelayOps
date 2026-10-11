@@ -7,6 +7,7 @@
     "node": ">=22.16.0 <23"
   },
   "scripts": {
+    "telegram:setup": "node --env-file-if-exists=.env --import tsx scripts/telegram-setup.ts",
     "agent:smoke": "node --env-file-if-exists=.env --import tsx scripts/agent-smoke.ts",
     "model:verify": "node --env-file-if-exists=.env --import tsx scripts/verify-model.ts",
     "model:smoke": "node --env-file-if-exists=.env --import tsx scripts/model-smoke.ts",

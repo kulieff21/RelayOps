@@ -49,6 +49,8 @@ model, authorized spending policy and explicit paid diagnostic command.
 See [tool dispatch and authority](docs/tools.md) and [agent loop](docs/agent-loop.md)
 for the implemented server boundaries and their remaining limits.
 See [procurement assistant](docs/procurement-agent.md) for proposal evidence and revisions.
+See [Telegram onboarding](docs/telegram-setup.md) for the explicit bot/token/private
+recipient setup CLI. Setup does not enable approvals or send messages.
 
 ## Run locally
 
