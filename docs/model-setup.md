@@ -155,3 +155,8 @@ Evaluation stays disabled. A reporting-only SQL column typo occurred after all t
 retry/no-mutation assertions passed; reporting was recovered from the same persisted
 run with no new inference. Local evidence: artifacts/model/customer-live-smoke.json.
 This single read verifies the connected path, not general customer-task reliability.
+
+Provider response diagnostics use fixed model-match classifications; they do not copy
+arbitrary provider model IDs that could reflect authorization credentials into CLI logs.
+Independent actual/unknown billing and no-ambiguous-retry rules remain unchanged. See
+[difficult cases](difficult-cases.md) for the regression and public-release scanning scope.

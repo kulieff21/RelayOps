@@ -1,11 +1,11 @@
 # Verification scope
 
 Run `npm run check`: type-check source, scripts and tests; ESLint; Prettier; Node tests;
-production API/frontend compilation. `npm run smoke` checks the compiled server over real HTTP on
+production API/frontend compilation and read-only public-release/secret scanning. `npm run smoke` checks the compiled server over real HTTP on
 dedicated loopback port 3099 and then stops it. All checks use unpaid fictional records.
 CI runs the same check on Node 22.
 
-The suite contains 218 tests covering:
+The suite contains 240 tests covering:
 
 - Bilingual fixtures, reference totals and deterministic quote rejection reasons.
 - No draft reservation, accepted 8/12 split and duplicate order/case prevention.
@@ -385,3 +385,19 @@ and 390×844, scroll/client widths matched (1265/1265 and 375/375); the mobile r
 fit within the viewport, Azerbaijani labels wrapped and no browser error was observed.
 The original named database retains one acknowledged PO and zero receipts; all QA writes
 were isolated. No paid request, supplier network, payment or Telegram message was made.
+
+## Difficult-case verification
+
+Phase 14 adds 22 combined/regression scenarios to the focused suites above. All 20 control
+IDs, executed evidence, state observations and the two reproduced/fixed defects are mapped
+in [difficult-case verification](difficult-cases.md). The checks include independent OS
+approval/continuation races, forced before/after-decision exits, budget/quotation changes,
+scripted prompt-injection attempts, provider/HTTP error privacy, non-sellable returns and
+an audit-reconstructed two-purchase case. These are unpaid sandbox consistency checks.
+
+`npm run test:difficult` runs the additional suite; `npm run check` also runs the existing
+coverage, production compilation and `npm run secrets:check`. The scanner reads actual
+saved integration values locally without printing them, and rejects private paths or
+credential signatures in working/staged/history files and built frontend assets. A bounded
+negative frontend probe verified that a generated credential signature is detected and
+the fixed failure output does not echo it. The original named demo/ledger are unchanged.

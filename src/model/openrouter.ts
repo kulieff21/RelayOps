@@ -337,13 +337,13 @@ export class OpenRouter {
         issues: result.error.issues.map((i) => `${i.code}:${i.path.join(".")}`),
       });
     if (result.data.error || result.data.model !== this.settings.model) {
-      const safeModel = z
-        .string()
-        .max(200)
-        .regex(/^[a-z0-9-]+\/[a-z0-9._:-]+$/)
-        .safeParse(result.data.model);
+      // A provider can echo credentials even inside a syntactically valid model ID.
+      // Diagnostics may be printed by a CLI: record only a fixed classification.
       throw new ModelResponseError({
-        reportedModel: safeModel.success ? safeModel.data : "invalid",
+        reportedModel:
+          result.data.model === this.settings.model
+            ? "configured"
+            : "unexpected",
       });
     }
     const choice = result.data.choices[0]!;

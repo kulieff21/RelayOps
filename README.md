@@ -45,7 +45,7 @@ Durable Telegram/website approvals bind a human decision to one draft, reserve s
 budget and queue a persisted continuation. An explicitly started leased polling receiver
 sends requested approvals and handles mapped private-chat callbacks. An explicit sandbox
 worker creates a unique approved PO/mock acknowledgement or a new rejected-draft revision.
-Receipt executors remain planned; an approval does not mean stock arrived. Adapter connection
+Receipt/inspection/allocation are explicit authenticated operations; an approval does not mean stock arrived. Adapter connection
 checks do not measure business-task success or AI gains.
 
 See the [product specification](docs/product-spec.md), [architecture](docs/architecture.md),
@@ -62,6 +62,8 @@ See [Telegram approvals](docs/telegram-approvals.md) for opt-in delivery, simula
 website decisions, recovery limits and the remaining purchasing boundary.
 See [sandbox continuation](docs/purchase-continuation.md) for the explicit worker,
 unique approved PO, mock supplier acknowledgement and rejection revision.
+See [difficult-case verification](docs/difficult-cases.md) for the twenty verified failure
+boundaries, adversarial scenarios, audit reconciliation and observed/fixed defects.
 
 ## Run locally
 

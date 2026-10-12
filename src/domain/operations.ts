@@ -147,7 +147,7 @@ export class Operations {
       )
       SELECT DISTINCT a.id,a.action,a.entity_id,a.created_at FROM audit_events a
       WHERE a.entity_id IN (SELECT id FROM entities) OR a.correlation_id IN (SELECT id FROM entities)
-      ORDER BY a.created_at,a.id`,
+      ORDER BY a.created_at,a.rowid`,
       caseId,
       row.order_id,
       row.order_id,

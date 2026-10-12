@@ -21,13 +21,15 @@
     "smoke": "npm run build && node --import tsx scripts/smoke.ts",
     "typecheck": "tsc -p tsconfig.check.json && tsc -p tsconfig.web.json",
     "test": "node --import tsx --test test/*.test.ts",
+    "test:difficult": "node --import tsx --test test/difficult-cases.test.ts",
+    "secrets:check": "node --import tsx scripts/verify-public.ts",
     "db:migrate": "node --env-file-if-exists=.env --import tsx scripts/database.ts migrate",
     "db:seed": "node --env-file-if-exists=.env --import tsx scripts/database.ts seed",
     "db:reset": "node --env-file-if-exists=.env --import tsx scripts/database.ts reset --demo-only",
     "lint": "eslint src scripts test",
     "format": "prettier --write src scripts test docs package.json tsconfig*.json vite.config.ts index.html eslint.config.js .github",
     "format:check": "prettier --check src scripts test docs package.json tsconfig*.json vite.config.ts index.html eslint.config.js .github",
-    "check": "npm run typecheck && npm run lint && npm run format:check && npm test && npm run build"
+    "check": "npm run typecheck && npm run lint && npm run format:check && npm test && npm run build && npm run secrets:check"
   },
   "dependencies": {
     "@fontsource-variable/manrope": "5.3.0",

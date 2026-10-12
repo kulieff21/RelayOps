@@ -240,11 +240,13 @@ test("integrated case audit follows linked entities and excludes unrelated order
     /PRIVATE_SENTINEL|actor_id|correlation_id|"data"/,
   );
   assert.deepEqual(
-    data,
-    [...data].sort(
-      (a, b) =>
-        a.created_at.localeCompare(b.created_at) || a.id.localeCompare(b.id),
-    ),
+    data.map((row) => row.id),
+    f.store
+      .all<{ id: string }>(
+        "SELECT id FROM audit_events ORDER BY created_at,rowid",
+      )
+      .filter((row) => data.some((event) => event.id === row.id))
+      .map((row) => row.id),
   );
 });
 
