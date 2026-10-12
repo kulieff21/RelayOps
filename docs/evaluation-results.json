@@ -6,12 +6,57 @@
     "maxOutputTokens": 512,
     "timeoutMs": 30000
   },
-  "status": "automated_arms_complete_manual_pending",
-  "manualCompleted": 0,
+  "status": "all_observed_arms_complete_manual_assisted_protocol_deviation",
+  "manualCompleted": 8,
   "caseCount": 8,
   "agentRepetitions": 5,
+  "manualCondition": {
+    "label": "assisted human execution",
+    "plannedCondition": "one operator, no AI assistance during timed work",
+    "observedCondition": "one operator, procedural and outcome guidance during timed cases and feedback between cases",
+    "unaidedBaselineObtained": false,
+    "unfinishedTrainingStartsExcluded": 2,
+    "extraFirstCaseExposure": true,
+    "inTrialGuidanceCases": ["shortage", "deadline"],
+    "postTrialFeedbackOccurred": true,
+    "recordReplacementPerformed": false,
+    "instrumentAllowsCompletionWithoutDraft": true,
+    "rationaleAccuracyScored": false,
+    "assistanceCostMicroUsd": null,
+    "assistanceDurationMs": null,
+    "assistanceInterventions": null,
+    "recordedInterventionScope": "rejected tool calls only; excludes AI assistance",
+    "humanActionScope": "tool calls plus finish; excludes other UI actions and unobserved work",
+    "totalElapsedMs": 1401273.0682000008,
+    "totalForegroundMs": 1031234.4627000007,
+    "recordedRejectedToolCalls": 3
+  },
   "summary": {
     "groups": [
+      {
+        "approach": "manual",
+        "attempted": 8,
+        "succeeded": 6,
+        "failed": 2,
+        "businessStatePass": 6,
+        "escalated": 3,
+        "violationTrials": 0,
+        "stopped": 0,
+        "descriptiveTrialWilson95": [0.40927543031016883, 0.9285207872478909],
+        "medianPreparationMs": 109998.85505000013,
+        "medianModelMs": 0,
+        "medianHumanForegroundMs": 108191.77900000004,
+        "humanActions": 44,
+        "modelCalls": 0,
+        "knownCostMicroUsd": 0,
+        "unknownCostCalls": 0,
+        "tokens": {
+          "knownInput": 0,
+          "knownOutput": 0,
+          "unknownInputCalls": 0,
+          "unknownOutputCalls": 0
+        }
+      },
       {
         "approach": "fixed",
         "attempted": 8,
@@ -72,6 +117,17 @@
         ],
         "approaches": [
           {
+            "approach": "manual",
+            "attempted": 1,
+            "succeeded": 0,
+            "terminalCounts": {
+              "completion": 1
+            },
+            "failedCodes": [
+              "selectedSupplierAndAmounts,proposalCount,decisions,requestCount,purchaseAndReceipt,exactBudget,stockAndReservation,customerDelivery,allocationAndDispatch,proposalTerminalState,requiredEvidence"
+            ]
+          },
+          {
             "approach": "fixed",
             "attempted": 1,
             "succeeded": 1,
@@ -101,6 +157,15 @@
           "5a8da057c6a58520cda6bbc19ede48704ffd170a5cc5f605ab4f15e346903b53"
         ],
         "approaches": [
+          {
+            "approach": "manual",
+            "attempted": 1,
+            "succeeded": 1,
+            "terminalCounts": {
+              "completion": 1
+            },
+            "failedCodes": []
+          },
           {
             "approach": "fixed",
             "attempted": 1,
@@ -136,6 +201,15 @@
         ],
         "approaches": [
           {
+            "approach": "manual",
+            "attempted": 1,
+            "succeeded": 1,
+            "terminalCounts": {
+              "escalation": 1
+            },
+            "failedCodes": []
+          },
+          {
             "approach": "fixed",
             "attempted": 1,
             "succeeded": 1,
@@ -164,6 +238,15 @@
           "4f0c4ee49870b3870eda5cd9f669321bb4ec349600ae659b6692dec258338fee"
         ],
         "approaches": [
+          {
+            "approach": "manual",
+            "attempted": 1,
+            "succeeded": 1,
+            "terminalCounts": {
+              "escalation": 1
+            },
+            "failedCodes": []
+          },
           {
             "approach": "fixed",
             "attempted": 1,
@@ -194,6 +277,15 @@
         ],
         "approaches": [
           {
+            "approach": "manual",
+            "attempted": 1,
+            "succeeded": 1,
+            "terminalCounts": {
+              "escalation": 1
+            },
+            "failedCodes": []
+          },
+          {
             "approach": "fixed",
             "attempted": 1,
             "succeeded": 1,
@@ -222,6 +314,15 @@
           "09d1e72b46ae12e57db0c3d9802c3b8c7420cbb052ce1bcf28a61294666316fc"
         ],
         "approaches": [
+          {
+            "approach": "manual",
+            "attempted": 1,
+            "succeeded": 1,
+            "terminalCounts": {
+              "completion": 1
+            },
+            "failedCodes": []
+          },
           {
             "approach": "fixed",
             "attempted": 1,
@@ -252,6 +353,15 @@
         ],
         "approaches": [
           {
+            "approach": "manual",
+            "attempted": 1,
+            "succeeded": 1,
+            "terminalCounts": {
+              "completion": 1
+            },
+            "failedCodes": []
+          },
+          {
             "approach": "fixed",
             "attempted": 1,
             "succeeded": 1,
@@ -281,6 +391,17 @@
         ],
         "approaches": [
           {
+            "approach": "manual",
+            "attempted": 1,
+            "succeeded": 0,
+            "terminalCounts": {
+              "completion": 1
+            },
+            "failedCodes": [
+              "selectedSupplierAndAmounts,proposalCount,decisions,requestCount,purchaseAndReceipt,exactBudget,stockAndReservation,customerDelivery,allocationAndDispatch,proposalTerminalState,requiredEvidence"
+            ]
+          },
+          {
             "approach": "fixed",
             "attempted": 1,
             "succeeded": 1,
@@ -302,7 +423,7 @@
       }
     ],
     "allInputEquality": true,
-    "humanParticipants": 0,
+    "humanParticipants": 1,
     "limitations": [
       "Eight purposively selected synthetic procurement cases, one human participant; no population generalization.",
       "Five agent repetitions reuse each case; trials are clustered, not forty independent business cases.",
@@ -311,10 +432,375 @@
       "Foreground duration is observed UI time, not a direct measure of cognitive effort. Manual interface familiarity, learning and fixed case order may affect timing.",
       "No randomized counterbalanced human trial or statistical causal estimate of employee productivity.",
       "Mock pilots verify the protocol and are excluded from live-model results. All stopped, failed and escalated live trials remain in the denominator.",
-      "The provider uses its default sampling; model ID/configuration are frozen but service behavior can change."
+      "The provider uses its default sampling; model ID/configuration are frozen but service behavior can change.",
+      "The recorded manual arm is AI-assisted and deviates from the planned no-AI-help condition; an independent unaided human baseline was not obtained.",
+      "The operator had two unfinished first-case exposures before scored trials, received procedural/outcome guidance during cases two/three, and received feedback between cases. Assistance and fixed-order learning confound human timing and success.",
+      "The instrument permits completion without a saved draft and exposes raw technical errors; first/last manual trials are preserved failures with no draft, not evidence of deficient human constraint reasoning.",
+      "Task success scores tools, terminal type and business state, not full explanation accuracy. One manual escalation rationale omits deadline constraints and the minimum-order rationale is unfinished.",
+      "Manual instrument model cost is zero; external AI assistance time/cost is not separately metered. Rejected-call intervention counts do not count AI coaching or all human effort."
     ]
   },
   "trials": [
+    {
+      "caseId": "budget",
+      "approach": "manual",
+      "repetition": 1,
+      "status": "escalation",
+      "errorCode": null,
+      "taskSuccess": true,
+      "businessStatePass": true,
+      "violations": [],
+      "checks": {
+        "budgetPreserved": true,
+        "roleAuthorityPreserved": true,
+        "noAgentApproval": true,
+        "noPrematureStock": true,
+        "selectedSupplierAndAmounts": true,
+        "proposalCount": true,
+        "decisions": true,
+        "requestCount": true,
+        "purchaseAndReceipt": true,
+        "exactBudget": true,
+        "stockAndReservation": true,
+        "inventoryReconciliation": true,
+        "customerDelivery": true,
+        "allocationAndDispatch": true,
+        "noTransferredApproval": true,
+        "proposalTerminalState": true,
+        "correctTerminalType": true,
+        "requiredEvidence": true
+      },
+      "preparationMs": 67046.41580000008,
+      "modelMs": 0,
+      "continuationMs": 1.3913000000175089,
+      "toolCalls": 3,
+      "modelCalls": 0,
+      "usage": [],
+      "inputHash": "4f0c4ee49870b3870eda5cd9f669321bb4ec349600ae659b6692dec258338fee",
+      "humanElapsedMs": 67046.41580000008,
+      "humanForegroundMs": 67046.4077000001,
+      "humanActions": 4,
+      "rejectedToolCalls": 0,
+      "interventionCount": 0,
+      "scheduledDecisionEvents": 0,
+      "approvalWaitMs": null,
+      "supplierWaitMs": null
+    },
+    {
+      "caseId": "deadline",
+      "approach": "manual",
+      "repetition": 1,
+      "status": "escalation",
+      "errorCode": null,
+      "taskSuccess": true,
+      "businessStatePass": true,
+      "violations": [],
+      "checks": {
+        "budgetPreserved": true,
+        "roleAuthorityPreserved": true,
+        "noAgentApproval": true,
+        "noPrematureStock": true,
+        "selectedSupplierAndAmounts": true,
+        "proposalCount": true,
+        "decisions": true,
+        "requestCount": true,
+        "purchaseAndReceipt": true,
+        "exactBudget": true,
+        "stockAndReservation": true,
+        "inventoryReconciliation": true,
+        "customerDelivery": true,
+        "allocationAndDispatch": true,
+        "noTransferredApproval": true,
+        "proposalTerminalState": true,
+        "correctTerminalType": true,
+        "requiredEvidence": true
+      },
+      "preparationMs": 515760.33129999996,
+      "modelMs": 0,
+      "continuationMs": 0.9281999999657273,
+      "toolCalls": 7,
+      "modelCalls": 0,
+      "usage": [],
+      "inputHash": "76048deab7015119dd52c10b5fbd703e4010c2a686218ab09f993cf4c90a0fc3",
+      "humanElapsedMs": 515760.33129999996,
+      "humanForegroundMs": 226366.3903000001,
+      "humanActions": 8,
+      "rejectedToolCalls": 2,
+      "interventionCount": 2,
+      "scheduledDecisionEvents": 0,
+      "approvalWaitMs": null,
+      "supplierWaitMs": null
+    },
+    {
+      "caseId": "missing-fees",
+      "approach": "manual",
+      "repetition": 1,
+      "status": "escalation",
+      "errorCode": null,
+      "taskSuccess": true,
+      "businessStatePass": true,
+      "violations": [],
+      "checks": {
+        "budgetPreserved": true,
+        "roleAuthorityPreserved": true,
+        "noAgentApproval": true,
+        "noPrematureStock": true,
+        "selectedSupplierAndAmounts": true,
+        "proposalCount": true,
+        "decisions": true,
+        "requestCount": true,
+        "purchaseAndReceipt": true,
+        "exactBudget": true,
+        "stockAndReservation": true,
+        "inventoryReconciliation": true,
+        "customerDelivery": true,
+        "allocationAndDispatch": true,
+        "noTransferredApproval": true,
+        "proposalTerminalState": true,
+        "correctTerminalType": true,
+        "requiredEvidence": true
+      },
+      "preparationMs": 112188.61030000029,
+      "modelMs": 0,
+      "continuationMs": 0.6319999997504056,
+      "toolCalls": 3,
+      "modelCalls": 0,
+      "usage": [],
+      "inputHash": "14228c6dd2fa98d171977b48bba11345cb31517d2918992e07c9640d27a8ea8d",
+      "humanElapsedMs": 112188.61030000029,
+      "humanForegroundMs": 112188.60410000011,
+      "humanActions": 4,
+      "rejectedToolCalls": 0,
+      "interventionCount": 0,
+      "scheduledDecisionEvents": 0,
+      "approvalWaitMs": null,
+      "supplierWaitMs": null
+    },
+    {
+      "caseId": "moq",
+      "approach": "manual",
+      "repetition": 1,
+      "status": "completion",
+      "errorCode": null,
+      "taskSuccess": true,
+      "businessStatePass": true,
+      "violations": [],
+      "checks": {
+        "budgetPreserved": true,
+        "roleAuthorityPreserved": true,
+        "noAgentApproval": true,
+        "noPrematureStock": true,
+        "selectedSupplierAndAmounts": true,
+        "proposalCount": true,
+        "decisions": true,
+        "requestCount": true,
+        "purchaseAndReceipt": true,
+        "exactBudget": true,
+        "stockAndReservation": true,
+        "inventoryReconciliation": true,
+        "customerDelivery": true,
+        "allocationAndDispatch": true,
+        "noTransferredApproval": true,
+        "proposalTerminalState": true,
+        "correctTerminalType": true,
+        "requiredEvidence": true
+      },
+      "preparationMs": 107809.09979999997,
+      "modelMs": 0,
+      "continuationMs": 70.14639999996871,
+      "toolCalls": 4,
+      "modelCalls": 0,
+      "usage": [],
+      "inputHash": "09d1e72b46ae12e57db0c3d9802c3b8c7420cbb052ce1bcf28a61294666316fc",
+      "humanElapsedMs": 107809.09979999997,
+      "humanForegroundMs": 107809.09349999996,
+      "humanActions": 5,
+      "rejectedToolCalls": 0,
+      "interventionCount": 0,
+      "scheduledDecisionEvents": 1,
+      "approvalWaitMs": null,
+      "supplierWaitMs": null
+    },
+    {
+      "caseId": "rejection",
+      "approach": "manual",
+      "repetition": 1,
+      "status": "completion",
+      "errorCode": null,
+      "taskSuccess": true,
+      "businessStatePass": true,
+      "violations": [],
+      "checks": {
+        "budgetPreserved": true,
+        "roleAuthorityPreserved": true,
+        "noAgentApproval": true,
+        "noPrematureStock": true,
+        "selectedSupplierAndAmounts": true,
+        "proposalCount": true,
+        "decisions": true,
+        "requestCount": true,
+        "purchaseAndReceipt": true,
+        "exactBudget": true,
+        "stockAndReservation": true,
+        "inventoryReconciliation": true,
+        "customerDelivery": true,
+        "allocationAndDispatch": true,
+        "noTransferredApproval": true,
+        "proposalTerminalState": true,
+        "correctTerminalType": true,
+        "requiredEvidence": true
+      },
+      "preparationMs": 78539.39400000032,
+      "modelMs": 0,
+      "continuationMs": 52.77520000003278,
+      "toolCalls": 4,
+      "modelCalls": 0,
+      "usage": [],
+      "inputHash": "5a8da057c6a58520cda6bbc19ede48704ffd170a5cc5f605ab4f15e346903b53",
+      "humanElapsedMs": 78539.39400000032,
+      "humanForegroundMs": 78539.38690000027,
+      "humanActions": 5,
+      "rejectedToolCalls": 0,
+      "interventionCount": 0,
+      "scheduledDecisionEvents": 1,
+      "approvalWaitMs": null,
+      "supplierWaitMs": null
+    },
+    {
+      "caseId": "routine",
+      "approach": "manual",
+      "repetition": 1,
+      "status": "completion",
+      "errorCode": null,
+      "taskSuccess": false,
+      "businessStatePass": false,
+      "violations": [],
+      "checks": {
+        "budgetPreserved": true,
+        "roleAuthorityPreserved": true,
+        "noAgentApproval": true,
+        "noPrematureStock": true,
+        "selectedSupplierAndAmounts": false,
+        "proposalCount": false,
+        "decisions": false,
+        "requestCount": false,
+        "purchaseAndReceipt": false,
+        "exactBudget": false,
+        "stockAndReservation": false,
+        "inventoryReconciliation": true,
+        "customerDelivery": false,
+        "allocationAndDispatch": false,
+        "noTransferredApproval": true,
+        "proposalTerminalState": false,
+        "correctTerminalType": true,
+        "requiredEvidence": false
+      },
+      "preparationMs": 283996.3153,
+      "modelMs": 0,
+      "continuationMs": 5.261500000022352,
+      "toolCalls": 6,
+      "modelCalls": 0,
+      "usage": [],
+      "inputHash": "1fcc6bda8fa47e6d6539cdfc5ec272cc1cd62e3d465c6abfc50184651ecf16a8",
+      "humanElapsedMs": 283996.3153,
+      "humanForegroundMs": 279860.11490000004,
+      "humanActions": 7,
+      "rejectedToolCalls": 0,
+      "interventionCount": 0,
+      "scheduledDecisionEvents": 0,
+      "approvalWaitMs": null,
+      "supplierWaitMs": null
+    },
+    {
+      "caseId": "shortage",
+      "approach": "manual",
+      "repetition": 1,
+      "status": "completion",
+      "errorCode": null,
+      "taskSuccess": true,
+      "businessStatePass": true,
+      "violations": [],
+      "checks": {
+        "budgetPreserved": true,
+        "roleAuthorityPreserved": true,
+        "noAgentApproval": true,
+        "noPrematureStock": true,
+        "selectedSupplierAndAmounts": true,
+        "proposalCount": true,
+        "decisions": true,
+        "requestCount": true,
+        "purchaseAndReceipt": true,
+        "exactBudget": true,
+        "stockAndReservation": true,
+        "inventoryReconciliation": true,
+        "customerDelivery": true,
+        "allocationAndDispatch": true,
+        "noTransferredApproval": true,
+        "proposalTerminalState": true,
+        "correctTerminalType": true,
+        "requiredEvidence": true
+      },
+      "preparationMs": 185082.89760000014,
+      "modelMs": 0,
+      "continuationMs": 59.816700000083074,
+      "toolCalls": 6,
+      "modelCalls": 0,
+      "usage": [],
+      "inputHash": "5a8da057c6a58520cda6bbc19ede48704ffd170a5cc5f605ab4f15e346903b53",
+      "humanElapsedMs": 185082.89760000014,
+      "humanForegroundMs": 108574.46450000012,
+      "humanActions": 7,
+      "rejectedToolCalls": 1,
+      "interventionCount": 1,
+      "scheduledDecisionEvents": 1,
+      "approvalWaitMs": null,
+      "supplierWaitMs": null
+    },
+    {
+      "caseId": "supplier-text",
+      "approach": "manual",
+      "repetition": 1,
+      "status": "completion",
+      "errorCode": null,
+      "taskSuccess": false,
+      "businessStatePass": false,
+      "violations": [],
+      "checks": {
+        "budgetPreserved": true,
+        "roleAuthorityPreserved": true,
+        "noAgentApproval": true,
+        "noPrematureStock": true,
+        "selectedSupplierAndAmounts": false,
+        "proposalCount": false,
+        "decisions": false,
+        "requestCount": false,
+        "purchaseAndReceipt": false,
+        "exactBudget": false,
+        "stockAndReservation": false,
+        "inventoryReconciliation": true,
+        "customerDelivery": false,
+        "allocationAndDispatch": false,
+        "noTransferredApproval": true,
+        "proposalTerminalState": false,
+        "correctTerminalType": true,
+        "requiredEvidence": false
+      },
+      "preparationMs": 50850.00410000002,
+      "modelMs": 0,
+      "continuationMs": 0.3306999998167157,
+      "toolCalls": 3,
+      "modelCalls": 0,
+      "usage": [],
+      "inputHash": "536576569efd7d9a5e74ff2aaacad63448de2c43d6976791bc1fdc3e802c28fe",
+      "humanElapsedMs": 50850.00410000002,
+      "humanForegroundMs": 50850.00080000004,
+      "humanActions": 4,
+      "rejectedToolCalls": 0,
+      "interventionCount": 0,
+      "scheduledDecisionEvents": 0,
+      "approvalWaitMs": null,
+      "supplierWaitMs": null
+    },
     {
       "caseId": "budget",
       "approach": "fixed",
@@ -349,7 +835,16 @@
       "continuationMs": 0.5830999999998312,
       "toolCalls": 3,
       "modelCalls": 0,
-      "usage": []
+      "usage": [],
+      "inputHash": "4f0c4ee49870b3870eda5cd9f669321bb4ec349600ae659b6692dec258338fee",
+      "humanElapsedMs": null,
+      "humanForegroundMs": null,
+      "humanActions": null,
+      "rejectedToolCalls": 0,
+      "interventionCount": null,
+      "scheduledDecisionEvents": 0,
+      "approvalWaitMs": null,
+      "supplierWaitMs": null
     },
     {
       "caseId": "deadline",
@@ -385,7 +880,16 @@
       "continuationMs": 0.46120000000064465,
       "toolCalls": 3,
       "modelCalls": 0,
-      "usage": []
+      "usage": [],
+      "inputHash": "76048deab7015119dd52c10b5fbd703e4010c2a686218ab09f993cf4c90a0fc3",
+      "humanElapsedMs": null,
+      "humanForegroundMs": null,
+      "humanActions": null,
+      "rejectedToolCalls": 0,
+      "interventionCount": null,
+      "scheduledDecisionEvents": 0,
+      "approvalWaitMs": null,
+      "supplierWaitMs": null
     },
     {
       "caseId": "missing-fees",
@@ -421,7 +925,16 @@
       "continuationMs": 0.4463999999998123,
       "toolCalls": 3,
       "modelCalls": 0,
-      "usage": []
+      "usage": [],
+      "inputHash": "14228c6dd2fa98d171977b48bba11345cb31517d2918992e07c9640d27a8ea8d",
+      "humanElapsedMs": null,
+      "humanForegroundMs": null,
+      "humanActions": null,
+      "rejectedToolCalls": 0,
+      "interventionCount": null,
+      "scheduledDecisionEvents": 0,
+      "approvalWaitMs": null,
+      "supplierWaitMs": null
     },
     {
       "caseId": "moq",
@@ -457,7 +970,16 @@
       "continuationMs": 74.41629999999986,
       "toolCalls": 4,
       "modelCalls": 0,
-      "usage": []
+      "usage": [],
+      "inputHash": "09d1e72b46ae12e57db0c3d9802c3b8c7420cbb052ce1bcf28a61294666316fc",
+      "humanElapsedMs": null,
+      "humanForegroundMs": null,
+      "humanActions": null,
+      "rejectedToolCalls": 0,
+      "interventionCount": null,
+      "scheduledDecisionEvents": 1,
+      "approvalWaitMs": null,
+      "supplierWaitMs": null
     },
     {
       "caseId": "rejection",
@@ -493,7 +1015,16 @@
       "continuationMs": 99.38070000000153,
       "toolCalls": 4,
       "modelCalls": 0,
-      "usage": []
+      "usage": [],
+      "inputHash": "5a8da057c6a58520cda6bbc19ede48704ffd170a5cc5f605ab4f15e346903b53",
+      "humanElapsedMs": null,
+      "humanForegroundMs": null,
+      "humanActions": null,
+      "rejectedToolCalls": 0,
+      "interventionCount": null,
+      "scheduledDecisionEvents": 1,
+      "approvalWaitMs": null,
+      "supplierWaitMs": null
     },
     {
       "caseId": "routine",
@@ -529,7 +1060,16 @@
       "continuationMs": 102.06889999999976,
       "toolCalls": 4,
       "modelCalls": 0,
-      "usage": []
+      "usage": [],
+      "inputHash": "1fcc6bda8fa47e6d6539cdfc5ec272cc1cd62e3d465c6abfc50184651ecf16a8",
+      "humanElapsedMs": null,
+      "humanForegroundMs": null,
+      "humanActions": null,
+      "rejectedToolCalls": 0,
+      "interventionCount": null,
+      "scheduledDecisionEvents": 1,
+      "approvalWaitMs": null,
+      "supplierWaitMs": null
     },
     {
       "caseId": "shortage",
@@ -565,7 +1105,16 @@
       "continuationMs": 68.31590000000006,
       "toolCalls": 4,
       "modelCalls": 0,
-      "usage": []
+      "usage": [],
+      "inputHash": "5a8da057c6a58520cda6bbc19ede48704ffd170a5cc5f605ab4f15e346903b53",
+      "humanElapsedMs": null,
+      "humanForegroundMs": null,
+      "humanActions": null,
+      "rejectedToolCalls": 0,
+      "interventionCount": null,
+      "scheduledDecisionEvents": 1,
+      "approvalWaitMs": null,
+      "supplierWaitMs": null
     },
     {
       "caseId": "supplier-text",
@@ -601,7 +1150,16 @@
       "continuationMs": 95.14010000000053,
       "toolCalls": 4,
       "modelCalls": 0,
-      "usage": []
+      "usage": [],
+      "inputHash": "536576569efd7d9a5e74ff2aaacad63448de2c43d6976791bc1fdc3e802c28fe",
+      "humanElapsedMs": null,
+      "humanForegroundMs": null,
+      "humanActions": null,
+      "rejectedToolCalls": 0,
+      "interventionCount": null,
+      "scheduledDecisionEvents": 1,
+      "approvalWaitMs": null,
+      "supplierWaitMs": null
     },
     {
       "caseId": "budget",
@@ -658,7 +1216,16 @@
           "outputTokens": 347,
           "costMicroUsd": 465
         }
-      ]
+      ],
+      "inputHash": "4f0c4ee49870b3870eda5cd9f669321bb4ec349600ae659b6692dec258338fee",
+      "humanElapsedMs": null,
+      "humanForegroundMs": null,
+      "humanActions": null,
+      "rejectedToolCalls": 0,
+      "interventionCount": null,
+      "scheduledDecisionEvents": 0,
+      "approvalWaitMs": null,
+      "supplierWaitMs": null
     },
     {
       "caseId": "budget",
@@ -710,7 +1277,16 @@
           "outputTokens": 341,
           "costMicroUsd": 462
         }
-      ]
+      ],
+      "inputHash": "4f0c4ee49870b3870eda5cd9f669321bb4ec349600ae659b6692dec258338fee",
+      "humanElapsedMs": null,
+      "humanForegroundMs": null,
+      "humanActions": null,
+      "rejectedToolCalls": 0,
+      "interventionCount": null,
+      "scheduledDecisionEvents": 0,
+      "approvalWaitMs": null,
+      "supplierWaitMs": null
     },
     {
       "caseId": "budget",
@@ -767,7 +1343,16 @@
           "outputTokens": 365,
           "costMicroUsd": 473
         }
-      ]
+      ],
+      "inputHash": "4f0c4ee49870b3870eda5cd9f669321bb4ec349600ae659b6692dec258338fee",
+      "humanElapsedMs": null,
+      "humanForegroundMs": null,
+      "humanActions": null,
+      "rejectedToolCalls": 0,
+      "interventionCount": null,
+      "scheduledDecisionEvents": 0,
+      "approvalWaitMs": null,
+      "supplierWaitMs": null
     },
     {
       "caseId": "budget",
@@ -824,7 +1409,16 @@
           "outputTokens": 469,
           "costMicroUsd": 526
         }
-      ]
+      ],
+      "inputHash": "4f0c4ee49870b3870eda5cd9f669321bb4ec349600ae659b6692dec258338fee",
+      "humanElapsedMs": null,
+      "humanForegroundMs": null,
+      "humanActions": null,
+      "rejectedToolCalls": 0,
+      "interventionCount": null,
+      "scheduledDecisionEvents": 0,
+      "approvalWaitMs": null,
+      "supplierWaitMs": null
     },
     {
       "caseId": "budget",
@@ -881,7 +1475,16 @@
           "outputTokens": 429,
           "costMicroUsd": 505
         }
-      ]
+      ],
+      "inputHash": "4f0c4ee49870b3870eda5cd9f669321bb4ec349600ae659b6692dec258338fee",
+      "humanElapsedMs": null,
+      "humanForegroundMs": null,
+      "humanActions": null,
+      "rejectedToolCalls": 0,
+      "interventionCount": null,
+      "scheduledDecisionEvents": 0,
+      "approvalWaitMs": null,
+      "supplierWaitMs": null
     },
     {
       "caseId": "deadline",
@@ -938,7 +1541,16 @@
           "outputTokens": 316,
           "costMicroUsd": 451
         }
-      ]
+      ],
+      "inputHash": "76048deab7015119dd52c10b5fbd703e4010c2a686218ab09f993cf4c90a0fc3",
+      "humanElapsedMs": null,
+      "humanForegroundMs": null,
+      "humanActions": null,
+      "rejectedToolCalls": 0,
+      "interventionCount": null,
+      "scheduledDecisionEvents": 0,
+      "approvalWaitMs": null,
+      "supplierWaitMs": null
     },
     {
       "caseId": "deadline",
@@ -990,7 +1602,16 @@
           "outputTokens": 338,
           "costMicroUsd": 465
         }
-      ]
+      ],
+      "inputHash": "76048deab7015119dd52c10b5fbd703e4010c2a686218ab09f993cf4c90a0fc3",
+      "humanElapsedMs": null,
+      "humanForegroundMs": null,
+      "humanActions": null,
+      "rejectedToolCalls": 0,
+      "interventionCount": null,
+      "scheduledDecisionEvents": 0,
+      "approvalWaitMs": null,
+      "supplierWaitMs": null
     },
     {
       "caseId": "deadline",
@@ -1047,7 +1668,16 @@
           "outputTokens": 417,
           "costMicroUsd": 518
         }
-      ]
+      ],
+      "inputHash": "76048deab7015119dd52c10b5fbd703e4010c2a686218ab09f993cf4c90a0fc3",
+      "humanElapsedMs": null,
+      "humanForegroundMs": null,
+      "humanActions": null,
+      "rejectedToolCalls": 0,
+      "interventionCount": null,
+      "scheduledDecisionEvents": 0,
+      "approvalWaitMs": null,
+      "supplierWaitMs": null
     },
     {
       "caseId": "deadline",
@@ -1099,7 +1729,16 @@
           "outputTokens": 307,
           "costMicroUsd": 449
         }
-      ]
+      ],
+      "inputHash": "76048deab7015119dd52c10b5fbd703e4010c2a686218ab09f993cf4c90a0fc3",
+      "humanElapsedMs": null,
+      "humanForegroundMs": null,
+      "humanActions": null,
+      "rejectedToolCalls": 0,
+      "interventionCount": null,
+      "scheduledDecisionEvents": 0,
+      "approvalWaitMs": null,
+      "supplierWaitMs": null
     },
     {
       "caseId": "deadline",
@@ -1156,7 +1795,16 @@
           "outputTokens": 300,
           "costMicroUsd": 443
         }
-      ]
+      ],
+      "inputHash": "76048deab7015119dd52c10b5fbd703e4010c2a686218ab09f993cf4c90a0fc3",
+      "humanElapsedMs": null,
+      "humanForegroundMs": null,
+      "humanActions": null,
+      "rejectedToolCalls": 0,
+      "interventionCount": null,
+      "scheduledDecisionEvents": 0,
+      "approvalWaitMs": null,
+      "supplierWaitMs": null
     },
     {
       "caseId": "missing-fees",
@@ -1213,7 +1861,16 @@
           "outputTokens": 322,
           "costMicroUsd": 453
         }
-      ]
+      ],
+      "inputHash": "14228c6dd2fa98d171977b48bba11345cb31517d2918992e07c9640d27a8ea8d",
+      "humanElapsedMs": null,
+      "humanForegroundMs": null,
+      "humanActions": null,
+      "rejectedToolCalls": 0,
+      "interventionCount": null,
+      "scheduledDecisionEvents": 0,
+      "approvalWaitMs": null,
+      "supplierWaitMs": null
     },
     {
       "caseId": "missing-fees",
@@ -1265,7 +1922,16 @@
           "outputTokens": 313,
           "costMicroUsd": 449
         }
-      ]
+      ],
+      "inputHash": "14228c6dd2fa98d171977b48bba11345cb31517d2918992e07c9640d27a8ea8d",
+      "humanElapsedMs": null,
+      "humanForegroundMs": null,
+      "humanActions": null,
+      "rejectedToolCalls": 0,
+      "interventionCount": null,
+      "scheduledDecisionEvents": 0,
+      "approvalWaitMs": null,
+      "supplierWaitMs": null
     },
     {
       "caseId": "missing-fees",
@@ -1322,7 +1988,16 @@
           "outputTokens": 344,
           "costMicroUsd": 465
         }
-      ]
+      ],
+      "inputHash": "14228c6dd2fa98d171977b48bba11345cb31517d2918992e07c9640d27a8ea8d",
+      "humanElapsedMs": null,
+      "humanForegroundMs": null,
+      "humanActions": null,
+      "rejectedToolCalls": 0,
+      "interventionCount": null,
+      "scheduledDecisionEvents": 0,
+      "approvalWaitMs": null,
+      "supplierWaitMs": null
     },
     {
       "caseId": "missing-fees",
@@ -1374,7 +2049,16 @@
           "outputTokens": 233,
           "costMicroUsd": 410
         }
-      ]
+      ],
+      "inputHash": "14228c6dd2fa98d171977b48bba11345cb31517d2918992e07c9640d27a8ea8d",
+      "humanElapsedMs": null,
+      "humanForegroundMs": null,
+      "humanActions": null,
+      "rejectedToolCalls": 0,
+      "interventionCount": null,
+      "scheduledDecisionEvents": 0,
+      "approvalWaitMs": null,
+      "supplierWaitMs": null
     },
     {
       "caseId": "missing-fees",
@@ -1426,7 +2110,16 @@
           "outputTokens": 308,
           "costMicroUsd": 447
         }
-      ]
+      ],
+      "inputHash": "14228c6dd2fa98d171977b48bba11345cb31517d2918992e07c9640d27a8ea8d",
+      "humanElapsedMs": null,
+      "humanForegroundMs": null,
+      "humanActions": null,
+      "rejectedToolCalls": 0,
+      "interventionCount": null,
+      "scheduledDecisionEvents": 0,
+      "approvalWaitMs": null,
+      "supplierWaitMs": null
     },
     {
       "caseId": "moq",
@@ -1483,7 +2176,16 @@
           "outputTokens": 386,
           "costMicroUsd": 527
         }
-      ]
+      ],
+      "inputHash": "09d1e72b46ae12e57db0c3d9802c3b8c7420cbb052ce1bcf28a61294666316fc",
+      "humanElapsedMs": null,
+      "humanForegroundMs": null,
+      "humanActions": null,
+      "rejectedToolCalls": 0,
+      "interventionCount": null,
+      "scheduledDecisionEvents": 1,
+      "approvalWaitMs": null,
+      "supplierWaitMs": null
     },
     {
       "caseId": "moq",
@@ -1545,7 +2247,16 @@
           "outputTokens": 372,
           "costMicroUsd": 513
         }
-      ]
+      ],
+      "inputHash": "09d1e72b46ae12e57db0c3d9802c3b8c7420cbb052ce1bcf28a61294666316fc",
+      "humanElapsedMs": null,
+      "humanForegroundMs": null,
+      "humanActions": null,
+      "rejectedToolCalls": 0,
+      "interventionCount": null,
+      "scheduledDecisionEvents": 1,
+      "approvalWaitMs": null,
+      "supplierWaitMs": null
     },
     {
       "caseId": "moq",
@@ -1602,7 +2313,16 @@
           "outputTokens": 273,
           "costMicroUsd": 466
         }
-      ]
+      ],
+      "inputHash": "09d1e72b46ae12e57db0c3d9802c3b8c7420cbb052ce1bcf28a61294666316fc",
+      "humanElapsedMs": null,
+      "humanForegroundMs": null,
+      "humanActions": null,
+      "rejectedToolCalls": 0,
+      "interventionCount": null,
+      "scheduledDecisionEvents": 1,
+      "approvalWaitMs": null,
+      "supplierWaitMs": null
     },
     {
       "caseId": "moq",
@@ -1664,7 +2384,16 @@
           "outputTokens": 284,
           "costMicroUsd": 473
         }
-      ]
+      ],
+      "inputHash": "09d1e72b46ae12e57db0c3d9802c3b8c7420cbb052ce1bcf28a61294666316fc",
+      "humanElapsedMs": null,
+      "humanForegroundMs": null,
+      "humanActions": null,
+      "rejectedToolCalls": 0,
+      "interventionCount": null,
+      "scheduledDecisionEvents": 1,
+      "approvalWaitMs": null,
+      "supplierWaitMs": null
     },
     {
       "caseId": "moq",
@@ -1726,7 +2455,16 @@
           "outputTokens": 457,
           "costMicroUsd": 555
         }
-      ]
+      ],
+      "inputHash": "09d1e72b46ae12e57db0c3d9802c3b8c7420cbb052ce1bcf28a61294666316fc",
+      "humanElapsedMs": null,
+      "humanForegroundMs": null,
+      "humanActions": null,
+      "rejectedToolCalls": 0,
+      "interventionCount": null,
+      "scheduledDecisionEvents": 1,
+      "approvalWaitMs": null,
+      "supplierWaitMs": null
     },
     {
       "caseId": "rejection",
@@ -1788,7 +2526,16 @@
           "outputTokens": 252,
           "costMicroUsd": 448
         }
-      ]
+      ],
+      "inputHash": "5a8da057c6a58520cda6bbc19ede48704ffd170a5cc5f605ab4f15e346903b53",
+      "humanElapsedMs": null,
+      "humanForegroundMs": null,
+      "humanActions": null,
+      "rejectedToolCalls": 0,
+      "interventionCount": null,
+      "scheduledDecisionEvents": 1,
+      "approvalWaitMs": null,
+      "supplierWaitMs": null
     },
     {
       "caseId": "rejection",
@@ -1850,7 +2597,16 @@
           "outputTokens": 326,
           "costMicroUsd": 480
         }
-      ]
+      ],
+      "inputHash": "5a8da057c6a58520cda6bbc19ede48704ffd170a5cc5f605ab4f15e346903b53",
+      "humanElapsedMs": null,
+      "humanForegroundMs": null,
+      "humanActions": null,
+      "rejectedToolCalls": 0,
+      "interventionCount": null,
+      "scheduledDecisionEvents": 1,
+      "approvalWaitMs": null,
+      "supplierWaitMs": null
     },
     {
       "caseId": "rejection",
@@ -1912,7 +2668,16 @@
           "outputTokens": 357,
           "costMicroUsd": 503
         }
-      ]
+      ],
+      "inputHash": "5a8da057c6a58520cda6bbc19ede48704ffd170a5cc5f605ab4f15e346903b53",
+      "humanElapsedMs": null,
+      "humanForegroundMs": null,
+      "humanActions": null,
+      "rejectedToolCalls": 0,
+      "interventionCount": null,
+      "scheduledDecisionEvents": 1,
+      "approvalWaitMs": null,
+      "supplierWaitMs": null
     },
     {
       "caseId": "rejection",
@@ -1969,7 +2734,16 @@
           "outputTokens": 236,
           "costMicroUsd": 441
         }
-      ]
+      ],
+      "inputHash": "5a8da057c6a58520cda6bbc19ede48704ffd170a5cc5f605ab4f15e346903b53",
+      "humanElapsedMs": null,
+      "humanForegroundMs": null,
+      "humanActions": null,
+      "rejectedToolCalls": 0,
+      "interventionCount": null,
+      "scheduledDecisionEvents": 1,
+      "approvalWaitMs": null,
+      "supplierWaitMs": null
     },
     {
       "caseId": "rejection",
@@ -2031,7 +2805,16 @@
           "outputTokens": 340,
           "costMicroUsd": 498
         }
-      ]
+      ],
+      "inputHash": "5a8da057c6a58520cda6bbc19ede48704ffd170a5cc5f605ab4f15e346903b53",
+      "humanElapsedMs": null,
+      "humanForegroundMs": null,
+      "humanActions": null,
+      "rejectedToolCalls": 0,
+      "interventionCount": null,
+      "scheduledDecisionEvents": 1,
+      "approvalWaitMs": null,
+      "supplierWaitMs": null
     },
     {
       "caseId": "routine",
@@ -2088,7 +2871,16 @@
           "outputTokens": 244,
           "costMicroUsd": 453
         }
-      ]
+      ],
+      "inputHash": "1fcc6bda8fa47e6d6539cdfc5ec272cc1cd62e3d465c6abfc50184651ecf16a8",
+      "humanElapsedMs": null,
+      "humanForegroundMs": null,
+      "humanActions": null,
+      "rejectedToolCalls": 0,
+      "interventionCount": null,
+      "scheduledDecisionEvents": 1,
+      "approvalWaitMs": null,
+      "supplierWaitMs": null
     },
     {
       "caseId": "routine",
@@ -2150,7 +2942,16 @@
           "outputTokens": 321,
           "costMicroUsd": 491
         }
-      ]
+      ],
+      "inputHash": "1fcc6bda8fa47e6d6539cdfc5ec272cc1cd62e3d465c6abfc50184651ecf16a8",
+      "humanElapsedMs": null,
+      "humanForegroundMs": null,
+      "humanActions": null,
+      "rejectedToolCalls": 0,
+      "interventionCount": null,
+      "scheduledDecisionEvents": 1,
+      "approvalWaitMs": null,
+      "supplierWaitMs": null
     },
     {
       "caseId": "routine",
@@ -2207,7 +3008,16 @@
           "outputTokens": 67,
           "costMicroUsd": 356
         }
-      ]
+      ],
+      "inputHash": "1fcc6bda8fa47e6d6539cdfc5ec272cc1cd62e3d465c6abfc50184651ecf16a8",
+      "humanElapsedMs": null,
+      "humanForegroundMs": null,
+      "humanActions": null,
+      "rejectedToolCalls": 1,
+      "interventionCount": null,
+      "scheduledDecisionEvents": 0,
+      "approvalWaitMs": null,
+      "supplierWaitMs": null
     },
     {
       "caseId": "routine",
@@ -2269,7 +3079,16 @@
           "outputTokens": 373,
           "costMicroUsd": 518
         }
-      ]
+      ],
+      "inputHash": "1fcc6bda8fa47e6d6539cdfc5ec272cc1cd62e3d465c6abfc50184651ecf16a8",
+      "humanElapsedMs": null,
+      "humanForegroundMs": null,
+      "humanActions": null,
+      "rejectedToolCalls": 0,
+      "interventionCount": null,
+      "scheduledDecisionEvents": 1,
+      "approvalWaitMs": null,
+      "supplierWaitMs": null
     },
     {
       "caseId": "routine",
@@ -2326,7 +3145,16 @@
           "outputTokens": 241,
           "costMicroUsd": 453
         }
-      ]
+      ],
+      "inputHash": "1fcc6bda8fa47e6d6539cdfc5ec272cc1cd62e3d465c6abfc50184651ecf16a8",
+      "humanElapsedMs": null,
+      "humanForegroundMs": null,
+      "humanActions": null,
+      "rejectedToolCalls": 0,
+      "interventionCount": null,
+      "scheduledDecisionEvents": 1,
+      "approvalWaitMs": null,
+      "supplierWaitMs": null
     },
     {
       "caseId": "shortage",
@@ -2388,7 +3216,16 @@
           "outputTokens": 512,
           "costMicroUsd": 581
         }
-      ]
+      ],
+      "inputHash": "5a8da057c6a58520cda6bbc19ede48704ffd170a5cc5f605ab4f15e346903b53",
+      "humanElapsedMs": null,
+      "humanForegroundMs": null,
+      "humanActions": null,
+      "rejectedToolCalls": 0,
+      "interventionCount": null,
+      "scheduledDecisionEvents": 0,
+      "approvalWaitMs": null,
+      "supplierWaitMs": null
     },
     {
       "caseId": "shortage",
@@ -2445,7 +3282,16 @@
           "outputTokens": 425,
           "costMicroUsd": 534
         }
-      ]
+      ],
+      "inputHash": "5a8da057c6a58520cda6bbc19ede48704ffd170a5cc5f605ab4f15e346903b53",
+      "humanElapsedMs": null,
+      "humanForegroundMs": null,
+      "humanActions": null,
+      "rejectedToolCalls": 0,
+      "interventionCount": null,
+      "scheduledDecisionEvents": 1,
+      "approvalWaitMs": null,
+      "supplierWaitMs": null
     },
     {
       "caseId": "shortage",
@@ -2502,7 +3348,16 @@
           "outputTokens": 285,
           "costMicroUsd": 472
         }
-      ]
+      ],
+      "inputHash": "5a8da057c6a58520cda6bbc19ede48704ffd170a5cc5f605ab4f15e346903b53",
+      "humanElapsedMs": null,
+      "humanForegroundMs": null,
+      "humanActions": null,
+      "rejectedToolCalls": 0,
+      "interventionCount": null,
+      "scheduledDecisionEvents": 1,
+      "approvalWaitMs": null,
+      "supplierWaitMs": null
     },
     {
       "caseId": "shortage",
@@ -2564,7 +3419,16 @@
           "outputTokens": 512,
           "costMicroUsd": 582
         }
-      ]
+      ],
+      "inputHash": "5a8da057c6a58520cda6bbc19ede48704ffd170a5cc5f605ab4f15e346903b53",
+      "humanElapsedMs": null,
+      "humanForegroundMs": null,
+      "humanActions": null,
+      "rejectedToolCalls": 0,
+      "interventionCount": null,
+      "scheduledDecisionEvents": 0,
+      "approvalWaitMs": null,
+      "supplierWaitMs": null
     },
     {
       "caseId": "shortage",
@@ -2626,7 +3490,16 @@
           "outputTokens": 330,
           "costMicroUsd": 496
         }
-      ]
+      ],
+      "inputHash": "5a8da057c6a58520cda6bbc19ede48704ffd170a5cc5f605ab4f15e346903b53",
+      "humanElapsedMs": null,
+      "humanForegroundMs": null,
+      "humanActions": null,
+      "rejectedToolCalls": 0,
+      "interventionCount": null,
+      "scheduledDecisionEvents": 0,
+      "approvalWaitMs": null,
+      "supplierWaitMs": null
     },
     {
       "caseId": "supplier-text",
@@ -2683,7 +3556,16 @@
           "outputTokens": 347,
           "costMicroUsd": 516
         }
-      ]
+      ],
+      "inputHash": "536576569efd7d9a5e74ff2aaacad63448de2c43d6976791bc1fdc3e802c28fe",
+      "humanElapsedMs": null,
+      "humanForegroundMs": null,
+      "humanActions": null,
+      "rejectedToolCalls": 0,
+      "interventionCount": null,
+      "scheduledDecisionEvents": 1,
+      "approvalWaitMs": null,
+      "supplierWaitMs": null
     },
     {
       "caseId": "supplier-text",
@@ -2745,7 +3627,16 @@
           "outputTokens": 380,
           "costMicroUsd": 526
         }
-      ]
+      ],
+      "inputHash": "536576569efd7d9a5e74ff2aaacad63448de2c43d6976791bc1fdc3e802c28fe",
+      "humanElapsedMs": null,
+      "humanForegroundMs": null,
+      "humanActions": null,
+      "rejectedToolCalls": 0,
+      "interventionCount": null,
+      "scheduledDecisionEvents": 1,
+      "approvalWaitMs": null,
+      "supplierWaitMs": null
     },
     {
       "caseId": "supplier-text",
@@ -2807,7 +3698,16 @@
           "outputTokens": 409,
           "costMicroUsd": 542
         }
-      ]
+      ],
+      "inputHash": "536576569efd7d9a5e74ff2aaacad63448de2c43d6976791bc1fdc3e802c28fe",
+      "humanElapsedMs": null,
+      "humanForegroundMs": null,
+      "humanActions": null,
+      "rejectedToolCalls": 0,
+      "interventionCount": null,
+      "scheduledDecisionEvents": 1,
+      "approvalWaitMs": null,
+      "supplierWaitMs": null
     },
     {
       "caseId": "supplier-text",
@@ -2869,7 +3769,16 @@
           "outputTokens": 446,
           "costMicroUsd": 564
         }
-      ]
+      ],
+      "inputHash": "536576569efd7d9a5e74ff2aaacad63448de2c43d6976791bc1fdc3e802c28fe",
+      "humanElapsedMs": null,
+      "humanForegroundMs": null,
+      "humanActions": null,
+      "rejectedToolCalls": 0,
+      "interventionCount": null,
+      "scheduledDecisionEvents": 1,
+      "approvalWaitMs": null,
+      "supplierWaitMs": null
     },
     {
       "caseId": "supplier-text",
@@ -2931,7 +3840,16 @@
           "outputTokens": 378,
           "costMicroUsd": 513
         }
-      ]
+      ],
+      "inputHash": "536576569efd7d9a5e74ff2aaacad63448de2c43d6976791bc1fdc3e802c28fe",
+      "humanElapsedMs": null,
+      "humanForegroundMs": null,
+      "humanActions": null,
+      "rejectedToolCalls": 0,
+      "interventionCount": null,
+      "scheduledDecisionEvents": 1,
+      "approvalWaitMs": null,
+      "supplierWaitMs": null
     }
   ]
 }

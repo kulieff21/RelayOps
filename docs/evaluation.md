@@ -43,9 +43,12 @@ No real goods, supplier network, payment or live Telegram request is involved.
 
 **Human baseline:** a single operator uses the local instrument. Start each case
 when ready; open requirements, quotes and comparison, inspect the evidence, write
-a reason, then save and finish the draft or escalate. Do not consult an AI assistant
-during timed work. The instrument does not reveal oracle answers or allow replacing
-a failed main trial after seeing its result. Tool errors remain in the trace.
+a reason, then save and finish the draft or escalate. The planned condition
+prohibits consulting an AI assistant during timed work. The recorded session
+deviated from this condition; see the observed-condition disclosure below before
+interpreting manual results. The instrument does not reveal oracle answers or
+allow replacing a failed main trial after seeing its result. Tool errors remain
+in the trace.
 
 **Fixed workflow:** read requirements, read supplier quotes, compare, branch on the
 actual selected-quote result; prepare a draft when feasible, otherwise escalate.
@@ -150,3 +153,20 @@ a failure. The comparison does not establish generalized security, superior empl
 productivity or production integration readiness. A successful fixed baseline is
 evidence that fixed automation is sufficient for these represented deterministic
 branches; model flexibility must be justified on separately measured tasks.
+
+## Observed manual condition (post-run disclosure)
+
+All eight operator trials are recorded, but the planned unaided human condition
+was not met. Two unfinished first-case exposures preceded the main records;
+procedural/outcome coaching occurred during cases two and three, and post-trial
+feedback affected learning between cases. Report this arm as **assisted human
+execution**. This disclosure is an analysis annotation; the frozen protocol,
+configuration, execution sources and original trial records are unchanged.
+
+The instrument permits Finish without saving a feasible draft and presents raw
+JSON/errors. First and last completed human trials therefore remain failures with
+no draft; no corrected replacement is inserted after feedback. The success oracle
+does not grade every rationale sentence. Rejected-call interventions count only
+observed tool rejections, not external coaching. Assistance cost/duration remain
+unmeasured. The final results record this deviation and interface limitation;
+unaided human success and any causal employee-productivity benefit remain unmeasured.
