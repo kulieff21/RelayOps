@@ -401,3 +401,7 @@ saved integration values locally without printing them, and rejects private path
 credential signatures in working/staged/history files and built frontend assets. A bounded
 negative frontend probe verified that a generated credential signature is detected and
 the fixed failure output does not echo it. The original named demo/ledger are unchanged.
+
+## Bilingual end-to-end and visual review
+
+Phase 15 adds four EN/AZ consent-to-Telegram-decision-to-final-state checks, bringing the suite to 244 tests. The production frontend and isolated API were reviewed for locale preservation, desktop/mobile layout, keyboard navigation, loading/failure/retry and motion behavior. See [the verification matrix and reproducible isolated UI server](bilingual-review.md) for observations, corrections and emulation limits.

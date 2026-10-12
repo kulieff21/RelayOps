@@ -2,6 +2,23 @@ import type { Locale } from "./types.js";
 
 // A tuple always carries both source and translation; missing keys are type errors.
 export const messages = {
+  highlightDisplay: ["27″", "27″"],
+  highlightQhd: ["QHD", "QHD"],
+  highlightResolution: ["2560 × 1440", "2560 × 1440"],
+  highlightRam: ["16 GB", "16 GB"],
+  highlightStorage: ["512 GB", "512 GB"],
+  highlightCpu: ["6-core", "6 nüvəli"],
+  highlightTerabyte: ["1 TB", "1 TB"],
+  highlightUsb: ["USB-C", "USB-C"],
+  highlightUsbSpeed: ["10 Gbps", "10 Gbps"],
+  highlightPorts: ["24 ports", "24 port"],
+  highlightNetworkSpeed: ["1 Gbps", "1 Gbps"],
+  highlightManaged: ["Managed", "İdarə olunan"],
+  highlightDdr: ["DDR5", "DDR5"],
+  highlightRamSpeed: ["5600 MT/s", "5600 MT/s"],
+  highlightVa: ["900 VA", "900 VA"],
+  highlightWatts: ["540 W", "540 W"],
+  highlightUps: ["UPS", "UPS"],
   remainingToDeliver: ["Remaining to deliver", "Çatdırılacaq qalan miqdar"],
   sandboxFulfillment: [
     "Sandbox receipt and fulfillment",
@@ -654,8 +671,8 @@ export const messages = {
   ],
   assistant: ["Equipment help", "Avadanlıq üzrə kömək"],
   quoteText: [
-    "Checked against the case budget, specifications and delivery deadline. This is a rules-based comparison; no purchase has been placed.",
-    "Büdcə, texniki xüsusiyyətlər və son tarixə görə yoxlanılıb. Bu qayda əsaslı müqayisədir; satınalma aparılmayıb.",
+    "Checked against the case budget, specifications and delivery deadline. Comparing quotations does not place a purchase.",
+    "Büdcə, texniki xüsusiyyətlər və son tarixə görə yoxlanılıb. Qiymət təkliflərinin müqayisəsi satınalma yaratmır.",
   ],
   feasible: ["Meets requirements", "Tələblərə uyğundur"],
   notFeasible: ["Outside requirements", "Tələblərə uyğun deyil"],
@@ -944,8 +961,8 @@ export const messages = {
   ],
   processStatus: ["Stored process status", "Qeydə alınmış proses vəziyyəti"],
   processBoundary: [
-    "Saved agent turns do not complete the supply case. Purchasing execution is not connected yet.",
-    "Saxlanılmış agent icraları təchizat işini tamamlamır. Satınalma icrası hələ qoşulmayıb.",
+    "Track the recorded approval, purchasing and fulfillment steps. A saved agent turn alone does not complete the supply case.",
+    "Qeydə alınmış təsdiq, satınalma və çatdırılma mərhələlərini izlə. Saxlanılmış agent icrası təkbaşına təchizat işini tamamlamır.",
   ],
   noProcesses: [
     "No process checkpoint has been recorded.",
@@ -973,13 +990,13 @@ export const messages = {
     "Purchasing proposal versions and the decisions bound to each version.",
     "Satınalma təklifi versiyaları və hər versiyaya bağlı qərarlar.",
   ],
-  decisionNotConnected: [
-    "Purchasing decisions are not connected yet",
-    "Satınalma qərarları hələ qoşulmayıb",
+  purchasingDecisions: [
+    "Version-bound purchasing decisions",
+    "Təklif versiyasına bağlı satınalma qərarları",
   ],
   decisionBoundary: [
-    "Stored proposals and decisions can be reviewed here. Telegram delivery and approval actions become available in a later stage.",
-    "Saxlanmış təklif və qərarlara burada baxa bilərsən. Telegram göndərişi və təsdiq əməliyyatları sonrakı mərhələdə açılacaq.",
+    "Review saved proposals and human decisions here. Open the linked supply case to submit a proposal or record an authorized decision.",
+    "Saxlanmış təklifləri və insan qərarlarını burada nəzərdən keçir. Təklif göndərmək və ya səlahiyyətli qərarı qeyd etmək üçün əlaqəli təchizat işini aç.",
   ],
   noProposals: [
     "No purchasing proposal has been recorded. Start with a case and review its quotations.",
@@ -1009,10 +1026,6 @@ export const messages = {
     "Ordered, received and cancelled quantities, with the inspection record for each receipt.",
     "Sifariş edilmiş, qəbul edilmiş və ləğv edilmiş miqdarlar, hər qəbulun yoxlama qeydi ilə.",
   ],
-  fulfillmentNotConnected: [
-    "Sandbox purchasing is connected; goods receipt is the next stage",
-    "Sandbox satınalma qoşulub; mal qəbulu növbəti mərhələdir",
-  ],
   receiptBoundary: [
     "An order is incoming supply, not physical stock. Receipt and inspection are separate records; sellable allocation must be verified before fulfillment.",
     "Satınalma sifarişi gözlənilən təchizatdır, fiziki stok deyil. Qəbul və yoxlama ayrı qeydlərdir; çatdırılmadan əvvəl satışa yararlı bölgü yoxlanılmalıdır.",
@@ -1033,9 +1046,9 @@ export const messages = {
   exceptionReason: ["Exception reason", "İstisnanın səbəbi"],
   modelUsage: ["Model runs and usage", "Model icraları və istifadəsi"],
   model: ["Recorded model", "Qeydə alınmış model"],
-  modelNotConnected: [
-    "Model execution is not connected yet",
-    "Model icrası hələ qoşulmayıb",
+  recordedModelActivity: [
+    "Recorded assistant activity",
+    "Qeydə alınmış assistent əməliyyatları",
   ],
   usageViewText: [
     "Inspect recorded runs, tool status and reported usage within your account's scope.",
@@ -1046,8 +1059,8 @@ export const messages = {
     "Mock və canlı qeydlər ayrıca işarələnir. Ara cəmlərə yalnız məlum qeydlər daxildir. Çatışmayan istifadə və xərc naməlum qalır; provayderin performansı haqqında nəticə çıxarılmır.",
   ],
   noModelRuns: [
-    "No model run has been recorded. OpenRouter setup starts in the next stage.",
-    "Model icrası qeydə alınmayıb. OpenRouter qurulması növbəti mərhələdə başlayır.",
+    "No assistant run is recorded in this view. Runs appear after an assistant request within your account's scope.",
+    "Bu görünüşdə assistent icrası qeydə alınmayıb. Hesabının icazə dairəsində assistent sorğusundan sonra icralar burada görünür.",
   ],
   input_tokens: [
     "Known input token subtotal",

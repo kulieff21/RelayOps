@@ -35,13 +35,13 @@ const categories: MessageKey[] = [
   "peripherals",
   "power",
 ];
-const highlights: Record<string, string[]> = {
-  "MON-QHD-27": ["27″", "QHD", "2560 × 1440"],
-  "PC-MINI-16": ["16 GB", "512 GB", "6-core"],
-  "SSD-EXT-1T": ["1 TB", "USB-C", "10 Gbps"],
-  "NET-SW-24G": ["24 ports", "1 Gbps", "Managed"],
-  "RAM-DDR5-16": ["16 GB", "DDR5", "5600 MT/s"],
-  "UPS-900": ["900 VA", "540 W", "UPS"],
+const highlights: Record<string, MessageKey[]> = {
+  "MON-QHD-27": ["highlightDisplay", "highlightQhd", "highlightResolution"],
+  "PC-MINI-16": ["highlightRam", "highlightStorage", "highlightCpu"],
+  "SSD-EXT-1T": ["highlightTerabyte", "highlightUsb", "highlightUsbSpeed"],
+  "NET-SW-24G": ["highlightPorts", "highlightNetworkSpeed", "highlightManaged"],
+  "RAM-DDR5-16": ["highlightRam", "highlightDdr", "highlightRamSpeed"],
+  "UPS-900": ["highlightVa", "highlightWatts", "highlightUps"],
 };
 export function ProductCard({
   product,
@@ -78,7 +78,9 @@ export function ProductCard({
           <Link to={`/product/${product.id}`}>
             <h3>{product.name}</h3>
           </Link>
-          <p className="card-specs">{highlights[product.id]?.join(" / ")}</p>
+          <p className="card-specs">
+            {highlights[product.id]?.map(t).join(" / ")}
+          </p>
         </div>
         <div className="card-buy">
           <strong>{money(locale, product.price)}</strong>
@@ -398,7 +400,11 @@ export function Collection() {
         </label>
         <label className="sort-control">
           <span>{t("sort")}</span>
-          <select value={sort} onChange={(e) => setSort(e.target.value)}>
+          <select
+            aria-label={t("sort")}
+            value={sort}
+            onChange={(e) => setSort(e.target.value)}
+          >
             <option value="featured">{t("featured")}</option>
             <option value="low">{t("lowPrice")}</option>
             <option value="high">{t("highPrice")}</option>
@@ -536,7 +542,7 @@ export function ProductPage({ id }: { id: string }) {
             <p>{product.description}</p>
             <div className="spec-pills">
               {highlights[id]?.map((value) => (
-                <span key={value}>{value}</span>
+                <span key={value}>{t(value)}</span>
               ))}
             </div>
             <strong className="detail-price">

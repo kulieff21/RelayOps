@@ -72,7 +72,7 @@
     background: var(--mist);
   }
   body {
-    min-width: 320px;
+    min-width: 0;
   }
   button {
     border: 0;
@@ -3372,6 +3372,21 @@
     }
     .integration-empty p {
       font-size: 12px;
+    }
+  }
+  @media (max-width: 360px) {
+    .header-inner {
+      padding-inline: 12px;
+      gap: 6px;
+    }
+    .brand {
+      gap: 6px;
+    }
+    .brand span {
+      font-size: 18px;
+    }
+    .header-tools {
+      gap: 2px;
     }
   }
   @media (prefers-reduced-motion: reduce) {

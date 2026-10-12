@@ -203,6 +203,7 @@ export function App() {
   }, [toast]);
   useEffect(() => {
     let current = true;
+    setCatalogError(null);
     request<Product[]>(`/api/products?locale=${locale}`)
       .then((result) => {
         if (current) {

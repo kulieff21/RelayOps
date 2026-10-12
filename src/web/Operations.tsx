@@ -318,7 +318,7 @@ export function ProposalView({
       <div className="integration-note">
         <ClipboardCheck size={22} />
         <div>
-          <strong>{t("decisionNotConnected")}</strong>
+          <strong>{t("purchasingDecisions")}</strong>
           <p>{t("decisionBoundary")}</p>
         </div>
       </div>
@@ -688,7 +688,7 @@ export function ModelUsageView({
       <div className="integration-note">
         <Cpu size={22} />
         <div>
-          <strong>{t("modelNotConnected")}</strong>
+          <strong>{t("recordedModelActivity")}</strong>
           <p>{t("usageBoundary")}</p>
         </div>
       </div>
