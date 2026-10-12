@@ -405,3 +405,11 @@ the fixed failure output does not echo it. The original named demo/ledger are un
 ## Bilingual end-to-end and visual review
 
 Phase 15 adds four EN/AZ consent-to-Telegram-decision-to-final-state checks, bringing the suite to 244 tests. The production frontend and isolated API were reviewed for locale preservation, desktop/mobile layout, keyboard navigation, loading/failure/retry and motion behavior. See [the verification matrix and reproducible isolated UI server](bilingual-review.md) for observations, corrections and emulation limits.
+
+## Comparative experiment checks
+
+Phase 16 adds fifteen unpaid verification cases. They compare each of eight fixed-workflow and guided-agent case executions against literal independent SQL final states and equal normalized input hashes. Additional cases reject fabricated success, no-effect timeouts and unread manual escalations; detect premature approval, wrong amounts, changed authority and duplicate effects; retain billed failed-attempt usage; and verify durable shared evaluation allocations, immutable configuration, rollback and overcharge stop. Full suite size is 259 tests.
+
+The manual instrument was reviewed in the in-app Chromium using a separately labelled practice server: requirements/quotation/comparison reads, reason entry, draft persistence and finalization. Desktop and 390-pixel layouts were inspected; mobile scroll/client widths both measured 390. The measured human server receives no automated action. Its initial interrupted exploratory interaction was retained separately and restarted before any draft or decision; no human trial is claimed.
+
+Eight fixed cases and forty live agent attempts were recorded under a frozen source/input/configuration manifest. Usage sums reconcile against 170 appended evaluation attempts in the original ledger; the original eight model rows, complete named business/conversation fingerprint and saved `.env` are unchanged. A rerun skipped all completed trial records without another inference. Actual outcomes and failure evidence, including safe stale-evidence/context and terminal-output/reference failures, are in [the results](evaluation-results.md). The human baseline and final comparison are still pending.

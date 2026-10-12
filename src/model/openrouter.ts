@@ -163,7 +163,7 @@ async function boundedJson(response: Response) {
 export class OpenRouter {
   constructor(
     private settings: ModelConfig,
-    private budget: ModelBudget,
+    private budget: Pick<ModelBudget, "reserve" | "settle">,
     private transport: typeof fetch = fetch,
     private observeUsage: (usage: UsageObservation) => void = () => {},
   ) {}

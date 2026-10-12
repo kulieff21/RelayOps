@@ -7,6 +7,9 @@
     "node": ">=22.16.0 <23"
   },
   "scripts": {
+    "evaluation": "node --env-file-if-exists=.env --import tsx scripts/evaluation.ts",
+    "evaluation:manual": "node --import tsx scripts/evaluation-manual.ts",
+    "test:evaluation": "node --import tsx --test test/evaluation.test.ts",
     "telegram:setup": "node --env-file-if-exists=.env --import tsx scripts/telegram-setup.ts",
     "telegram:worker": "node --env-file-if-exists=.env --import tsx scripts/telegram-worker.ts",
     "process:worker": "node --env-file-if-exists=.env --import tsx scripts/process-worker.ts",

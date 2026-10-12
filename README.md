@@ -64,6 +64,7 @@ See [sandbox continuation](docs/purchase-continuation.md) for the explicit worke
 unique approved PO, mock supplier acknowledgement and rejection revision.
 See [difficult-case verification](docs/difficult-cases.md) for the twenty verified failure
 boundaries, adversarial scenarios, audit reconciliation and observed/fixed defects.
+See [comparative experiment protocol](docs/evaluation.md) and [recorded automated-arm results](docs/evaluation-results.md): eight fixed-workflow cases and forty live-agent trials are complete; the human baseline and final three-approach comparison remain pending. These results do not establish a human productivity gain.
 
 ## Run locally
 
