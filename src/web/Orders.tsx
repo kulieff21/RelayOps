@@ -22,6 +22,7 @@ import {
 } from "./i18n";
 import { request } from "./api";
 import type { Order, Return } from "./types";
+import { CustomerProgress } from "./FulfillmentActions";
 
 export function Status({ value }: { value: string }) {
   const { locale } = useShop();
@@ -275,7 +276,9 @@ export function OrderPage({ id }: { id: string }) {
         ? 2
         : order.status === "processing"
           ? 1
-          : 0;
+          : order.status === "confirmed"
+            ? 0
+            : -1;
   return (
     <section className="container order-page">
       <Link
@@ -366,6 +369,7 @@ export function OrderPage({ id }: { id: string }) {
               </article>
             ))}
           </div>
+          <CustomerProgress orderId={id} />
         </div>
         <aside className="order-side">
           <h3>{t("review")}</h3>

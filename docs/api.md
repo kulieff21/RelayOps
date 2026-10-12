@@ -189,3 +189,24 @@ First valid decision wins across website and Telegram; approval reserves budget 
 queues a purchasing job, with no immediate receipt or model call. The separate explicit
 sandbox worker consumes it; purchase reads include a labelled mock supplier acknowledgement.
 See [Telegram approvals](telegram-approvals.md) for delivery and restart behavior.
+
+## Receipt and fulfillment
+
+- POST `/api/purchase-orders/:id/receipts`: operator/owner; strict
+  `{quantity,serials?:string[],evidence,key}`. Records arrival and pending inspection;
+  cannot exceed unreceived/uncancelled PO quantity. No sellable-stock effect.
+- POST `/api/goods-receipts/:id/inspect`: operator/owner; strict
+  `{outcome:"sellable"|"damaged"|"incomplete"|"wrong_item",notes,key}`.
+  One terminal inspection; sellable inventory/allocation/order readiness is transactional.
+- POST `/api/purchase-orders/:id/supplier-events`: purchaser/owner; strict
+  `{kind:"delay",receiptAt,evidence,key}` or `{kind:"cancellation",quantity,evidence,key}`.
+  Mock evidence only. Cancellation releases only its acknowledged commitment.
+- POST `/api/procurement/:id/replan`: purchaser/owner; strict `{reason,key}`.
+  Returns a new draft requiring a new human decision, or a recorded escalation.
+- GET `/api/orders/:id/progress`: same order visibility as GET order; reservations,
+  whole-order batches, filtered operational timeline and customer-specific in-app updates.
+
+Supplied roles, totals, stock effects and customer IDs are rejected. These routes never
+contact a supplier, payment provider or model. Read-only purchasing records now include
+inspection notes/time and append-only mock supplier events; operators do not see refunded
+budget amounts. See [goods handling](goods-fulfillment.md) for quantity/date/retry policy.

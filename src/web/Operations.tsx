@@ -1,4 +1,6 @@
 import type { ReactNode } from "react";
+import { useState } from "react";
+import { SupplyDialog, type SupplyAction } from "./FulfillmentActions";
 import {
   ArrowUpRight,
   ClipboardCheck,
@@ -423,7 +425,11 @@ export function PurchaseView({
   workspace: Workspace;
   purchasing: boolean;
 }) {
-  const { t, locale, products } = useShop();
+  const { t, locale, products, session } = useShop();
+  const [action, setAction] = useState<SupplyAction | null>(null);
+  const canReceive = session?.account.roles.some((role) =>
+    ["operator", "owner"].includes(role),
+  );
   const { data, error } = useData<PurchasingRecords>(
     `/api/purchasing-records${filterQuery(caseId)}`,
   );
@@ -438,7 +444,7 @@ export function PurchaseView({
       <div className="integration-note">
         <PackageCheck size={22} />
         <div>
-          <strong>{t("fulfillmentNotConnected")}</strong>
+          <strong>{t("sandboxFulfillment")}</strong>
           <p>{t("receiptBoundary")}</p>
         </div>
       </div>
@@ -480,6 +486,72 @@ export function PurchaseView({
               ]}
             />
             <h3>{t("goodsReceipts")}</h3>
+            <div className="supply-actions">
+              {po.remaining_quantity > 0 &&
+                ["acknowledged", "partially_received"].includes(po.status) && (
+                  <>
+                    {canReceive && (
+                      <button
+                        className="button button-small"
+                        onClick={() =>
+                          setAction({
+                            kind: "receive",
+                            id: po.id,
+                            remaining: po.remaining_quantity,
+                          })
+                        }
+                      >
+                        {t("receiveGoods")}
+                      </button>
+                    )}
+                    {purchasing && (
+                      <>
+                        <button
+                          className="button button-small button-secondary"
+                          onClick={() =>
+                            setAction({ kind: "delay", id: po.id })
+                          }
+                        >
+                          {t("recordDelay")}
+                        </button>
+                        <button
+                          className="button button-small button-secondary"
+                          onClick={() =>
+                            setAction({
+                              kind: "cancellation",
+                              id: po.id,
+                              remaining: po.remaining_quantity,
+                            })
+                          }
+                        >
+                          {t("recordSupplierCancellation")}
+                        </button>
+                      </>
+                    )}
+                  </>
+                )}
+              {purchasing && (
+                <button
+                  className="text-link"
+                  onClick={() => setAction({ kind: "replan", id: po.case_id })}
+                >
+                  {t("replanSupply")}
+                </button>
+              )}
+            </div>
+            {po.supplierEvents?.map((event) => (
+              <p className="receipt-record" key={event.id}>
+                {t(
+                  event.kind === "delay"
+                    ? "recordDelay"
+                    : "recordSupplierCancellation",
+                )}{" "}
+                · {event.quantity || ""}{" "}
+                {event.receipt_at && dateTime(locale, event.receipt_at)}
+                <br />
+                {event.evidence}
+              </p>
+            ))}
             {po.supplierAcknowledgement && (
               <p className="record-warning">
                 {t("supplierMockBoundary")} ·{" "}
@@ -513,12 +585,29 @@ export function PurchaseView({
                         {t("exceptionReason")}: {r.exception_reason}
                       </p>
                     )}
+                    {canReceive && r.inspection === "pending" && (
+                      <button
+                        className="button button-small"
+                        onClick={() => setAction({ kind: "inspect", id: r.id })}
+                      >
+                        {t("inspectGoods")}
+                      </button>
+                    )}
+                    {r.inspectionRecord && (
+                      <p>
+                        {r.inspectionRecord.notes} ·{" "}
+                        {dateTime(locale, r.inspectionRecord.created_at)}
+                      </p>
+                    )}
                   </section>
                 ))}
               </div>
             )}
           </article>
         ))
+      )}
+      {action && (
+        <SupplyDialog action={action} onClose={() => setAction(null)} />
       )}
     </>
   );

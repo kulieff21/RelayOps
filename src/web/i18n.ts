@@ -2,9 +2,159 @@ import type { Locale } from "./types.js";
 
 // A tuple always carries both source and translation; missing keys are type errors.
 export const messages = {
+  remainingToDeliver: ["Remaining to deliver", "Çatdırılacaq qalan miqdar"],
+  sandboxFulfillment: [
+    "Sandbox receipt and fulfillment",
+    "Sandbox mal qəbulu və çatdırılma",
+  ],
+  receiveGoods: ["Record goods receipt", "Mal qəbulunu qeyd et"],
+  inspectGoods: ["Inspect received goods", "Qəbul edilmiş malı yoxla"],
+  recordDelay: ["Record supplier delay", "Təchizatçı gecikməsini qeyd et"],
+  recordSupplierCancellation: [
+    "Record supplier cancellation",
+    "Təchizatçı ləğvini qeyd et",
+  ],
+  replanSupply: ["Review supply plan", "Təchizat planını nəzərdən keçir"],
+  replanEscalated: [
+    "No feasible replacement; staff review is recorded.",
+    "Uyğun əvəzləyici təklif yoxdur; əməkdaş baxışı qeydə alınıb.",
+  ],
+  replanDecisionRequired: [
+    "New draft saved; a new human decision is required.",
+    "Yeni layihə saxlanılıb; yeni insan qərarı tələb olunur.",
+  ],
+  supplySaved: ["Supply record saved", "Təchizat qeydi saxlanılıb"],
+  serialEntryHelp: [
+    "Optional: one serial per unit, separated by commas or new lines.",
+    "İstəyə bağlı: hər vahid üçün bir seriya nömrəsi, vergül və ya yeni sətirlə ayırın.",
+  ],
+  inspection: ["Inspection outcome", "Yoxlama nəticəsi"],
+  evidence: ["Evidence / notes", "Sübut / qeydlər"],
+  recordAction: ["Save record", "Qeydi saxla"],
+  supplyProgress: ["Supply and fulfillment", "Təchizat və çatdırılma"],
+  notifications: ["Updates", "Yeniliklər"],
+  timeline: ["Order timeline", "Sifariş tarixçəsi"],
+  revisedEstimate: [
+    "Revised estimate · needs review",
+    "Yenilənmiş təxmin · baxış tələb olunur",
+  ],
+  nGoodsReceived: [
+    "Goods arrived; inspection is pending.",
+    "Mal qəbul edilib; yoxlama gözlənilir.",
+  ],
+  nStockAllocated: [
+    "Inspected stock allocated to your order.",
+    "Yoxlanılmış stok sifarişinizə ayrılıb.",
+  ],
+  nOrderReady: [
+    "All accepted units reserved; order is ready for preparation.",
+    "Razılaşdırılmış bütün vahidlər rezerv edilib; sifariş hazırlığa hazırdır.",
+  ],
+  nSupplyReview: [
+    "Supply needs staff review; delivery is not newly confirmed.",
+    "Təchizata əməkdaş baxışı lazımdır; yeni çatdırılma təsdiqlənməyib.",
+  ],
+  nShortageAcknowledged: [
+    "Supply shortage recorded for procurement.",
+    "Stok çatışmazlığı satınalma üçün qeydə alınıb.",
+  ],
+  nPurchasingConfirmed: [
+    "Sandbox purchasing confirmed; goods have not arrived yet.",
+    "Sandbox satınalma təsdiqlənib; mal hələ qəbul edilməyib.",
+  ],
+  nApprovalPending: [
+    "Purchasing proposal is awaiting a human decision.",
+    "Satınalma təklifi insan qərarını gözləyir.",
+  ],
+  nApprovalApproved: [
+    "Purchasing approved; execution is pending.",
+    "Satınalma təsdiqlənib; icra gözlənilir.",
+  ],
+  nApprovalRejected: [
+    "Purchasing proposal rejected; revision is needed.",
+    "Satınalma təklifi rədd edilib; yenilənmə lazımdır.",
+  ],
+  nOrderCancelled: [
+    "Order cancellation recorded.",
+    "Sifarişin ləğvi qeydə alınıb.",
+  ],
+  nCancellationRequested: [
+    "Cancellation requested; dispatch must be checked.",
+    "Ləğv istənilib; göndəriş yoxlanılmalıdır.",
+  ],
+  nOrderProcessing: ["Order is being prepared.", "Sifariş hazırlanır."],
+  nOrderShipped: [
+    "Order dispatch recorded.",
+    "Sifarişin göndərilməsi qeydə alınıb.",
+  ],
+  nOrderDelivered: [
+    "Order delivery recorded.",
+    "Sifarişin çatdırılması qeydə alınıb.",
+  ],
+  PURCHASE_NOT_FOUND: [
+    "Purchase order was not found.",
+    "Satınalma sifarişi tapılmadı.",
+  ],
+  PURCHASE_NOT_RECEIVABLE: [
+    "This purchase has no receivable supply.",
+    "Bu satınalma üzrə qəbul ediləcək təchizat yoxdur.",
+  ],
+  RECEIPT_QUANTITY_EXCEEDED: [
+    "Quantity exceeds the remaining ordered supply.",
+    "Miqdar sifarişin qalan təchizatını aşır.",
+  ],
+  RECEIPT_SERIALS_INVALID: [
+    "Supply one distinct serial for each recorded unit, or leave all blank.",
+    "Hər vahid üçün fərqli seriya nömrəsi yazın və ya hamısını boş saxlayın.",
+  ],
+  RECEIPT_SERIAL_DUPLICATE: [
+    "A serial is already recorded for this product.",
+    "Bu məhsul üçün seriya nömrəsi artıq qeydə alınıb.",
+  ],
+  RECEIPT_NOT_FOUND: ["Goods receipt was not found.", "Mal qəbulu tapılmadı."],
+  INSPECTION_ALREADY_RECORDED: [
+    "Inspection already recorded; refresh the receipt.",
+    "Yoxlama artıq qeydə alınıb; qəbulu yeniləyin.",
+  ],
+  SUPPLIER_CANCELLATION_EXCEEDED: [
+    "Cancellation exceeds unreceived supply.",
+    "Ləğv qəbul edilməmiş təchizat miqdarını aşır.",
+  ],
+  SUPPLIER_DELAY_INVALID: [
+    "Provide a later supplier receipt date in the future.",
+    "Təchizatçı üçün gələcəkdə daha gec qəbul tarixi daxil edin.",
+  ],
+  GOODS_NOT_SELLABLE: [
+    "Inspection did not find sellable goods.",
+    "Yoxlamada satışa yararlı mal müəyyən edilmədi.",
+  ],
+  FULFILLMENT_CONSENT_STALE: [
+    "Accepted requirements changed; new consent must be reviewed.",
+    "Razılaşdırılmış tələblər dəyişib; yeni razılıq nəzərdən keçirilməlidir.",
+  ],
+  FULFILLMENT_DEADLINE_REVIEW: [
+    "Verified dates no longer support the accepted delivery commitment.",
+    "Yoxlanılmış tarixlər razılaşdırılmış çatdırılma vədini artıq qarşılamır.",
+  ],
+  SUPPLY_INCOMPLETE: [
+    "Received sellable quantity is insufficient; further supply is needed.",
+    "Qəbul edilmiş satışa yararlı miqdar kifayət deyil; əlavə təchizat lazımdır.",
+  ],
+  SUPPLIER_DELAY_REVIEW: [
+    "Supplier reported a delay; the plan needs review.",
+    "Təchizatçı gecikmə bildirib; plana baxış lazımdır.",
+  ],
+  SUPPLIER_CANCELLED_REVIEW: [
+    "Supplier cancellation recorded; remaining demand needs review.",
+    "Təchizatçı ləğvi qeydə alınıb; qalan tələbə baxış lazımdır.",
+  ],
+  SUPPLIER_FAILURE: [
+    "Simulated supplier failed; staff review required.",
+    "Simulyasiya təchizatçı uğursuz oldu; əməkdaş baxışı lazımdır.",
+  ],
   supplierMockBoundary: [
-    "Simulated supplier response · no physical receipt",
-    "Simulyasiya təchizatçı cavabı · fiziki qəbul yoxdur",
+    "Simulated supplier response · receipt is recorded separately",
+    "Simulyasiya təchizatçı cavabı · qəbul ayrıca qeydə alınır",
   ],
   approvalBoundary: [
     "An approval reserves purchasing budget; it does not purchase, receive or deliver goods.",

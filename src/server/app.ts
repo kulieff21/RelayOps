@@ -6,6 +6,7 @@ import { Business } from "../domain/business.js";
 import { Views } from "../domain/views.js";
 import { Purchasing } from "../domain/purchasing.js";
 import { Operations } from "../domain/operations.js";
+import { Fulfillment } from "../domain/fulfillment.js";
 import { Approvals, type ApprovalOptions } from "../domain/approvals.js";
 import {
   ProcurementAssistant,
@@ -40,6 +41,7 @@ export function createApp(
   const views = new Views(business);
   const purchasing = new Purchasing(business);
   const operations = new Operations(business);
+  const fulfillment = new Fulfillment(business);
   const approvals = new Approvals(business, auth, approvalOptions);
   const assistant = new CustomerAssistant(business, auth, models);
   const procurementAssistant = new ProcurementAssistant(
@@ -301,6 +303,40 @@ export function createApp(
   }));
   app.post("/api/orders/:id/cancel", async (request) => ({
     data: business.cancelOrder(
+      actor(request.headers.authorization),
+      params(request.params),
+      request.body,
+    ),
+  }));
+  app.get("/api/orders/:id/progress", async (request) => ({
+    data: fulfillment.progress(
+      actor(request.headers.authorization),
+      params(request.params),
+    ),
+  }));
+  app.post("/api/purchase-orders/:id/receipts", async (request) => ({
+    data: fulfillment.receive(
+      actor(request.headers.authorization),
+      params(request.params),
+      request.body,
+    ),
+  }));
+  app.post("/api/goods-receipts/:id/inspect", async (request) => ({
+    data: fulfillment.inspect(
+      actor(request.headers.authorization),
+      params(request.params),
+      request.body,
+    ),
+  }));
+  app.post("/api/purchase-orders/:id/supplier-events", async (request) => ({
+    data: fulfillment.supplierEvent(
+      actor(request.headers.authorization),
+      params(request.params),
+      request.body,
+    ),
+  }));
+  app.post("/api/procurement/:id/replan", async (request) => ({
+    data: fulfillment.replan(
       actor(request.headers.authorization),
       params(request.params),
       request.body,

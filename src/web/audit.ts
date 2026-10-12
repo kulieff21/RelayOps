@@ -1,5 +1,37 @@
 export function auditName(locale: string, action: string) {
   const labels: Record<string, [string, string]> = {
+    "goods.inspected": [
+      "Goods inspection recorded",
+      "Mal yoxlaması qeydə alındı",
+    ],
+    "stock.allocated": [
+      "Inspected stock allocated",
+      "Yoxlanılmış stok ayrıldı",
+    ],
+    "order.supply_ready": [
+      "All units reserved; order ready",
+      "Bütün vahidlər rezerv edilib; sifariş hazırdır",
+    ],
+    "supply.review_required": [
+      "Supply plan requires review",
+      "Təchizat planına baxış lazımdır",
+    ],
+    "supplier.delay": [
+      "Supplier delay recorded",
+      "Təchizatçı gecikməsi qeydə alındı",
+    ],
+    "supplier.cancellation": [
+      "Supplier cancellation recorded",
+      "Təchizatçı ləğvi qeydə alındı",
+    ],
+    "supply.replanned": [
+      "Supply replanned; new decision required",
+      "Təchizat yenidən planlanıb; yeni qərar lazımdır",
+    ],
+    "supply.replan_escalated": [
+      "No feasible replacement; review required",
+      "Uyğun əvəzləyici təklif yoxdur; baxış lazımdır",
+    ],
     "approval.requested": [
       "Purchasing decision requested",
       "Satınalma qərarı istəndi",
@@ -69,7 +101,10 @@ export function auditName(locale: string, action: string) {
       "Order summary prepared",
       "Sifariş xülasəsi hazırlandı",
     ],
-    "order.confirmed": ["Order confirmed", "Sifariş təsdiqləndi"],
+    "order.confirmed": [
+      "Customer order accepted",
+      "Müştəri sifarişi qəbul edildi",
+    ],
     "procurement.shortage_created": [
       "Supply case opened",
       "Təchizat işi açıldı",

@@ -50,6 +50,11 @@ export interface ReceiptRecord {
   serials: string[];
   exception_reason: string | null;
   created_at: string;
+  inspectionRecord?: {
+    outcome: string;
+    notes: string;
+    created_at: string;
+  } | null;
 }
 export interface PurchaseRecord {
   id: string;
@@ -64,6 +69,15 @@ export interface PurchaseRecord {
   status: string;
   created_at: string;
   receipts: ReceiptRecord[];
+  supplierEvents?: {
+    id: string;
+    kind: "delay" | "cancellation";
+    quantity: number;
+    receipt_at: string | null;
+    evidence: string;
+    released_amount: number;
+    created_at: string;
+  }[];
   supplierAcknowledgement: {
     mode: "mock";
     outcome: "acknowledged" | "failed";

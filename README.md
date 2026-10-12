@@ -17,6 +17,11 @@ The workspace supports supplier capabilities and quotation entry with immutable 
 history, original evidence, explicit missing data and guarded concurrent edits.
 Full case details, linked activity, proposal/decision history, PO/receipt inspection
 and model usage reads are available with role-scoped access and honest empty states.
+Operators/owners explicitly record full/partial goods receipt and inspection; sellable
+stock movements and linked-order allocation commit once. Purchasing staff record mock
+supplier delay/cancellation and review replacement drafts without transferring approval.
+Customer order details show saved fulfillment dates, operational history and localized
+updates. See [goods receipt and fulfillment](docs/goods-fulfillment.md).
 
 The server-side OpenRouter adapter and persistent shared spending guard are implemented.
 Typed tool dispatch validates model arguments, rechecks session/role/case scope and

@@ -52,11 +52,9 @@ export function procurementRequirements(
   if (!["awaiting_supply", "confirmed"].includes(order.status))
     blockers.push("ORDER_NOT_AWAITING_PROCUREMENT");
   if (
-    row.status === "committed" ||
     budget.reserved > 0 ||
-    budget.committed > 0 ||
     business.store.one(
-      "SELECT po.id FROM purchase_orders po JOIN proposals p ON p.id=po.proposal_id WHERE p.case_id=? AND po.status NOT IN ('cancelled','failed')",
+      "SELECT po.id FROM purchase_orders po JOIN proposals p ON p.id=po.proposal_id WHERE p.case_id=? AND po.status NOT IN ('cancelled','failed') AND (po.quantity>po.received_quantity+po.cancelled_quantity OR EXISTS (SELECT 1 FROM goods_receipts r WHERE r.purchase_order_id=po.id AND r.inspection='pending'))",
       caseId,
     )
   )

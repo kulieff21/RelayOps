@@ -22,8 +22,11 @@ match accepted consent. Missing/malformed accepted specifications block a propos
 Purchasing need equals accepted quantity minus delivered quantity and effective active
 reservations. Expired reservations do not cover demand; original shortage remains historical.
 Unreserved physical stock is visible but never silently allocated. Active purchasing
-commitments block another draft. Incoming supply is not physical availability, and no
-unrelated cases are merged. Partial receipts/consolidation require later services.
+PO quantities or pending inspections block another draft. Already received/cancelled
+obligations still reduce the available case budget without blocking explicit remaining-demand
+replanning by themselves. Incoming supply is not physical availability, and no unrelated
+cases are merged. Explicit partial receipt/inspection is implemented separately; supply
+consolidation is not enabled. See [goods handling](goods-fulfillment.md).
 
 Only the latest quotation per supplier/product pair is considered, including current
 supplier capabilities. An incomplete latest quote never falls back to an old offer.

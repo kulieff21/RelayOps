@@ -214,6 +214,12 @@ export class Operations {
       }),
       purchaseOrders: purchaseOrders.map((po) => ({
         ...po,
+        supplierEvents: store.all<
+          NonNullable<PurchaseRecord["supplierEvents"]>[number]
+        >(
+          `SELECT id,kind,quantity,receipt_at,evidence,${financial ? "released_amount" : "0 released_amount"},created_at FROM supplier_events WHERE purchase_order_id=? ORDER BY created_at,rowid`,
+          po.id,
+        ),
         supplierAcknowledgement:
           store.one<NonNullable<PurchaseRecord["supplierAcknowledgement"]>>(
             "SELECT mode,outcome,created_at FROM supplier_acknowledgements WHERE purchase_order_id=?",
@@ -227,6 +233,11 @@ export class Operations {
           .map((r) => ({
             ...r,
             serials: z.array(z.string()).parse(JSON.parse(r.serials)),
+            inspectionRecord:
+              store.one<NonNullable<ReceiptRecord["inspectionRecord"]>>(
+                "SELECT outcome,notes,created_at FROM receipt_inspections WHERE receipt_id=?",
+                r.id,
+              ) ?? null,
           })),
       })),
     };

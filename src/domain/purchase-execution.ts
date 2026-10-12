@@ -1,6 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { Approvals } from "./approvals.js";
 import { Procurement } from "./procurement.js";
+import { notifyOrder } from "./notifications.js";
 import { BusinessError, requireRole } from "../shared/contracts.js";
 
 export type ContinuationResult = {
@@ -139,6 +140,17 @@ export class PurchaseExecution {
       }
       const status =
         supplierOutcome === "failed" ? "escalated" : "waiting_supply";
+      notifyOrder(
+        business,
+        requirements.orderId,
+        supplierOutcome === "failed" ? "nSupplyReview" : "nPurchasingConfirmed",
+        {
+          quantity: row.quantity,
+          ...(supplierOutcome === "failed"
+            ? { reason: "SUPPLIER_FAILURE" }
+            : {}),
+        },
+      );
       store.run(
         "UPDATE processes SET state=?,checkpoint=?,version=version+1,updated_at=? WHERE id=?",
         status,

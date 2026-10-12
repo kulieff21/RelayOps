@@ -29,7 +29,8 @@ with audit; no expired reservation is silently revived.
 The simulated failure mode retains a failed PO/acknowledgement, releases the sandbox
 commitment, excludes it from incoming supply and escalates for review. It does not
 pretend to cancel a real supplier obligation or automatically replan a different order.
-Supplier cancellation, delay handling, receipt/inspection and fulfillment are later stages.
+Supplier cancellation, delay handling and explicit receipt/inspection/allocation are
+connected through separate authenticated routes; see [goods handling](goods-fulfillment.md).
 
 For rejection, the worker recomputes current deterministic evidence, prepares an
 immutable next draft with the rejection reason and returns to human review. The same

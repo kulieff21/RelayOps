@@ -94,6 +94,7 @@ export class Procurement {
             "expired",
             "superseded",
             "invalidated",
+            "executed",
           ].includes(previous.status)
         )
           throw new BusinessError("PROPOSAL_AWAITING_DECISION");

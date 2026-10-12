@@ -5,6 +5,7 @@ import { digest } from "./auth.js";
 import { evaluateQuote, exactTotal, type Requirement } from "./quotes.js";
 import { capabilitiesSchema } from "../shared/purchasing.js";
 import { procurementRequirements } from "./procurement-requirements.js";
+import { notifyOrder } from "./notifications.js";
 import {
   BusinessError,
   requireRole,
@@ -356,6 +357,16 @@ export class Business {
         allocation,
         bulk: summary.quantity >= 10,
       });
+      if (summary.shortage > 0)
+        notifyOrder(
+          this,
+          id,
+          "nShortageAcknowledged",
+          {
+            quantity: summary.shortage,
+          },
+          this.newId(),
+        );
       return this.getOrder(actor, id);
     });
   }
@@ -411,6 +422,11 @@ export class Business {
           status,
           reason: input.reason,
         });
+        notifyOrder(
+          this,
+          orderId,
+          status === "cancelled" ? "nOrderCancelled" : "nCancellationRequested",
+        );
         return this.getOrder(actor, orderId);
       },
     );
@@ -476,7 +492,7 @@ export class Business {
                 this.clock.now(),
               );
               this.store.run(
-                "UPDATE reservations SET status='consumed' WHERE order_id=? AND product_id=?",
+                "UPDATE reservations SET status='consumed' WHERE order_id=? AND product_id=? AND status='active'",
                 orderId,
                 line.product_id,
               );
@@ -512,6 +528,17 @@ export class Business {
           to: input.status,
           evidence: input.evidence,
         });
+        notifyOrder(
+          this,
+          orderId,
+          input.status === "shipped"
+            ? "nOrderShipped"
+            : input.status === "delivered"
+              ? "nOrderDelivered"
+              : input.status === "cancelled"
+                ? "nOrderCancelled"
+                : "nOrderProcessing",
+        );
         return this.getOrder(actor, orderId);
       },
     );

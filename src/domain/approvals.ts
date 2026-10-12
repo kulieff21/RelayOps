@@ -3,6 +3,7 @@ import { z } from "zod";
 import { Business } from "./business.js";
 import { Auth } from "./auth.js";
 import { Procurement } from "./procurement.js";
+import { notifyOrder } from "./notifications.js";
 import { checkApprovalPolicy } from "./quotes.js";
 import { BusinessError, requireRole, type Actor } from "../shared/contracts.js";
 import {
@@ -269,6 +270,11 @@ export class Approvals {
           },
           caseId,
         );
+        notifyOrder(
+          this.business,
+          proposal.snapshot.evidence.requirements.orderId,
+          "nApprovalPending",
+        );
         return this.view(actor, this.row(requestId));
       },
     );
@@ -403,6 +409,15 @@ export class Approvals {
       row.id,
       { proposalId: row.proposal_id, decision, reason },
       row.case_id,
+    );
+    const orderId = this.store.one<{ order_id: string }>(
+      "SELECT order_id FROM procurement_cases WHERE id=?",
+      row.case_id,
+    )!.order_id;
+    notifyOrder(
+      this.business,
+      orderId,
+      decision === "approved" ? "nApprovalApproved" : "nApprovalRejected",
     );
     return this.view(actor, this.row(row.id));
   }

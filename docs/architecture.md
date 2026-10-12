@@ -281,3 +281,19 @@ explanation failure and restart without duplicate effects. Reads compute stale/e
 status without rewriting history. Both assistants share live admission and the original
 spending guard. No Telegram approval, budget allocation, PO, receipt or purchasing worker
 executes at this stage. See [procurement assistant](procurement-agent.md).
+
+## Receipt and customer fulfillment
+
+`Fulfillment` uses synchronous authenticated business effects for explicit goods receipt,
+immutable inspection, sellable movements, linked reservation/allocation and order readiness.
+Migration 009 preserves receipt binding, serial identity, terminal inspection and append-only
+allocation/supplier-event evidence. In-app notifications commit with their originating effect.
+Scoped progress reads expose only customer operational fields. Actual receipt/inspection
+timestamps support delivery calculations; material date/consent changes require review.
+
+Supplier delay/cancellation records mock evidence, preserves received obligations and releases
+only acknowledged cancelled costs. Explicit deterministic replan binds a fresh draft to the
+reopened case and current remaining demand/budget; no old approval transfers. Outstanding PO
+quantities/pending inspection block competing purchase obligations. The explicit business worker
+still only continues approval/rejection: API/bot startup does not fabricate receipt, inspection,
+dispatch, delivery or paid inference. See [goods handling](goods-fulfillment.md).

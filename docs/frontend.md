@@ -72,14 +72,15 @@ effective status without rewriting the historical stored state during a read.
 `/workspace/approvals` reads each stored proposal version, its exact quotation/version,
 quantity, AZN total, required approval route, expiry and linked human decision/reason.
 Expired pending records retain their stored status with an explicit elapsed warning.
-No decision or proposal is invented when its table is empty. Submission and decision
-mutations are intentionally scheduled with the later agent/Telegram workflow.
+No decision or proposal is invented when its table is empty. Bound submission and human
+decision controls connect to the durable website/Telegram approval workflow.
 
 `/workspace/purchaseOrders` reads ordered/received/cancelled/remaining quantities and
 all linked receipt inspections, serials and exception reasons. Operators can inspect
 these goods-handling records without accessing proposal amounts or decisions.
 A recorded receipt is not itself proof of allocation or sellable physical stock.
-Actual PO creation, supplier receipt and allocation services remain later stages.
+Explicit sandbox purchasing, goods receipt, inspection and linked-order allocation
+services are connected; acknowledgment and physical handling remain separate.
 
 `/workspace/audit?case=:id` follows explicit order, consent, case, proposal, bound quote,
 approval, PO, receipt, return, process, run and tool relationships. It includes event
@@ -131,6 +132,15 @@ styles are included. A shared subscription responds to changes in the motion pre
 without clearing the app; both MotionConfig and continuous hardware scenes follow it. Sessions stay in session storage; no tokens enter navigation URLs.
 
 ## Local operation
+
+The purchasing panel connects explicit full/partial receipt, terminal inspection,
+supplier delay/cancellation evidence and supply review. Operator/owner handling controls
+are separate from purchaser/owner supplier controls. EN/AZ native dialogs preserve input
+on locale changes and reuse the original retry key/body after an uncertain response.
+PO acknowledgement never substitutes for receipt or inspection. Customer order details
+show persisted supply/fulfillment batches, operational history and localized in-app updates.
+An awaiting-supply order does not highlight confirmed in the order stepper. See
+[goods handling](goods-fulfillment.md).
 
 Run `npm run dev` and `npm run dev:web` in separate terminals. For the production bundle,
 run `npm run build`, then `npm start` and `npm run preview`. SPA hosting must provide a

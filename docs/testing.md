@@ -5,7 +5,7 @@ production API/frontend compilation. `npm run smoke` checks the compiled server 
 dedicated loopback port 3099 and then stops it. All checks use unpaid fictional records.
 CI runs the same check on Node 22.
 
-The suite contains 195 tests covering:
+The suite contains 218 tests covering:
 
 - Bilingual fixtures, reference totals and deterministic quote rejection reasons.
 - No draft reservation, accepted 8/12 split and duplicate order/case prevention.
@@ -342,9 +342,46 @@ no feasible quote escalates. Audit failure rolls back PO, allocation, acknowledg
 reservation extension and job claim. Active/abandoned/exhausted leases are checked.
 A real child process exits after continuation commit and resumes with one completed job;
 two independent OS processes compete for one PO without repeating it. Migration 008
-preserves existing checksums/records. Goods receipt/fulfillment execution remains later.
+preserves existing checksums/records. Separate receipt/fulfillment checks follow below.
 
 The production PO view was reviewed in disposable headless Chrome against an isolated
 server at 1280×1000 and 390×844. EN/AZ mock supplier disclosure, acknowledged quantity 12,
 received quantity zero, committed budget and reload passed, with matching document
 scroll/client widths (1265/1265 and 390/390) and no runtime exception.
+
+## Goods receipt and fulfillment checks
+
+Twenty-three unpaid checks exercise full and partial receipt, pending/terminal inspection,
+exactly-once inventory and linked-order allocation, retained damaged/incomplete/wrong-item
+evidence, quantity/serial rejection and global delivery-key conflict. Audit failure rolls
+back receipt quantities, inspection, stock, allocation, notifications, readiness and retry
+records together. Expired holds reacquire only free stock; competing accepted orders retain
+their units. Cancelled customers leave supply unallocated and purchasing obligations intact.
+
+Late inspection and changed accepted requirements preserve actual inspected inventory but
+block allocation/new promises. Supplier delay saves a reviewed estimate; partial cancellation
+releases unit costs while retaining fees. Full pre-receipt cancellation releases the remaining
+commitment and creates a new valid draft requiring a fresh human decision. That decision can
+create a separate replacement PO while retaining the old cancelled PO/executed decision.
+Insufficient remaining budget or an unresolved PO escalates without purchasing again.
+
+HTTP checks verify role denials, revoked sessions/roles, strict arguments and foreign customer
+progress concealment. Notification locale and replay deduplication are checked. An isolated
+customer HTTP offer/consent creates the 20-unit order and 12-unit shortage; real services then
+compare, approve, purchase, receive, inspect, allocate, prepare, ship and deliver all 20 units.
+Database final state and one dispatch/receipt effect verify the outcome independently of
+model prose. The timeline records receipt before inspection before allocation before ready.
+
+A pending receipt survives reopening; a real process exits immediately after inspection commit
+and resumes the same key with one stock/allocation effect. Two independent OS inspectors racing
+on the same receipt also preserve one effect. Migration 009 preserves earlier checksums;
+full-fixture reset reproduction includes stable notification IDs. All 218 tests, types, lint,
+format, API/frontend production build and compiled HTTP startup passed.
+
+The production bundle was reviewed in the in-app Browser against an isolated in-memory server.
+EN/AZ full quantities, 5+7 partial arrivals/inspection, notes preserved across locale changes,
+customer readiness/date/updates, reload and original-language evidence passed. At 1280×1000
+and 390×844, scroll/client widths matched (1265/1265 and 375/375); the mobile receipt dialog
+fit within the viewport, Azerbaijani labels wrapped and no browser error was observed.
+The original named database retains one acknowledged PO and zero receipts; all QA writes
+were isolated. No paid request, supplier network, payment or Telegram message was made.
