@@ -5,7 +5,7 @@ production API/frontend compilation and read-only public-release/secret scanning
 dedicated loopback port 3099 and then stops it. All checks use unpaid fictional records.
 CI runs the same check on Node 22.
 
-The current suite contains 260 tests. Sections below retain historical stage counts
+The current suite contains 261 tests. Sections below retain historical stage counts
 and conditions; later sections supersede their pending-stage notes. Covered behavior includes:
 
 - Bilingual fixtures, reference totals and deterministic quote rejection reasons.
@@ -424,3 +424,8 @@ and root traversal. Credential-free production launch, restart persistence, simu
 approval, HTTP access and clean-checkout/reset checks are documented in
 [portfolio evidence](portfolio.md). These isolated checks do not reset the operator demo
 or replace any frozen trial.
+
+A regression test also forks the actual visitor launcher under an IPC supervisor with
+a missing npm executable and verifies a nonzero exit with no retained channel. This
+reproduces the supervised failure discovered during clean-checkout verification; it
+performs no install or database mutation.
