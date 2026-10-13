@@ -2,11 +2,14 @@
   "name": "relayops",
   "version": "0.1.0",
   "private": true,
+  "license": "MIT",
   "type": "module",
   "engines": {
     "node": ">=22.16.0 <23"
   },
   "scripts": {
+    "demo": "node scripts/launch-demo.mjs",
+    "demo:worker": "node --import tsx scripts/demo-worker.ts",
     "evaluation": "node --env-file-if-exists=.env --import tsx scripts/evaluation.ts",
     "evaluation:manual": "node --import tsx scripts/evaluation-manual.ts",
     "test:evaluation": "node --import tsx --test test/evaluation.test.ts",

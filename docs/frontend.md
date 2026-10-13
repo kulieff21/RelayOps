@@ -35,8 +35,8 @@ Purchasers only see procurement-linked orders and purchasing views, not customer
 
 Quotation comparison shows deterministic total, quantity/MOQ excess, delivery timing
 and rejection reasons for a selected case, with links to the exact supplier/product version
-history. No agent has made that decision. Purchasing execution and approval actions
-remain disconnected; their review screens cannot authorize or execute a purchase.
+history. Guided/live procurement drafts and explicit human approval controls are connected.
+The separate continuation worker creates a sandbox PO only after a valid decision.
 The equipment-help panel opens the connected `/assistant` conversation interface.
 
 `/workspace/suppliers` displays stored equipment categories and the Baku service zone.
@@ -84,7 +84,7 @@ services are connected; acknowledgment and physical handling remain separate.
 
 `/workspace/audit?case=:id` follows explicit order, consent, case, proposal, bound quote,
 approval, PO, receipt, return, process, run and tool relationships. It includes event
-summaries in timestamp/ID order, never arbitrary audit payloads or unrelated
+summaries in timestamp/insertion order, never arbitrary audit payloads or unrelated
 supplier/product-wide activity. Purchasers can inspect integrated cases; owner-wide
 activity remains available to owners when no case is selected.
 
@@ -94,8 +94,8 @@ procurement runs linked to cases; owners see all runs. Mock/live labels remain d
 Known-entry subtotals show their coverage; missing records and null costs are unknown,
 not zero. USD rendering retains six decimals. Provider request identifiers, tool
 arguments/results, checkpoints and credentials stay private. The adapter/executor
-is implemented for customer conversations and procurement drafts; purchasing execution and
-PO creation remain later stages. Freshly seeded demos have no run, proposal or PO records.
+is implemented for customer conversations and procurement drafts; explicit sandbox
+purchasing/receipt services are connected independently of inference. Freshly seeded demos have no run, proposal or PO records.
 
 Proposal, purchase, audit and usage case filters use shareable query parameters;
 locale changes, reload and browser Back preserve their meaning. The complete panel

@@ -5,7 +5,8 @@ production API/frontend compilation and read-only public-release/secret scanning
 dedicated loopback port 3099 and then stops it. All checks use unpaid fictional records.
 CI runs the same check on Node 22.
 
-The suite contains 240 tests covering:
+The current suite contains 260 tests. Sections below retain historical stage counts
+and conditions; later sections supersede their pending-stage notes. Covered behavior includes:
 
 - Bilingual fixtures, reference totals and deterministic quote rejection reasons.
 - No draft reservation, accepted 8/12 split and duplicate order/case prevention.
@@ -412,4 +413,14 @@ Phase 16 adds fifteen unpaid verification cases. They compare each of eight fixe
 
 The manual instrument was reviewed in the in-app Chromium using a separately labelled practice server: requirements/quotation/comparison reads, reason entry, draft persistence and finalization. Desktop and 390-pixel layouts were inspected; mobile scroll/client widths both measured 390. The measured human server receives no automated action. Its initial interrupted exploratory interaction was retained separately and restarted before any draft or decision; no human trial is claimed.
 
-Eight fixed cases and forty live agent attempts were recorded under a frozen source/input/configuration manifest. Usage sums reconcile against 170 appended evaluation attempts in the original ledger; the original eight model rows, complete named business/conversation fingerprint and saved `.env` are unchanged. A rerun skipped all completed trial records without another inference. Actual outcomes and failure evidence, including safe stale-evidence/context and terminal-output/reference failures, are in [the results](evaluation-results.md). The human baseline and final comparison are still pending.
+Eight fixed cases and forty live agent attempts were recorded under a frozen source/input/configuration manifest. Usage sums reconcile against 170 appended evaluation attempts in the original ledger; the original eight model rows, complete named business/conversation fingerprint and saved `.env` are unchanged. A rerun skipped all completed trial records without another inference. Actual outcomes and failure evidence, including safe stale-evidence/context and terminal-output/reference failures, are in [the results](evaluation-results.md). All eight assisted-human records and the final three-arm comparison are complete.
+The planned unaided condition was not obtained; coaching/exposure/interface limitations
+are disclosed in the results. Original records remain unchanged.
+
+## Portfolio launch checks
+
+Phase 17 adds a same-origin static-serving check for deep links, missing API/assets
+and root traversal. Credential-free production launch, restart persistence, simulated
+approval, HTTP access and clean-checkout/reset checks are documented in
+[portfolio evidence](portfolio.md). These isolated checks do not reset the operator demo
+or replace any frozen trial.

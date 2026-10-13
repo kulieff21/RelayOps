@@ -43,15 +43,16 @@ Order offers expire in 15 minutes and reserve nothing before acceptance. The cur
 checkout creates an accepted order immediately after consent; it does not implement
 an intermediate payment/checkout stock hold. Shortage orders reserve available units
 for 24 hours. Full-stock accepted orders reserve through the accepted deadline and must
-revalidate before processing/shipping. Extension after PO commitment and partial shipment
-orchestration are future work. For shortages, the summary reports requested deadline
+revalidate before processing/shipping. Approved sandbox PO acknowledgement can extend active holds within the accepted deadline;
+receipt/inspection allocates linked supply. For shortages, the summary reports requested deadline
 and `pending_supplier_confirmation`, not a guaranteed supply date.
 
 Each mutation's key must be 8–100 characters. Retry identical input with the same key;
 reusing it for a different request returns `IDEMPOTENCY_CONFLICT`. Obtaining a new offer
 is required after stock/specification/price changed: `NEW_CONSENT_REQUIRED`. A purchaser
 cannot approve more than 100000 minor units; over-budget totals always fail policy checks.
-The approval endpoints below accept actual human decisions; PO execution remains later.
+Approval endpoints accept human decisions; the separate explicit continuation worker
+creates a sandbox PO after revalidation without adding physical stock.
 
 ## Supplier and quotation records
 

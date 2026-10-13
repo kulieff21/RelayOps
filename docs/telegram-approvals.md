@@ -54,7 +54,7 @@ supplier capability and budget evidence invalidate the request. Its own approval
 allocation is excluded when comparing remaining budget, avoiding self-invalidation;
 other allocations still count. Sweeps release only this request's reserved allocation,
 retain decision history, escalate the process and request a new proposal/decision.
-Any future continuation executor must revalidate before executing a purchase.
+The continuation executor revalidates before executing a sandbox purchase.
 
 ## Delivery and recovery limits
 
@@ -75,7 +75,7 @@ send also schedules the terminal message edit after delivery succeeds.
 The CLI stops after three consecutive receiver failures. Restart it after investigating
 the fixed error code; preserve the database and allow an abandoned 120-second lease
 to expire. It does not reset business records or invoke a model. Multi-instance hosting,
-webhooks, receipt execution and unrestricted deployment are outside this
+webhooks and unrestricted deployment are outside this
 local receiver's verification scope.
 
 ## Verification
@@ -89,7 +89,8 @@ process exits after decision commit and resumes with one decision/allocation/job
 EN/AZ controls and simulated mode are reviewed separately from actual delivery.
 These isolated checks do not establish live Telegram button delivery. A separately
 observed operator-owned live EN approval recorded one decision/allocation and the
-successful terminal message edit. Receipt and delivery completion remain later.
+successful terminal message edit. Receipt/delivery services are separately implemented and checked with synthetic evidence;
+the named operator demonstration still has zero receipts.
 
 Protocol references: [polling acknowledgement](https://core.telegram.org/bots/api#getupdates),
 [inline controls](https://core.telegram.org/bots/api#inlinekeyboardbutton),

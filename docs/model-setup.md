@@ -160,3 +160,14 @@ Provider response diagnostics use fixed model-match classifications; they do not
 arbitrary provider model IDs that could reflect authorization credentials into CLI logs.
 Independent actual/unknown billing and no-ambiguous-retry rules remain unchanged. See
 [difficult cases](difficult-cases.md) for the regression and public-release scanning scope.
+
+## Completed experiment accounting (supersedes historical balances)
+
+The eight-case/five-repetition experiment and assisted-human arm are complete; see
+[evaluation results](evaluation-results.md). Original ledger: 178 requests, 52,696
+micro-USD known, zero held, USD 0.947304 remaining. The USD 0.50 evaluation allocation
+was inside that same USD 1; its USD 0.448124 remaining overlaps the global balance.
+Historical smoke balances above describe their earlier checkpoints. No budget renewal
+or additional paid trial is required for the portfolio. The normal API environment
+evaluation flag remains disabled; the completed CLI experiment explicitly selected
+its allocation. Visitor mode ignores live configuration and requires no key.

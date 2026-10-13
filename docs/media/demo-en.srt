@@ -1,0 +1,43 @@
+1
+00:00:00,000 --> 00:00:03,000
+Fictional sandbox / English storefront
+
+2
+00:00:03,000 --> 00:00:06,000
+Role-scoped workspace / actual SQLite records
+
+3
+00:00:06,000 --> 00:00:09,000
+Accepted demand / guided procurement / human boundary
+
+4
+00:00:09,000 --> 00:00:12,000
+Immutable 12-unit / 1,920 AZN draft / no purchase yet
+
+5
+00:00:12,000 --> 00:00:15,000
+Version-bound proposal evidence / linked case controls
+
+6
+00:00:15,000 --> 00:00:18,000
+Explicit simulated owner approval / no Telegram message
+
+7
+00:00:18,000 --> 00:00:21,000
+One acknowledged sandbox PO / zero received stock
+
+8
+00:00:21,000 --> 00:00:24,000
+Receipt recorded / inspection still pending
+
+9
+00:00:24,000 --> 00:00:27,000
+Sellable inspection / exactly-once linked allocation
+
+10
+00:00:27,000 --> 00:00:30,000
+Guided customer assistant / real product evidence
+
+11
+00:00:30,000 --> 00:00:33,000
+Customer B: 20 units reserved / confirmed / not delivered

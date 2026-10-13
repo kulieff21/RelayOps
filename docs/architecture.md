@@ -1,13 +1,10 @@
 # Architecture and decisions
 
-Status: backend foundation and complete pre-agent bilingual storefront/operations views implemented.
-The server-side OpenRouter adapter and durable shared spending guard are implemented.
-The internal observe/action/result loop is implemented over authenticated tool dispatch,
-with aggregate limits, safe classified retries and durable conversation/run recovery.
-Website/procurement assistants and durable Telegram/website approvals are implemented.
-An explicit atomic sandbox continuation consumes approval/rejection jobs; receipt and
-fulfillment orchestration remain future stages. See [continuation](purchase-continuation.md).
-Adapter diagnostics do not execute these workflows.
+Status: bilingual storefront/workspace, bounded assistants, durable human approvals,
+sandbox purchasing and explicit receipt/inspection/allocation are implemented. The
+credential-free visitor launcher serves API/UI together. Live model and Telegram are
+separately configured opt-ins; all supplier/payment/delivery events remain synthetic.
+See [process states/recovery](processes.md), [setup](setup.md) and [limitations](limitations.md).
 
 ## ADR 001: independently deployable clients and server
 
@@ -19,28 +16,34 @@ and staff routes share translation/control code. Vite proxies API requests local
 The server still validates every identity, argument and state-changing action.
 
 Choose Fastify 5, TypeScript 5 and strict Zod 4 contracts for the server. The initial
-API runs without credentials. All model tools will invoke the same domain services as
+API runs without credentials. All model tools invoke the same domain services as
 manual operations; agents do not execute SQL or provide their own authority.
 
 ```mermaid
 flowchart LR
-  C[Customer browser EN/AZ] --> API[Fastify API: authenticated identity]
-  B[Business browser EN/AZ] --> API
-  API --> S[Deterministic business services]
-  S --> DB[(SQLite on persistent local disk)]
-  W[Future leased process worker] --> DB
-  W --> S
-  W --> OR[OpenRouter: server-side credentials]
-  W --> TG[Telegram: mapped human approver]
-  TG --> U[Future polling / authenticated webhook receiver]
-  U --> S
+  C[Customer EN/AZ] --> API[Fastify: authenticated identity]
+  B[Staff EN/AZ] --> API
+  API --> S[Deterministic policies and transactions]
+  API --> A[Bounded server agent loop]
+  A --> T[Typed tools: same domain services]
+  T --> S
+  A --> M[Guided scripts OR opt-in OpenRouter]
+  S --> DB[(Persistent SQLite)]
+  W[Explicit leased continuation worker] --> S
+  TG[Opt-in Telegram polling and mapped owner] --> S
+  S --> O[Immutable proposals / approval outbox / audit]
 ```
 
-The diagram includes future components, not proof of implemented integrations.
-Repository layout: `src/web` contains the UI, `src/server` handles HTTP/config,
-`src/domain` for policies, `src/db` for storage/fixtures, `src/shared` for contracts,
-`src/worker` for future workers, `migrations` for SQL, `scripts` for maintenance,
-`test` for isolated verification and `docs` for public product documentation.
+Repository: `src/web` UI, `src/server` HTTP/config/static visitor entry, `src/domain`
+policies, `src/db` storage/fixtures, `src/shared` contracts, `src/agent` orchestration,
+`src/worker` continuation, `src/telegram` polling, `src/model` adapters/budget,
+`src/evaluation` measurement, `migrations` immutable SQL, `scripts` explicit commands,
+`test` isolated checks and `docs` public portfolio material.
+
+The model chooses tools and drafts grounded explanations. Services enforce identities,
+accepted specifications, exact AZN integers, quote validity, budgets, consent and human
+approval. Tool effects/audit/checkpoints are atomic; no model-generated role or purchase
+claim grants authority. Approval authorizes a proposal, not inspected stock or delivery.
 
 ## ADR 002: SQLite and checked SQL migrations
 
@@ -76,11 +79,10 @@ or a shared network filesystem.
 ## ADR 003: durable processes, jobs and Telegram
 
 Persist process checkpoints and a job outbox in the same transaction as the business
-event. Future workers atomically lease ready jobs, increment attempts, set an expiry,
+event. Explicit workers atomically lease ready jobs, increment attempts, set an expiry,
 and recover expired leases after restart. Unique dedupe keys prevent duplicate jobs;
 idempotent business effects handle the crash between effect commit and job completion.
-Use bounded attempts/backoff and terminal escalation, not infinite retries. The worker
-executor is deliberately scheduled with agent/approval integration, not this foundation.
+Use bounded attempts/backoff and terminal escalation, not infinite retries. The continuation executor runs only through an explicit worker command.
 
 Process states: ready, running, waiting_approval, waiting_supply, completed, escalated,
 failed. Checkpoints contain the step, case ID and accepted consent/proposal references.
@@ -89,12 +91,12 @@ in-memory timer as their only source of truth. Poll persisted deadlines and read
 check expiry again at the action boundary. Business dates never depend on session time.
 
 Telegram local development uses opt-in long polling, persisted update IDs and offset,
-without an inbound tunnel. Hosted operation will use an HTTPS webhook validated using
+without an inbound tunnel. Future hosted operation would need an HTTPS webhook validated using
 Telegram's webhook secret header, plus explicit Telegram user/chat-to-account mapping.
 Callbacks reference an opaque request ID, not a role or amount supplied by Telegram text.
 Bot onboarding, mapped private callbacks and leased send/receive adapters are implemented.
 See [Telegram approvals](telegram-approvals.md) for uncertain-send recovery and the
-persisted continuation boundary; hosted webhooks and purchasing executors remain later.
+persisted continuation; hosted webhooks remain unimplemented.
 
 Proposals are immutable after submission. Expiry is min(quote expiry, submission+24h).
 First valid authorized decision wins. In one transaction record the decision, reserve
@@ -102,15 +104,14 @@ budget and enqueue continuation; repeats return the prior decision. On execution
 revalidate consent, requirements, quote version/expiry and budget. Material changes
 invalidate/release the approval and require a new proposal. One proposal maps to at most
 one PO. PO creation converts the budget allocation to commitment without adding stock.
-Receipts later add inspected stock and allocate to still-valid customer demand.
+Explicit receipt inspections add sellable stock and allocate to still-valid customer demand.
 
 ## ADR 004: authority, idempotency and audit
 
 Demo authentication uses scrypt password hashes and opaque random bearer sessions.
 Only SHA-256 session-token hashes are stored; expiry uses the real wall clock even when
 business fixtures use a frozen clock. Log out removes the token. Login is bounded per
-IP for local development. Tokens must later be held in browser memory, not query strings
-or durable localStorage. Public hosting needs HTTPS, public-demo isolation/reset rules,
+IP for local development. The UI retains bearer sessions in sessionStorage, not query strings or durable localStorage. Public hosting needs HTTPS, public-demo isolation/reset rules,
 deployment rate limits and a reviewed authentication strategy. Current host is loopback
 only; shared known fixture passwords are not production credentials.
 
@@ -147,16 +148,17 @@ same normalized function envelope used by the model adapter. Strict JSON argumen
 cannot supply an actor, role or authorization claim. Supplier/customer text is data.
 
 Model-requested confirmation/cancellation/returns yield confirmation_required without
-executing a mutation, even if confirmed=true is supplied. A future trusted UI event
-must obtain affirmative consent and invoke the ordinary authenticated business route,
+executing a mutation, even if confirmed=true is supplied. The trusted customer UI
+obtains affirmative consent and invokes the ordinary authenticated business route,
 which revalidates rules. No dispatcher method accepts a model-created consent grant.
 See [tool dispatch](tools.md) and [agent loop](agent-loop.md). The internal loop refreshes
 authentication before/after inference, serializes exact tool observations and stops for
 confirmation. It returns separate invocation-local model/tool records and validates
 explicit completion/clarification/escalation against strict terminal JSON and local
 evidence references. Escalation destinations come from trusted assistant scope and
-remain not_created until a future real handoff. Completion closes the assistant turn,
-not a business process. Conversation endpoints and durable execution/resume remain future work.
+are linked to persisted customer support/procurement handoffs by the connected assistant.
+Completion closes the assistant turn, not a business process. Authenticated conversation
+endpoints and durable execution/resume are implemented.
 
 Deterministic code computes available stock, sale totals, quote MOQ/excess/all-in price,
 deadline feasibility, reservation expiry, return eligibility and role/budget thresholds.
@@ -168,8 +170,8 @@ ineligible. Missing feasible supply returns clarification/escalation rather than
 
 Accounts store `en`/`az` preferences; public catalog accepts an explicit locale defaulting
 to English. Product descriptions are bilingual. The UI uses typed English/Azerbaijani
-entries checked for missing translations and fixture specification coverage. Future
-persisted notifications store message keys/parameters and recipient locale.
+entries checked for missing translations and fixture specification coverage.
+Persisted notifications store message keys/parameters and recipient locale.
 Assistant/Telegram prose follows the recipient locale. API errors use stable English
 codes translated by the bilingual UI.
 Language is not part of the consent fingerprint; switching it does not alter an offer.
@@ -223,8 +225,8 @@ retain the full summary scope. Reads do not advance process checkpoints or execu
 prepared approval/PO/receipt schema. No new migration is needed for these views.
 
 The main named demo remains unchanged by populated-view verification. Isolated test
-fixtures populate the existing schema to verify rendering/visibility of future records;
-they are not evidence that the future worker or approval workflow runs.
+fixtures populate the schema to verify rendering/visibility. Approval, continuation and
+receipt services are verified separately; populated views alone do not prove execution.
 
 ## OpenRouter adapter boundary
 
@@ -245,7 +247,7 @@ never touches this ledger. Its schema is independent of immutable business migra
 
 This is application accounting for this project, not an OpenRouter account/key limit.
 It assumes provider catalogue prices and token caps are honored; unrelated key use is
-outside its accounting. A future agent entry point must always use this adapter/ledger,
+outside its accounting. Live agent entry points always use this adapter/ledger,
 persist all execution outcomes and supply trusted actor context to a validated dispatcher.
 No public completion endpoint or website conversation exists yet. The explicit local
 diagnostic stores actual usage and a synthetic tool result in existing run/usage tables.
@@ -279,8 +281,9 @@ including drafts. Revision inserts another version and supersedes only an old dr
 Model tools commit proposal/audit/evidence/checkpoint together; committed proposals survive
 explanation failure and restart without duplicate effects. Reads compute stale/expired
 status without rewriting history. Both assistants share live admission and the original
-spending guard. No Telegram approval, budget allocation, PO, receipt or purchasing worker
-executes at this stage. See [procurement assistant](procurement-agent.md).
+spending guard. Draft preparation does not itself execute Telegram approval, budget
+allocation, PO or receipt; these are separate human/worker services.
+See [procurement assistant](procurement-agent.md).
 
 ## Receipt and customer fulfillment
 

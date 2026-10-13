@@ -1,0 +1,122 @@
+{
+  "capturedDate": "2026-10-13",
+  "locale": "en",
+  "provenance": "Actual isolated fictional visitor application browser captures; public synthetic accounts only.",
+  "video": {
+    "durationSeconds": 33,
+    "sampleFramesPerSecond": 2,
+    "encodedFramesPerSecond": 24,
+    "edited": true,
+    "timingBenchmark": false,
+    "audio": false,
+    "realIntegrations": false
+  },
+  "files": [
+    {
+      "file": "approval-en.jpg",
+      "sha256": "106f94f7aa482b50bee2a9c69d3bc358c4fa6a44643d922ec3bb8c612fb2ff6e",
+      "bytes": 68226,
+      "width": 1265,
+      "height": 712,
+      "encoding": "JPEG"
+    },
+    {
+      "file": "assistant-en.jpg",
+      "sha256": "abdbf911430760a08b0007cc0359fd49054af861af33ad78a23504080fce0c1c",
+      "bytes": 59340,
+      "width": 1265,
+      "height": 712,
+      "encoding": "JPEG"
+    },
+    {
+      "file": "customer-progress-en.jpg",
+      "sha256": "85743d304119ff387b835e396d036725c65d4b9caa5ccc79e0c35cbafb1d2511",
+      "bytes": 42243,
+      "width": 1265,
+      "height": 712,
+      "encoding": "JPEG"
+    },
+    {
+      "file": "demo-en.mp4",
+      "sha256": "992dae26ad4a1df712f8e3d643434b1f49e1406305e7e3a7e4d50504fb3743a5",
+      "bytes": 536324
+    },
+    {
+      "file": "demo-en.srt",
+      "sha256": "3c7538b137b41bcde5085f361b6b2afb0d96420299f49e1567764ad3a7499e54",
+      "bytes": 923
+    },
+    {
+      "file": "draft-en.jpg",
+      "sha256": "05d7e1ac49ce4deba45f0367116c2a38fa5c65801ff10f221df496a62a4f9173",
+      "bytes": 55940,
+      "width": 1265,
+      "height": 712,
+      "encoding": "JPEG"
+    },
+    {
+      "file": "inspection-en.jpg",
+      "sha256": "d6ff612bc12c45707b24adeb139489eed34201e73fbe3e92410aadef9ed416f5",
+      "bytes": 50255,
+      "width": 1265,
+      "height": 712,
+      "encoding": "JPEG"
+    },
+    {
+      "file": "procurement-en.jpg",
+      "sha256": "758507634662299d786b742f591f6ff65c3ed123279c54a9a3c5081ee7b3dbf8",
+      "bytes": 58236,
+      "width": 1265,
+      "height": 712,
+      "encoding": "JPEG"
+    },
+    {
+      "file": "proposal-en.jpg",
+      "sha256": "f6e23418efde413a06d547c19a7eeaec0483c5284d89db182cebff34ac3e22a1",
+      "bytes": 54805,
+      "width": 1265,
+      "height": 712,
+      "encoding": "JPEG"
+    },
+    {
+      "file": "purchase-en.jpg",
+      "sha256": "a79aaaaed6b528317f88232cac93a625b3062255c96e1a5a8c72f747444cc041",
+      "bytes": 55815,
+      "width": 1265,
+      "height": 712,
+      "encoding": "JPEG"
+    },
+    {
+      "file": "receipt-en.jpg",
+      "sha256": "426ce525b4757ca7302f514a3cd1c548b483d4b9c871daf34ec7a53517cb8f16",
+      "bytes": 52373,
+      "width": 1265,
+      "height": 712,
+      "encoding": "JPEG"
+    },
+    {
+      "file": "storefront-en.jpg",
+      "sha256": "e379aaa4df9b0c0e2e8afef496ee8ac69ea80d29e76d43e2d4af0b293fe7df89",
+      "bytes": 51495,
+      "width": 1265,
+      "height": 712,
+      "encoding": "JPEG"
+    },
+    {
+      "file": "storefront-mobile-en.jpg",
+      "sha256": "59113f5c4fa1cb8ede5338288fe18d0a255787a1dfdb925631de7d345189f58f",
+      "bytes": 29487,
+      "width": 375,
+      "height": 811,
+      "encoding": "JPEG"
+    },
+    {
+      "file": "workspace-en.jpg",
+      "sha256": "70f652a6ebe1fb0d6d70c213d9a6f8e88c374f1027a98309b007bdc9f3c91b32",
+      "bytes": 48281,
+      "width": 1265,
+      "height": 712,
+      "encoding": "JPEG"
+    }
+  ]
+}

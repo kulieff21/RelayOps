@@ -281,8 +281,9 @@ No email/SMS integration is required in the initial product.
 | AC33 | An entire case is reviewed                           | Audit trail reconstructs requirements, tools, proposals, decisions and stock events |
 | AC34 | Mock integrations are used                           | UI/evidence identifies mock execution, not a live model or supplier run             |
 
-These remain the full-product acceptance targets. Backend foundation checks are recorded
-in docs/testing.md; UI, live integrations and full-process acceptance remain pending.
+These define full-product acceptance targets. Implemented sandbox UI/process behavior
+and isolated end-to-end verification are in docs/testing.md. Limited live model/Telegram
+observations are separate from synthetic supplier/payment/delivery events.
 
 ## 14. Scope and integration boundaries (01.16)
 
@@ -295,7 +296,8 @@ inspection events. A visitor mode uses labelled mock integrations without creden
 No real payment, supplier commitment, live personal customer data or automatic tax
 compliance claim is included. Hosted deployment is not assumed by this specification.
 
-The implementation stack is recorded in docs/architecture.md. Still open: exact
-OpenRouter model/provider, paid-run budget,
-evaluation sample size and joint website visual-design decisions. This document defines
-behavior; it does not prescribe a visual theme or announce completed features.
+The selected stack is in docs/architecture.md and visual direction in docs/design.md.
+The recorded experiment used openai/gpt-6-luna with the openai provider, eight cases
+and five live repetitions, within a USD 0.50 allocation inside the original USD 1.
+See docs/evaluation.md and docs/evaluation-results.md for frozen settings and limitations.
+This specification defines intended behavior; verification is recorded separately.

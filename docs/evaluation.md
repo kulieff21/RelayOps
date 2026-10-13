@@ -156,6 +156,15 @@ branches; model flexibility must be justified on separately measured tasks.
 
 ## Observed manual condition (post-run disclosure)
 
+The original execution snapshot remains published at application commit
+`0ae91a26c3eabc1d0f777fe93450c7b1c22ee66f`; the completed numeric report is at
+`5d3e578db72b92b380cfc9ce726f1a47b5378993`. Portfolio launch/package changes after
+the experiment are not frozen execution evidence. A current checkout cannot silently
+reuse the original main manifest against changed package hashes. Preserve the original
+manifest, source revision and all raw records; any new experiment needs a separate
+identity/protocol, not a repaired or overwritten original outcome. Public checkouts
+contain numeric results, not the private complete raw trial evidence.
+
 All eight operator trials are recorded, but the planned unaided human condition
 was not met. Two unfinished first-case exposures preceded the main records;
 procedural/outcome coaching occurred during cases two and three, and post-trial
