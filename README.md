@@ -115,3 +115,6 @@ model spending ledger. Original raw trial evidence stays private, outside visito
 Original source/artwork/media: [MIT](LICENSE), copyright 2026 Elmar Quliyev.
 Fonts/dependencies retain their licenses: [asset attribution](docs/attribution.md),
 [complete installed third-party notices](THIRD_PARTY_NOTICES.md).
+
+Public content, verification coverage and release boundaries are recorded in the
+[release review](docs/release.md).

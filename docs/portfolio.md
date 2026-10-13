@@ -54,7 +54,7 @@ the evaluation's original execution snapshot is a separate earlier revision.
 
 | Check                       | Observed scope                                                                                                                                                   |
 | --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Full application suite      | 260/261 tests plus types, lint, formatting, API/UI build and public-content scan passed.                                                                         |
+| Full application suite      | 261/261 tests plus types, lint, formatting, API/UI build and public-content scan passed.                                                                         |
 | Compiled API smoke          | Real health and Azerbaijani catalog HTTP checks passed; owned child exited.                                                                                      |
 | Credential-free launch      | A separate clean Git clone with no dependencies/runtime started with the documented install/build/serve command.                                                 |
 | Live isolation              | Visitor entry ignored live shell flags and a synthetic `.env` enabling live integrations; assistants/Telegram remained unavailable for live execution.           |
