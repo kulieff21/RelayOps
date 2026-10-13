@@ -60,4 +60,5 @@ try {
 } catch {
   console.error("Demo preparation failed; check the command output above.");
   process.exitCode = 1;
+  if (process.connected) process.disconnect();
 }
